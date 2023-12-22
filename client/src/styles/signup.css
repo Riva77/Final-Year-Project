@@ -1,0 +1,46 @@
+/* styles.css */
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+  }
+  
+  .bannerSection {
+    display: flex;
+    flex: 1;
+    /* background: #F1EEE3; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  
+  .formSection {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    background: #ffffff;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+  }
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+  align-items: center;
+  }
+  .nav-link{
+    color: #4C2B21;
+    /* font-weight: 700; */
+    cursor: "pointer";
+  
+   font-weight: bold;
+    /* font-family: "Playfair display"; */
+  
+  }
+  
+  .nav-link:hover {
+    text-decoration: underline;
+    
+  }
