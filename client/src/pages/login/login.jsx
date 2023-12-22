@@ -2,9 +2,12 @@ import { useState } from "react";
 import background from "../../assets/background.jpg";
 import { CustomButton, TextInput } from "../../components";
 import "../../styles/login.css";
+import { useNavigate } from "react-router-dom";
+import { toastError, toastSuccess } from "../../utils/toast";
+import { login } from "../../apis/login";
 
 const Login = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // const dispatch = useDispatch(); //reducer use garera store ma data set garna help garxa
 
   const [formData, setFormData] = useState({
@@ -28,18 +31,18 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    // const response = await login(formData);
+    const response = await login(formData);
 
-    // if (response.success) {
-    //   const userToken = response.data.token;
-    //   // console.log(jwtDecode(userToken));
-    //   localStorage.setItem("userToken", userToken); //Key= "userToken", userToken= value. Aba get garni bela key matra chainxa
-    //   toastSuccess("Logged in successfully!");
-    //   navigate("/");
-    // } else {
-    //   toastError(response.error);
-    // }
-    // console.log("response", response);
+    if (response.success) {
+      const userToken = response.data.token;
+      // console.log(jwtDecode(userToken));
+      localStorage.setItem("userToken", userToken); //Key= "userToken", userToken= value. Aba get garni bela key matra chainxa
+      toastSuccess("Logged in successfully!");
+      navigate("/");
+    } else {
+      toastError(response.error);
+    }
+    console.log("response", response);
   };
   return (
     <div className="container">
