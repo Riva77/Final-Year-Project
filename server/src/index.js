@@ -5,6 +5,8 @@ const cors = require("cors");
 const connection = require("./database/connect.js");
 const loginRoutes = require("./routes/authentication/login.js");
 const registerRoutes = require("./routes/authentication/register.js");
+const addProductRoutes = require("./routes/product/addProduct.js");
+const getProductRoutes = require("./routes/product/getProduct.js");
 
 connection();
 const app = express();
@@ -23,6 +25,8 @@ app.use(cors(corsOptions));
 
 app.use("/api/login", loginRoutes);
 app.use("/api/register", registerRoutes);
+app.use("/api/addProduct", addProductRoutes);
+app.use("/api/getProduct", getProductRoutes);
 
 app.listen(8000, () => {
   //setting up the server to listen on the port 8000
