@@ -34,6 +34,9 @@ const Signup = () => {
       const response = await signup(formData);
       if (response.success) {
         toastSuccess("User registered successfully!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } else {
       }
       console.log("response", response);
