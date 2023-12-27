@@ -13,6 +13,7 @@ const addGenreRoutes = require("./routes/genre/addGenre.js");
 const getGenreRoutes = require("./routes/genre/getGenre.js");
 const cloudinaryRoutes = require("../src/routes/cloudinary/cloudinary.js");
 const fileUpload = require("express-fileupload");
+const getUserRoutes = require("./routes/user/getUser.js");
 
 connection();
 const app = express();
@@ -40,6 +41,7 @@ app.use("/api/getAuthor", getAuthorRoutes);
 app.use("/api/addGenre", addGenreRoutes);
 app.use("/api/getGenre", getGenreRoutes);
 app.use("/api/cloudinary", cloudinaryRoutes);
+app.use("/api/getUser", getUserRoutes);
 
 app.listen(8000, () => {
   //setting up the server to listen on the port 8000
