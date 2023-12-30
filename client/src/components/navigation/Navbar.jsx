@@ -57,7 +57,7 @@ const Navbar = () => {
               <>
                 {userData.role === "admin" && (
                   <>
-                    <span onClick={() => navigate("/dashboard")}>
+                    <span onClick={() => navigate("/admindashboard")}>
                       <LuLayoutDashboard size={25} style={styles.pointer} />
                     </span>
                     <span onClick={logoutClickHandler}>

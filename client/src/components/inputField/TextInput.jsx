@@ -1,7 +1,7 @@
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
 
-const TextInput = ({ type, value, onChange, name, label }) => {
+const TextInput = ({ type, value, onChange, name, label, min }) => {
   const [inputType, setInputType] = useState(type);
 
   const handlePasswordVisibility = () => {
@@ -44,6 +44,7 @@ const TextInput = ({ type, value, onChange, name, label }) => {
           value={value}
           onChange={onChange}
           placeholder={label}
+          min={min}
           style={{
             marginTop: "4px",
             width: "100%",
