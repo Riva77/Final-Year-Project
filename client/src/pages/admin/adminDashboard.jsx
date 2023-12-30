@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 // import { useSelector } from "react-redux";
 import CustomButton from "../../components/buttons/CustomButton";
 import Tab from "../../components/admin/Tab";
-// import AddProduct from "./contents/addProduct";
+import AddProduct from "../../pages/admin/contents/AddProduct";
+import AddAuthor from "./contents/AddAuthor";
+import AddGenre from "./contents/AddGenre";
 
 const AdminDashboard = () => {
   const tab = localStorage.getItem("adminActiveTab");
@@ -53,21 +55,21 @@ const AdminDashboard = () => {
               isActive={activeTab === "Add Product"}
             />
             <Tab
-              title={"Inventory"}
+              title={"Add Author"}
               onClick={handleTabClick}
-              isActive={activeTab === "Inventory"}
+              isActive={activeTab === "Add Author"}
             />
             <Tab
-              title={"Add Ingredients"}
+              title={"Add Genre"}
               onClick={handleTabClick}
-              isActive={activeTab === "Add Ingredients"}
+              isActive={activeTab === "Add Genre"}
             />
           </div>
           <CustomButton name="Logout" onClick={handleLogout} />
         </aside>
         <section
           style={{
-            padding: "128px 32px",
+            padding: "50px 32px",
             flex: 1,
             display: "flex",
             borderRadius: "6px",
@@ -77,9 +79,9 @@ const AdminDashboard = () => {
             overflowY: "auto",
           }}
         >
-          {/* {activeTab === "Add Product" && <AddProduct />} */}
-          {/* {activeTab === "Inventory" && <Inventory />}
-          {activeTab === "Add Ingredients" && <AddIngredients />} */}
+          {activeTab === "Add Product" && <AddProduct />}
+          {activeTab === "Add Author" && <AddAuthor />}
+          {activeTab === "Add Genre" && <AddGenre />}
         </section>
       </div>
     </>

@@ -14,6 +14,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  quantity: {
+    type: Number,
+    required: true,
+  },
   image: {
     type: String,
     required: true,
@@ -30,16 +34,8 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  publisher: {
-    type: String,
-    required: true,
-  },
   pages: {
     type: Number,
-    required: true,
-  },
-  date: {
-    type: Date,
     required: true,
   },
 });
@@ -51,13 +47,12 @@ const validate = (data) => {
     name: Joi.string().required().label("Name"),
     price: Joi.number().required().label("Price"),
     description: Joi.string().required().label("Description"),
+    quantity: Joi.string().required().label("Quantity"),
     image: Joi.string().required().label("Image"),
     author: Joi.string().required().label("Author"),
     synopsis: Joi.string().required().label("Synopsis"),
     genre: Joi.string().required().label("Genre"),
-    publisher: Joi.string().required().label("Publisher"),
     pages: Joi.number().required().label("Pages"),
-    date: Joi.date().required().label("Date"),
   });
   return schema.validate(data);
 };
