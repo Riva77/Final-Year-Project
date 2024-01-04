@@ -4,7 +4,7 @@ import { CustomButton, TextInput } from "../../components";
 import "../../styles/login.css";
 import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../utils/toast";
-import { login } from "../../apis/login";
+import { login } from "../../apis/authentication/login";
 
 const Login = () => {
   const navigate = useNavigate();

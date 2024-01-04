@@ -3,7 +3,7 @@ import background from "../../assets/background.jpg";
 import "../../styles/signup.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signup } from "../../apis/signup";
+import { signup } from "../../apis/authentication/signup";
 import { toastError, toastSuccess } from "../../utils/toast";
 
 const Signup = () => {
