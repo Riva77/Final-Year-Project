@@ -1,12 +1,71 @@
 import CaterogiesBook from "../../assets/CaterogiesBook.png";
+import { useEffect, useState } from "react";
 import {
   CustomButton,
   TextInput,
   RangeSlider,
   Dropdown,
 } from "../../components";
+import { getAuthor } from "../../apis/Author/getAuthor";
+import { getGenre } from "../../apis/Genre/getGenre";
+import { useSelector } from "react-redux";
+import ProductCard from "../../components/card/ProductCard";
 
 const Shop = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    description: "",
+    quantity: "",
+    image: "",
+    author: "",
+    synopsis: "",
+    genre: "",
+    pages: "",
+  });
+
+  const [author, setAuthor] = useState(null);
+  const [genre, setGenre] = useState(null);
+  const [minPrice, setMinPrice] = useState(0); //for rangeSlider
+  const [maxPrice, setMaxPrice] = useState(50); //for rangeSlider
+
+  const fetchAuthor = async () => {
+    const authorData = await getAuthor();
+    setAuthor(authorData?.data);
+  };
+  console.log(author);
+
+  const fetchGenre = async () => {
+    const genreData = await getGenre();
+    setGenre(genreData?.data);
+  };
+
+  useEffect(() => {
+    fetchAuthor();
+    fetchGenre();
+  }, []);
+
+  const handleProductClick = (productId) => {
+    navigate(`/shop/productDetails/${productId}`);
+  };
+
+  const productData = useSelector((state) => state.product.data);
+
+  const books = productData?.map((book) => {
+    return (
+      <ProductCard
+        name={book.name}
+        price={book.price}
+        image={book.image}
+        key={book._id}
+        onClick={() => handleProductClick(book._id)}
+      />
+    );
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
   return (
     <div style={styles.divMain}>
       <section
@@ -33,23 +92,22 @@ const Shop = () => {
           <div style={styles.tab}>
             <span style={styles.tabHeading}>Filter by Genre</span>
             <Dropdown
-            // items={bookGenre}
-            // label="Genre"
-            // value={genre}
-            // key={genre}
-            // onChange={(e) => dropdownChangeHandler(e, "Genre")}
+              items={genre}
+              label="Genre"
+              value={formData.genre}
+              name={"genre"}
+              onChange={handleChange}
             />
           </div>
           <div style={styles.tab}>
             <span style={styles.tabHeading}>Filter by Author</span>
-            <Dropdown />
-            {/* <Dropdown
-              items={bookAuthor}
+            <Dropdown
+              items={author}
               label="Author"
-              value={author}
-              key={author}
-              onChange={(e) => dropdownChangeHandler(e, "Author")}
-            /> */}
+              value={formData.author}
+              name={"author"}
+              onChange={handleChange}
+            />
           </div>
         </section>
 
@@ -131,7 +189,7 @@ const Shop = () => {
             >
               Discover Our Books
             </div>
-            {/* <div style={styles.booksPic}>{books}</div> */}
+            <div style={styles.booksPic}>{books}</div>
           </div>
         </section>
       </section>
