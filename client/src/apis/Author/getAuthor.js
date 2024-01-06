@@ -1,11 +1,9 @@
 import axios from "axios";
 
-export const getAuthor = async ({ name }) => {
+export const getAuthor = async () => {
   const API_URL = "http://localhost:8000/api";
   try {
-    const response = await axios.get(`${API_URL}/getAuthor`, {
-      name,
-    });
+    const response = await axios.get(`${API_URL}/getAuthor`);
 
     const data = response?.data; // if response exist the get response data
     return { success: true, data };
