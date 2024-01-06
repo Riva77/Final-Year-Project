@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   data: null,
   error: null,
+  isLoggedIn: false,
 };
 
 export const fetchUserData = createAsyncThunk(
@@ -18,6 +19,12 @@ export const fetchUserData = createAsyncThunk(
   }
 );
 
+const CLEAR_USER_DATA = "auth/clearUserData";
+
+export const clearUserData = () => ({
+  type: CLEAR_USER_DATA,
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -28,11 +35,16 @@ const authSlice = createSlice({
     });
     builder.addCase(fetchUserData.fulfilled, (state, action) => {
       state.loading = false;
+      state.isLoggedIn = true;
       state.data = action.payload;
     });
     builder.addCase(fetchUserData.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
+    });
+    builder.addCase(CLEAR_USER_DATA, (state) => {
+      state.data = [];
+      state.isLoggedIn = false;
     });
   },
 });
