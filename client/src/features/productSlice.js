@@ -9,7 +9,7 @@ const initialState = {
 
 export const fetchProductData = createAsyncThunk(
   "product/fetchProductData", //action type providing unique identifier for action. multiple slices ko naam fetch walai vayo vani problem hunxa so naming convention huna parxa.
-  async (id) => {
+  async () => {
     const response = await axios.get(
       //get function le chai id anudar user ko data linxa
       `http://localhost:8000/api/getProduct`
