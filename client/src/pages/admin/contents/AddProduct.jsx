@@ -1,42 +1,17 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TextInput from "../../../components/inputField/TextInput";
 import TextArea from "../../../components/inputField/TextArea";
 import CustomButton from "../../../components/buttons/CustomButton";
 import { toastSuccess, toastError } from "../../../utils/toast";
-import { addProduct } from "../../../apis/product/addProduct";
-import ItemsDropdown from "../../../components/sliderAndDropdown/ItemsDropdown";
 import FileInput from "../../../components/inputField/FileInput";
+import Dropdown from "../../../components/sliderAndDropdown/Dropdown";
+import { getAuthor } from "../../../apis/Author/getAuthor";
+import { getGenre } from "../../../apis/Genre/getGenre";
+import { addProduct } from "../../../apis/product/addProduct";
+import axios from "axios";
 // import { PostRequest } from "../../../services/httpRequest";
 
 const AddProduct = () => {
-  const ingredientTypes = [
-    {
-      id: "1",
-      label: "Pizza Base",
-      value: "pizzaBase",
-    },
-    {
-      id: "2",
-      label: "Cheese",
-      value: "cheese",
-    },
-    {
-      id: "3",
-      label: "Sauce",
-      value: "sauce",
-    },
-    {
-      id: "4",
-      label: "Veggies",
-      value: "veggies",
-    },
-    {
-      id: "5",
-      label: "Meat",
-      value: "meat",
-    },
-  ];
-
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -53,6 +28,24 @@ const AddProduct = () => {
     preview: "",
     data: "",
   });
+
+  const [author, setAuthor] = useState(null);
+  const [genre, setGenre] = useState(null);
+
+  const fetchAuthor = async () => {
+    const authorData = await getAuthor();
+    setAuthor(authorData?.data);
+  };
+
+  const fetchGenre = async () => {
+    const genreData = await getGenre();
+    setGenre(genreData?.data);
+  };
+
+  useEffect(() => {
+    fetchAuthor();
+    fetchGenre();
+  }, []);
 
   const handleFileChange = useCallback((e) => {
     const file = e.target.files[0];
@@ -87,6 +80,7 @@ const AddProduct = () => {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     const form = new FormData();
     form.append("file", file.data);
 
@@ -102,23 +96,23 @@ const AddProduct = () => {
       }
       const response = await addProduct(formData);
       if (response.success) {
-        toastSuccess(response.message);
-        setFormData(initialFormData);
+        toastSuccess("Product Added Successfully");
         setFile({ data: "", preview: "" });
+        setFormData({
+          name: "",
+          price: "",
+          description: "",
+          quantity: "",
+          image: "",
+          author: "",
+          synopsis: "",
+          genre: "",
+          pages: "",
+        });
       } else {
         toastError(response.error);
       }
-      setFormData({
-        name: "",
-        price: "",
-        description: "",
-        quantity: "",
-        image: "",
-        author: "",
-        synopsis: "",
-        genre: "",
-        pages: "",
-      });
+
       console.log("response", response);
     } else {
       toastError("Cloudinary upload failed");
@@ -166,22 +160,20 @@ const AddProduct = () => {
             min={1}
             onChange={handleChange}
           />
-          {/* <ItemsDropdown
-            // options={ingredientTypes}
-            // // value={currentExtension}
-            // onChange={(event) => {
-            //   setCurrentExtension(event);
-            //   setFormData({ ...formData, type: event.value });
-            // }}
+          <Dropdown
+            items={author}
+            label="Author"
+            value={formData.author}
+            name={"author"}
+            onChange={handleChange}
           />
-          <ItemsDropdown
-            // options={ingredientTypes}
-            // // value={currentExtension}
-            // onChange={(event) => {
-            //   setCurrentExtension(event);
-            //   setFormData({ ...formData, type: event.value });
-            // }}
-          /> */}
+          <Dropdown
+            items={genre}
+            label="Genre"
+            value={formData.genre}
+            name={"genre"}
+            onChange={handleChange}
+          />
         </div>
         <FileInput
           type="file"
