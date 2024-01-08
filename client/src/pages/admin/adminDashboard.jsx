@@ -6,6 +6,7 @@ import Tab from "../../components/admin/Tab";
 import AddProduct from "../../pages/admin/contents/AddProduct";
 import AddAuthor from "./contents/AddAuthor";
 import AddGenre from "./contents/AddGenre";
+import Product from "./contents/Product";
 
 const AdminDashboard = () => {
   const tab = localStorage.getItem("adminActiveTab");
@@ -64,6 +65,11 @@ const AdminDashboard = () => {
               onClick={handleTabClick}
               isActive={activeTab === "Add Genre"}
             />
+             <Tab
+              title={"Product"}
+              onClick={handleTabClick}
+              isActive={activeTab === "Product"}
+            />
           </div>
           <CustomButton name="Logout" onClick={handleLogout} />
         </aside>
@@ -82,6 +88,7 @@ const AdminDashboard = () => {
           {activeTab === "Add Product" && <AddProduct />}
           {activeTab === "Add Author" && <AddAuthor />}
           {activeTab === "Add Genre" && <AddGenre />}
+          {activeTab === "Product" && <Product />}
         </section>
       </div>
     </>
