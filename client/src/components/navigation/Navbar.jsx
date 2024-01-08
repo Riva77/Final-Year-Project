@@ -12,10 +12,12 @@ import {
 } from "react-icons/bi";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { clearUserData } from "../../features/authslice";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const userToken = localStorage.getItem("userToken"); //local storage bata userToken leko
 
@@ -23,7 +25,8 @@ const Navbar = () => {
 
   const logoutClickHandler = () => {
     localStorage.removeItem("userToken");
-    navigate("/"); //Navigating to homepage
+    dispatch(clearUserData());
+    navigate("/");
   };
 
   return (
