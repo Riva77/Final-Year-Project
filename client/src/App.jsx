@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/login/login";
@@ -13,17 +13,24 @@ import Blog from "./pages/Blog/blog";
 import { jwtDecode } from "jwt-decode";
 import { fetchUserData } from "./features/authslice";
 import { useDispatch, useSelector } from "react-redux";
+import PrivateRoutes from "./utils/privateRoutes";
+import { fetchProductData } from "./features/productSlice";
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userToken = localStorage.getItem("userToken");
+
   useEffect(() => {
     if (userToken) {
       const userId = jwtDecode(userToken)._id;
       dispatch(fetchUserData(userId));
     }
-    // dispatch(fetchProductData());
-  }, [dispatch, userToken]);
+  }, [userToken]);
+
+  useEffect(() => {
+    dispatch(fetchProductData());
+  }, []);
 
   const pathsWithoutNavbar = ["/login", "/signup"];
   const [navbarVisible, setNavbarVisible] = useState(true);
@@ -33,17 +40,27 @@ function App() {
     setNavbarVisible(!pathsWithoutNavbar.includes(path));
   }, [location.pathname]);
 
+  //Fetching data from global state
+  const user = useSelector((state) => state.user);
+  useEffect(() => {
+    if (user.data) {
+      user.data.role === "admin" ? navigate("/adminDashboard") : navigate("/");
+    }
+  }, [user.data]);
+
   return (
     <div>
       <Toaster richColors={true} />
       {navbarVisible && <Navbar />}
       <Routes>
+        <Route element={<PrivateRoutes />}>
+          <Route exact path="/adminDashboard" element={<AdminDashboard />} />
+        </Route>
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/shop" element={<Shop />} />
         <Route exact path="/" element={<Home />} />
         <Route exact path="/blog" element={<Blog />} />
-        <Route exact path="/adminDashboard" element={<AdminDashboard />} />
       </Routes>
     </div>
   );
