@@ -63,16 +63,31 @@ const AddProduct = () => {
 
   //Image cloudinary ma upload garni
   const cloudinaryUpload = async (form) => {
-    const response = await axios.post(
-      "http://localhost:8000/api/cloudinary",
-      form,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/cloudinary",
+        form,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response;
+      
+    } catch (error) {
+      if (
+        error.response &&
+        error.response?.status >= 400 &&
+        error.response?.status <= 500
+      ) {
+        return {
+          success: false,
+          error: error.response.data.message || error.response.data,
+        };
       }
-    );
-    return response;
+    }
+    
   };
 
   const handleChange = (e) => {
