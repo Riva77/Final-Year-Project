@@ -10,9 +10,9 @@ cloudinary.config({
 });
 
 router.post("/", async (req, res) => {
-  const file = req.files.file;
-
+ 
   try {
+    const file = req.files.file;
     const { url } = await cloudinary.uploader.upload(file.tempFilePath);
     res.status(200).json({ url });
   } catch (error) {
