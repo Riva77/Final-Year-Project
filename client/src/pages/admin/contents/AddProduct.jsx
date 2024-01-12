@@ -210,7 +210,7 @@ const AddProduct = () => {
           onChange={handleChange}
         />
         <div className="flex justify-center mt-3">
-          <CustomButton title="Add Ingredient" name="Add" />
+          <CustomButton title="Add Product" name="Add" />
         </div>
       </form>
     </div>
