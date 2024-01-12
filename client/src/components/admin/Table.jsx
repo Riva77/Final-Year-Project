@@ -26,7 +26,7 @@ const Table = ({ items }) => {
         </thead>
 
         <tbody className="divide-y divide-gray-200">
-          {items.map((item, index) => {
+          {items?.map((item, index) => {
             return (
               <tr key={item._id}>
                 <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
