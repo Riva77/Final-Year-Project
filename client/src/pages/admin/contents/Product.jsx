@@ -1,26 +1,8 @@
-// import { useSelector } from "react-redux";
-// import Table from "../../../components/admin/Table";
-// import CustomButton from "../../../components/buttons/CustomButton";
-
-// const Product = () => {
-//   //fetching data from global state
-//   const productData = useSelector((state) => state.product.data);
-//   console.log(productData);
-//   return (
-//     <div className="w-full my-2 flex flex-col gap-4">
-//       <h1 className="font-bold text-xl mb-9">Product Details</h1>
-//       <CustomButton type="Add" name="Add Products" />
-//       <Table items={productData} />
-//     </div>
-//   );
-// };
-
-// export default Product;
-
 import { useState, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Table from "../../../components/admin/Table";
 import CustomButton from "../../../components/buttons/CustomButton";
+import { setProductModal } from "../../../features/modalSlice";
 
 const Product = () => {
   const productData = useSelector((state) => state.product.data);
@@ -28,19 +10,27 @@ const Product = () => {
 
   // Filter products based on the search query
   const filteredProducts = useMemo(() => {
-    return productData?.filter((product) =>
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.genre.toLowerCase().includes(searchQuery.toLowerCase())
+    return productData?.filter(
+      (product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.genre.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [productData, searchQuery]);
 
+  const dispatch = useDispatch();
+  const handleAddProduct = () => {
+    dispatch(setProductModal());
+  };
+
   return (
     <div className="w-full my-2 flex flex-col gap-4">
-      <h1 className="font-bold text-xl mb-9">Product Details</h1>
+      <h1 className="flex text-xl font-medium border-b-2 border-b-gray-200 mb-5 pb-2 items-center">
+        Product Details
+      </h1>
 
-      <CustomButton type="Add" name="Add Products" />
-      
+      <CustomButton type="Add" name="Add Products" onClick={handleAddProduct} />
+
       {/* Search Bar */}
       <input
         type="text"
@@ -50,8 +40,6 @@ const Product = () => {
         className="p-2 border border-gray-300 rounded"
       />
 
-      
-      
       {/* Pass filtered products to the Table component */}
       <Table items={filteredProducts} />
     </div>
@@ -59,5 +47,3 @@ const Product = () => {
 };
 
 export default Product;
-
-
