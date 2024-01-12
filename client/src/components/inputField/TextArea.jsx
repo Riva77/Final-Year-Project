@@ -1,12 +1,12 @@
-const TextArea = ({ label, name, value, onChange }) => {
+const TextArea = ({ label, name, value, onChange, rows, cols}) => {
   return (
     <div style={styles.container}>
       <label style={styles.label}>{label}</label>
       <textarea
         name={name}
         value={value}
-        cols="30"
-        rows="10"
+        cols={cols?cols:"30"}
+        rows={rows?rows:"10"}     
         style={styles.textAreaStyle}
         onChange={onChange}
       ></textarea>
