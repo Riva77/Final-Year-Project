@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CustomButton from "../../components/buttons/CustomButton";
 import Tab from "../../components/admin/Tab";
 import AddProduct from "../../pages/admin/contents/AddProduct";
@@ -9,6 +9,7 @@ import AddGenre from "./contents/AddGenre";
 import Product from "./contents/Product";
 import Genre from "./contents/Genre";
 import Author from "./contents/Author";
+import UpdateModal from "./contents/UpdateProductModal";
 
 const AdminDashboard = () => {
   const tab = localStorage.getItem("adminActiveTab");
@@ -19,8 +20,11 @@ const AdminDashboard = () => {
   };
   const handleLogout = () => {};
 
+  const isModalOpen = useSelector((state) => state.modal.isAddProductModalOpen);
+
   return (
     <>
+      <UpdateModal isOpen={isModalOpen} />
       <div
         style={{
           padding: "20px 64px",
@@ -67,17 +71,17 @@ const AdminDashboard = () => {
               onClick={handleTabClick}
               isActive={activeTab === "Add Genre"}
             />
-             <Tab
+            <Tab
               title={"Product"}
               onClick={handleTabClick}
               isActive={activeTab === "Product"}
             />
             <Tab
-            title={"Author"}
-            onClick={handleTabClick}
-            isActive={activeTab === "Author"}
-          />
-          <Tab
+              title={"Author"}
+              onClick={handleTabClick}
+              isActive={activeTab === "Author"}
+            />
+            <Tab
               title={"Genre"}
               onClick={handleTabClick}
               isActive={activeTab === "Genre"}
