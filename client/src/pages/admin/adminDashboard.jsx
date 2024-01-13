@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CustomButton from "../../components/buttons/CustomButton";
 import Tab from "../../components/admin/Tab";
-import AddProduct from "../../pages/admin/contents/AddProduct";
-import AddAuthor from "./contents/AddAuthor";
-import AddGenre from "./contents/AddGenre";
 import Product from "./contents/Product";
 import Genre from "./contents/Genre";
 import Author from "./contents/Author";
-import UpdateModal from "./contents/UpdateProductModal";
+import UpdateProductModal from "./contents/UpdateProductModal";
+import UpdateAuthorModal from "./contents/UpdateAuthorModal";
+import UpdateGenreModal from "./contents/UpdateGenreModal";
 
 const AdminDashboard = () => {
   const tab = localStorage.getItem("adminActiveTab");
@@ -20,11 +19,15 @@ const AdminDashboard = () => {
   };
   const handleLogout = () => {};
 
-  const isModalOpen = useSelector((state) => state.modal.isAddProductModalOpen);
+  const isProductModalOpen = useSelector((state) => state.modal.isAddProductModalOpen);
+  const isAuthorModalOpen = useSelector((state) => state.modal.isAddAuthorModalOpen);
+  const isGenreModalOpen = useSelector((state) => state.modal.isAddGenreModalOpen);
 
   return (
     <>
-      <UpdateModal isOpen={isModalOpen} />
+      <UpdateProductModal isOpen={isProductModalOpen} />
+      <UpdateAuthorModal isOpen={isAuthorModalOpen} />
+      <UpdateGenreModal isOpen={isGenreModalOpen} />
       <div
         style={{
           padding: "20px 64px",
@@ -56,21 +59,7 @@ const AdminDashboard = () => {
               gap: 2,
             }}
           >
-            <Tab
-              title={"Add Product"}
-              onClick={handleTabClick}
-              isActive={activeTab === "Add Product"}
-            />
-            <Tab
-              title={"Add Author"}
-              onClick={handleTabClick}
-              isActive={activeTab === "Add Author"}
-            />
-            <Tab
-              title={"Add Genre"}
-              onClick={handleTabClick}
-              isActive={activeTab === "Add Genre"}
-            />
+           
             <Tab
               title={"Product"}
               onClick={handleTabClick}
@@ -101,9 +90,6 @@ const AdminDashboard = () => {
             overflowY: "auto",
           }}
         >
-          {activeTab === "Add Product" && <AddProduct />}
-          {activeTab === "Add Author" && <AddAuthor />}
-          {activeTab === "Add Genre" && <AddGenre />}
           {activeTab === "Product" && <Product />}
           {activeTab === "Author" && <Author />}
           {activeTab === "Genre" && <Genre />}
