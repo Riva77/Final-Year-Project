@@ -1,24 +1,44 @@
-import { useState, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useState, useMemo, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import GenreTable from "../../../components/admin/GenreTable";
 import CustomButton from "../../../components/buttons/CustomButton";
+import { setGenreModal } from "../../../features/modalSlice";
+import {getGenre} from "../../../apis/Genre/getGenre";
 
 const Genre = () => {
-  const productData = useSelector((state) => state.product.data);
+
   const [searchQuery, setSearchQuery] = useState("");
+  const[genre, setGenre]=useState(null);
+
+
+  const fetchGenre = async()=>{
+    const genreData = await getGenre();
+    setGenre(genreData?.data);
+  }
+
+  useEffect(()=>{
+    fetchGenre(); //Fetching genre whenever the component renders
+  },[]);
+
 
   // Filter products based on the search query
   const filteredProducts = useMemo(() => {
-    return productData?.filter((product) =>
-      product.genre.toLowerCase().includes(searchQuery.toLowerCase())
+    return genre?.filter((data) =>
+      data.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [productData, searchQuery]);
+  }, [genre, searchQuery]);
+
+  const dispatch = useDispatch();
+  const handleAddGenre = () => {
+    dispatch(setGenreModal());
+  };
+
 
   return (
     <div className="w-full my-2 flex flex-col gap-4">
-      <h1 className="font-bold text-xl mb-9">Genre Details</h1>
+      <h1  className="flex text-xl font-medium border-b-2 border-b-gray-200 mb-5 pb-2 items-center">Genre Details</h1>
 
-      <CustomButton type="Add" name="Add Genre" />
+      <CustomButton type="Add" name="Add Genre"  onClick={handleAddGenre} />
       
       {/* Search Bar */}
       <input
