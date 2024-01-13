@@ -13,7 +13,7 @@ import { getGenre } from "../../../apis/Genre/getGenre";
 import { addProduct } from "../../../apis/product/addProduct";
 import axios from "axios";
 
-const UpdateModal = ({ isOpen }) => {
+const UpdateProductModal = ({ isOpen }) => {
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(setProductModal());
@@ -249,4 +249,4 @@ const UpdateModal = ({ isOpen }) => {
   );
 };
 
-export default UpdateModal;
+export default UpdateProductModal;
