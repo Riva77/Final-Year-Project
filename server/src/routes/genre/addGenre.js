@@ -1,4 +1,5 @@
 const router = require("express").Router();
+
 const { Genre, validate } = require("../../models/Genre.js");
 
 router.post("/", async (req, res) => {
@@ -10,6 +11,7 @@ router.post("/", async (req, res) => {
     if (error) {
       return res.status(400).send(error.details[0].message); //F.E bata field ko req.ment ma kei error aayo vani error throw garxa
     }
+    body.name = body.name.trim();
     const genre = await Genre.findOne({ name: body.name }); //pailai bata yo email vako user xaki xaina check gareko
 
     if (genre) {
