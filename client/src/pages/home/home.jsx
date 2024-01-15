@@ -9,6 +9,7 @@ import lauren from "../../assets/lauren.png";
 import tahereh from "../../assets/tahereh.png";
 import ProductCard from "../../components/card/ProductCard";
 import { useSelector } from "react-redux";
+import Footer from "../../components/footer/Footer";
 
 const home = () => {
   const productData = useSelector((state) => state.product.data);
@@ -106,6 +107,7 @@ const home = () => {
           </div>
         </div>
       </section>
+      <Footer/>
     </div>
   );
 };
