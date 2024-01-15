@@ -10,48 +10,47 @@ import { getAuthor } from "../../apis/Author/getAuthor";
 import { getGenre } from "../../apis/Genre/getGenre";
 import { useSelector } from "react-redux";
 import ProductCard from "../../components/card/ProductCard";
+import Footer from "../../components/footer/Footer"
 
 const Shop = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    price: "",
-    description: "",
-    quantity: "",
-    image: "",
-    author: "",
-    synopsis: "",
-    genre: "",
-    pages: "",
-  });
 
-  const [author, setAuthor] = useState(null);
-  const [genre, setGenre] = useState(null);
-  const [minPrice, setMinPrice] = useState(0); //for rangeSlider
+  const [author, setAuthor] = useState("All");
+  const [genre, setGenre] = useState("All");
+  const [minPrice, setMinPrice] = useState(1); //for rangeSlider
   const [maxPrice, setMaxPrice] = useState(50); //for rangeSlider
 
-  const fetchAuthor = async () => {
-    const authorData = await getAuthor();
-    setAuthor(authorData?.data);
-  };
-  console.log(author);
-
-  const fetchGenre = async () => {
-    const genreData = await getGenre();
-    setGenre(genreData?.data);
+  const handlePriceChange = (newPriceRange) => {
+    //for rangeSlider
+    setMinPrice(newPriceRange[0]); //for rangeSlider
+    setMaxPrice(newPriceRange[1]); //for rangeSlider
   };
 
-  useEffect(() => {
-    fetchAuthor();
-    fetchGenre();
-  }, []);
-
-  const handleProductClick = (productId) => {
-    navigate(`/shop/productDetails/${productId}`);
-  };
+  // const handleProductClick = (productId) => {
+  //   navigate(`/shop/productDetails/${productId}`);
+  // };
 
   const productData = useSelector((state) => state.product.data);
 
-  const books = productData?.map((book) => {
+  const books = productData 
+  ?.filter((book) => {
+    if (genre === "All") {
+      return book.price <= maxPrice && book.price >= minPrice;
+    } else {
+      return (
+        book.price <= maxPrice &&
+        book.price >= minPrice &&
+        book.genre === genre
+      );
+    }
+  })
+  .filter((book) => {
+    if (author === "All") {
+      return book;
+    } else {
+      return book.author === author; //each book ko author check gareko ra matching return gareko
+    }
+  })
+  .map((book) => {
     return (
       <ProductCard
         name={book.name}
@@ -63,9 +62,28 @@ const Shop = () => {
     );
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  
+  const dropdownChangeHandler = (e, label) => {
+    // #ProudOfMyself
+    const selectedValue = e.target.value;
+    if (label === "Genre") {
+      setGenre(selectedValue);
+    } else if (label === "Author") {
+      setAuthor(selectedValue);
+    }
   };
+
+  const bookGenre = [
+    "All",
+    ...new Set(productData?.map((books) => books.genre)),
+  ]; //book haru ko genre lai set vitra haleko. set ma unique data store hunxa.
+  const bookAuthor = [
+    "All",
+    ...new Set(productData?.map((books) => books.author)),
+  ]; //book haru ko genre lai set vitra haleko. set ma unique data store hunxa.
+
+  console.log(bookGenre)
+
   return (
     <div style={styles.divMain}>
       <section
@@ -79,34 +97,34 @@ const Shop = () => {
           <div style={styles.tab}>
             <span style={styles.tabHeading}>Filter by Price</span>
             <div style={styles.priceRange}>
-              {/* <span>
+              <span>
                 Min: <span style={styles.price}>$ {minPrice}</span>
               </span>
               <span>
                 Max: <span style={styles.price}>$ {maxPrice}</span>
-              </span> */}
+              </span>
             </div>
-            {/* <RangeSlider min={0} max={50} onChange={handlePriceChange} /> */}
-            <RangeSlider />
+            <RangeSlider min={0} max={50} onChange={handlePriceChange} />
+            
           </div>
           <div style={styles.tab}>
             <span style={styles.tabHeading}>Filter by Genre</span>
             <Dropdown
-              items={genre}
+              items={bookGenre}
               label="Genre"
-              value={formData.genre}
+              value={genre}
               name={"genre"}
-              onChange={handleChange}
+              onChange={(e) => dropdownChangeHandler(e, "Genre")}
             />
           </div>
           <div style={styles.tab}>
             <span style={styles.tabHeading}>Filter by Author</span>
             <Dropdown
-              items={author}
+              items={bookAuthor}
               label="Author"
-              value={formData.author}
+              value={author}
               name={"author"}
-              onChange={handleChange}
+              onChange={(e) => dropdownChangeHandler(e, "Author")}
             />
           </div>
         </section>
@@ -193,6 +211,7 @@ const Shop = () => {
           </div>
         </section>
       </section>
+      <Footer/>
     </div>
   );
 };
