@@ -11,6 +11,7 @@ import { getGenre } from "../../apis/Genre/getGenre";
 import { useSelector } from "react-redux";
 import ProductCard from "../../components/card/ProductCard";
 import Footer from "../../components/footer/Footer"
+import { useNavigate } from "react-router-dom";
 
 const Shop = () => {
 
@@ -19,15 +20,17 @@ const Shop = () => {
   const [minPrice, setMinPrice] = useState(1); //for rangeSlider
   const [maxPrice, setMaxPrice] = useState(50); //for rangeSlider
 
+  const navigate= useNavigate();
+
   const handlePriceChange = (newPriceRange) => {
     //for rangeSlider
     setMinPrice(newPriceRange[0]); //for rangeSlider
     setMaxPrice(newPriceRange[1]); //for rangeSlider
   };
 
-  // const handleProductClick = (productId) => {
-  //   navigate(`/shop/productDetails/${productId}`);
-  // };
+  const handleProductClick = (productId) => {
+    navigate(`/shop/productDetails/${productId}`);
+  };
 
   const productData = useSelector((state) => state.product.data);
 
