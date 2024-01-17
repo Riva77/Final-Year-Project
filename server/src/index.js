@@ -7,6 +7,7 @@ const loginRoutes = require("./routes/authentication/login.js");
 const registerRoutes = require("./routes/authentication/register.js");
 const addProductRoutes = require("./routes/product/addProduct.js");
 const getProductRoutes = require("./routes/product/getProduct.js");
+const getSingleProductRoutes = require("./routes/product/getSingleProduct.js");
 const addAuthorRoutes = require("./routes/author/addAuthor.js");
 const getAuthorRoutes = require("./routes/author/getAuthor.js");
 const addGenreRoutes = require("./routes/genre/addGenre.js");
@@ -14,6 +15,8 @@ const getGenreRoutes = require("./routes/genre/getGenre.js");
 const cloudinaryRoutes = require("../src/routes/cloudinary/cloudinary.js");
 const fileUpload = require("express-fileupload");
 const getUserRoutes = require("./routes/user/getUser.js");
+const getCartItemRoutes = require("./routes/cart/getCartItem.js");
+const addCartItemRoutes = require("./routes/cart/addCartItem.js");
 
 connection();
 const app = express();
@@ -36,12 +39,15 @@ app.use("/api/login", loginRoutes);
 app.use("/api/register", registerRoutes);
 app.use("/api/addProduct", addProductRoutes);
 app.use("/api/getProduct", getProductRoutes);
+app.use("/api/getSingleProduct", getSingleProductRoutes);
 app.use("/api/addAuthor", addAuthorRoutes);
 app.use("/api/getAuthor", getAuthorRoutes);
 app.use("/api/addGenre", addGenreRoutes);
 app.use("/api/getGenre", getGenreRoutes);
 app.use("/api/cloudinary", cloudinaryRoutes);
 app.use("/api/getUser", getUserRoutes);
+app.use("/api/addCartItem", addCartItemRoutes);
+app.use("/api/getCartItem", getCartItemRoutes);
 
 app.listen(8000, () => {
   //setting up the server to listen on the port 8000
