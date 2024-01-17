@@ -15,6 +15,7 @@ import { fetchUserData } from "./features/authslice";
 import { useDispatch, useSelector } from "react-redux";
 import PrivateRoutes from "./utils/privateRoutes";
 import { fetchProductData } from "./features/productSlice";
+import ProductDetails from "./pages/product/productDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -61,6 +62,7 @@ function App() {
         <Route exact path="/shop" element={<Shop />} />
         <Route exact path="/" element={<Home />} />
         <Route exact path="/blog" element={<Blog />} />
+        <Route path="/shop/productDetails/:productId" element={<ProductDetails />} />
       </Routes>
     </div>
   );
