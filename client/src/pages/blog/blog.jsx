@@ -226,7 +226,7 @@
 import React from "react";
 
 const Blog = () => {
-  return <div>B</div>;
+  return <div>I love my blog</div>;
 };
 
 export default Blog;
