@@ -70,7 +70,7 @@ const Navbar = () => {
                 )}
                 {userData.role === "user" && (
                   <>
-                    <span>
+                    <span onClick={() => navigate("/cart")}>
                       <AiOutlineShoppingCart size={25} style={styles.pointer} />
                     </span>
                     <span>
