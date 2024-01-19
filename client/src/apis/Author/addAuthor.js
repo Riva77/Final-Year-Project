@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const addAuthor = async ({ name }) => {
+export const addAuthor = async ({ name, image}) => {
   const API_URL = "http://localhost:8000/api";
   try {
     const response = await axios.post(`${API_URL}/addAuthor`, {
-      name,
+      name,image
     });
 
     const data = response?.data; // if response exist the get response data
