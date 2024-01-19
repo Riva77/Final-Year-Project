@@ -88,8 +88,8 @@ const ProductDetails = () => {
             </div>
             <div style={styles.minidetailDiv}>
               <div style={styles.miniDetail}>
-                Publisher
-                <span style={styles.minidetailAns}>{book?.publisher}</span>
+                Genre
+                <span style={styles.minidetailAns}>{book?.genre}</span>
               </div>
               <div style={styles.miniDetail}>
                 Author
@@ -98,8 +98,8 @@ const ProductDetails = () => {
             </div>
             <div style={styles.minidetailDiv}>
               <div style={styles.miniDetail}>
-                Published Date
-                <span style={styles.minidetailAns}>{book?.date}</span>
+                Quantity
+                <span style={styles.minidetailAns}>{book?.quantity}</span>
               </div>
               <div style={styles.miniDetail}>
                 Pages
