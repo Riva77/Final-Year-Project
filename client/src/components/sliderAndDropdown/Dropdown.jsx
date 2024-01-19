@@ -32,7 +32,7 @@ const Dropdown = ({ items, onChange, value, label, name }) => {
         
   
           {items?.map((item, index) => (
-            <MenuItem key={index} value={item}>{item}</MenuItem>
+            <MenuItem key={index} value={item.name}>{item.name}</MenuItem>
           ))}
         </Select>
       </FormControl>
