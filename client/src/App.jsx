@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PrivateRoutes from "./utils/privateRoutes";
 import { fetchProductData } from "./features/productSlice";
 import ProductDetails from "./pages/product/productDetails";
+import Cart from "./pages/cart/Cart";
 
 function App() {
   const dispatch = useDispatch();
@@ -62,6 +63,7 @@ function App() {
         <Route exact path="/shop" element={<Shop />} />
         <Route exact path="/" element={<Home />} />
         <Route exact path="/blog" element={<Blog />} />
+        <Route exact path="/cart" element={<Cart/>} />
         <Route path="/shop/productDetails/:productId" element={<ProductDetails />} />
       </Routes>
     </div>
