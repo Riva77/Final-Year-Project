@@ -70,51 +70,6 @@ const UpdateAuthorModal = ({ isOpen }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault(); // Prevent the default form submission behavior
-
-  //   try {
-
-  //   const form = new FormData();
-  //   form.append("file", file.data);
-
-  //   const cloudinaryResponse = await cloudinaryUpload(form); //vako img file lai cloudinary ma upload gareko
-  //   console.log(cloudinaryResponse); //just check garya
-
-  //   if (cloudinaryResponse.status === 200) {
-  //     console.log(formData);
-
-  //     // Cloudinary bata return aako response url lai form data ko img ma assign/save garya (string ma kina vani backend ma img string ma save hunxa)
-  //     if (cloudinaryResponse.data.url) {
-  //       formData.image = cloudinaryResponse.data.url;
-  //     }
-
-  //     const response = await addAuthor(formData);
-  //     console.log(response);
-
-  //     if (response.success) {
-  //       toastSuccess("Author added successfully!");
-
-  //       // Reset the form data
-  //       setFormData({
-  //         name: "",
-  //         image:"",
-  //       });
-  //     } else {
-  //       toastError(response.error);
-  //     }
-
-  //     console.log("response", response);
-  //   } else {
-  //     toastError("Cloudinary upload failed");
-  //     console.log("error");
-  //   }
-
-  //   } catch (error) {
-  //     console.error("An error occurred:", error);
-  //     toastError("An error occurred while adding the author.");
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -178,8 +133,8 @@ const UpdateAuthorModal = ({ isOpen }) => {
             />
             <FileInput
               type="file"
-              label="Product Image"
-              name="productImage"
+              label="Author Image"
+              name="authorImage"
               onChange={handleFileChange}
               style={{ width: "400px" }}
             />
