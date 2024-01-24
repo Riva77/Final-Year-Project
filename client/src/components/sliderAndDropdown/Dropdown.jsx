@@ -6,7 +6,7 @@ import Select from "@mui/material/Select";
 
 
 const Dropdown = ({ items, onChange, value, label, name }) => {
-  
+  console.log("DD:",items);
   return (
     <Box sx={{ width: 250 }}>
       <FormControl fullWidth>
@@ -32,7 +32,7 @@ const Dropdown = ({ items, onChange, value, label, name }) => {
         
   
           {items?.map((item, index) => (
-            <MenuItem key={index} value={item.name}>{item.name}</MenuItem>
+            <MenuItem key={index} value={item.name?item.name:item}>{item.name?item.name:item}</MenuItem>
           ))}
         </Select>
       </FormControl>
