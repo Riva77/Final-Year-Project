@@ -48,7 +48,7 @@ function App() {
     if (user.data) {
       user.data.role === "admin" ? navigate("/adminDashboard") : navigate("/");
     }
-  }, [user.data]);
+  }, []);
 
   return (
     <div>
