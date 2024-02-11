@@ -1,73 +1,102 @@
+import { useSelector } from "react-redux";
 import CartCard from "../../components/card/CartCard";
+import { Padding } from "@mui/icons-material";
+import CustomButton from "../../components/buttons/CustomButton";
 
 // import Footer from "../components/Footer";
 const Cart = () => {
+  const cartItems = useSelector((state) => state.cart.products);
+  const cart = cartItems?.map((item) => {
+    return (
+      <CartCard
+        productId={item?._id}
+        image={item?.image}
+        name={item?.name}
+        productPrice={item?.price}
+        productQuantity={item?.quantity}
+        genre={item?.genre}
+        author={item?.author}
+        key={item?._id}
+      />
+    );
+  });
   return (
-    <div style={styles.divMain}>
-      <section
-        style={{
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <section style={styles.firstSection}>
-          <section
+    <div style={styles.cartItemContainer}>
+      <section style={styles.detailSection} >
+        <div style={styles.heading}>
+          <span className="font-semibold">Shopping Cart</span>
+          <span>{cartItems?.length} Items</span>
+        </div>
+        <div style={styles.columnTabs}>
+          <span
             style={{
-              display: "flex",
-              margin: "41px 46px 20px 46px",
-              alignItems: "center",
-              justifyContent: "space-between",
-              borderBottom: "1px solid black",
-              paddingBottom: "45px",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                flex: 1,
-                gap: 20,
-                fontFamily: "'Playfair Display'",
-              }}
-            >
-              <div style={styles.bestSellerDiv}>Shopping Cart</div>
-            </div>
-          </section>
-          <div
-            style={{
-              display: "flex",
+              ...styles.tabHeading,
+              flex: 3,
               justifyContent: "flex-start",
-              margin: "0 46px",
             }}
+            className="font-semibold"
           >
-            <span
-              style={{ display: "flex", justifyContent: "flex-start", flex: 3 }}
-            >
-              Product
-            </span>
-            <span
-              style={{ display: "flex", justifyContent: "center", flex: 1.7 }}
-            >
-              Quantity
-            </span>
-            <span
-              style={{ display: "flex", justifyContent: "center", flex: 1 }}
-            >
-              Price
-            </span>
-            <span
-              style={{ display: "flex", justifyContent: "flex-end", flex: 1 }}
-            >
-              Total
-            </span>
-          </div>
-          <div>
-            <CartCard />
-          </div>
-        </section>
-        <section style={styles.secondSection}></section>
+            Product
+          </span>
+          <span
+            className="font-semibold"
+            style={{ ...styles.tabHeading, flex: 1 }}
+          >
+            Quantity
+          </span>
+          <span
+            className="font-semibold"
+            style={{ ...styles.tabHeading, flex: 1 }}
+          >
+            Price
+          </span>
+          <span
+            className="font-semibold"
+            style={{ ...styles.tabHeading, flex: 1 }}
+          >
+            Total
+          </span>
+        </div>
+        <div style={styles.cartItems}>{cart}</div>
       </section>
-      {/* <Footer /> */}
+      <section style={styles.summarySection} className="flex flex-col ">
+       <div> <div className="font-semibold" style={styles.heading}>
+          Summary
+        </div>
+        <div>
+          <table className="w-full mb-5">
+            <thead>
+              <tr>
+                <th className="text-left">Product</th>
+                <th className="text-left">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cartItems?.map((item) => (
+                <tr>
+                  <td className="text-left">{item?.name}</td>
+                  <td className="text-left">${item?.quantity * item?.price}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div></div>
+
+        <div className="">
+          <div className="flex justify-between font-bold text-xl border-t border-[#4C2B21] py-5">
+            <span>Grand Total</span>
+            <span>
+              $
+              {cartItems?.reduce((accumulator, product) => {
+                return accumulator + product.quantity * product.price;
+              }, 0)}
+            </span>
+          </div>
+          <div className="flex justify-center">
+            <CustomButton name={"Checkout"} />
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
@@ -77,34 +106,47 @@ export default Cart;
 //CSS
 
 const styles = {
-  divMain: {
+  cartItemContainer: {
+    display: "flex",
+    gap: 20,
+    alignItems: "flex-start",
+  },
+
+  heading: {
+    display: "flex",
+    justifyContent: "space-between",
+    fontSize: "30px",
+    paddingTop: "30px",
+    paddingBottom: "30px",
+    borderBottom: "2px solid gray",
+    marginBottom: "30px",
+  },
+
+  detailSection: {
+    flex: 3,
+    padding: "30px 75px",
+  },
+  summarySection: {
+    flex: 1,
+    minHeight: "100vh",
+    background: "#F1EEE3",
+    padding: "30px",
+  },
+
+  columnTabs: {
+    display: "flex",
+    alignItems: "flex-start",
+    height: "50px",
+  },
+
+  tabHeading: {
+    fontSize: "14px",
     display: "flex",
     justifyContent: "center",
-    background: "#F1EEE3",
-    flexDirection: "column",
-    //height: "100vh",
   },
-
-  secondSection: {
+  cartItems: {
     display: "flex",
     flexDirection: "column",
-    gap: 50,
-    background: "#F1EEE3",
-    flex: 1,
-    padding: "75px",
-    height: "87vh",
-  },
-
-  firstSection: {
-    display: "flex",
-    background: "#FDFBF7",
-    flex: 5,
-    padding: "0 25px",
-    justifyContent: "flex-start",
-    flexDirection: "column",
-  },
-  bestSellerDiv: {
-    fontSize: "33px",
-    fontWeight: "bold",
+    gap: 20,
   },
 };
