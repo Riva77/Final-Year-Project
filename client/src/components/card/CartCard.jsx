@@ -19,25 +19,22 @@ const CartCard = ({
 }) => {
   const dispatch = useDispatch();
 
-
   const [quantity, setQuantity] = useState(productQuantity);
   const [productTotPrice, setProductTotPrice] = useState(
     productQuantity * productPrice
   );
 
-
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
     setProductTotPrice(Number(newQuantity) * productPrice);
-
   };
 
   const handleDeleteCartItem = () => {
     dispatch(removeProductFromCart(productId));
   };
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(updateProductQuantity({ productId, quantity }));
-  },[quantity])
+  }, [quantity]);
 
   return (
     <div style={styles.container}>
@@ -64,10 +61,10 @@ const CartCard = ({
           {/* <span>{quantity}</span>
           <span>{String(isUpdated)}</span> */}
         </div>
-        <div style={{ ...styles.otherDetails, color: "#024e82" }}>
+        <div style={{ ...styles.otherDetails, color: "#4C2B21" }}>
           $ {productPrice}
         </div>
-        <div style={{ ...styles.otherDetails, color: "#024e82" }}>
+        <div style={{ ...styles.otherDetails, color: "#4C2B21" }}>
           $ {productTotPrice}
         </div>
       </section>

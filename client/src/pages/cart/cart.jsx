@@ -22,7 +22,7 @@ const Cart = () => {
   });
   return (
     <div style={styles.cartItemContainer}>
-      <section style={styles.detailSection} >
+      <section style={styles.detailSection}>
         <div style={styles.heading}>
           <span className="font-semibold">Shopping Cart</span>
           <span>{cartItems?.length} Items</span>
@@ -60,27 +60,31 @@ const Cart = () => {
         <div style={styles.cartItems}>{cart}</div>
       </section>
       <section style={styles.summarySection} className="flex flex-col ">
-       <div> <div className="font-semibold" style={styles.heading}>
-          Summary
-        </div>
         <div>
-          <table className="w-full mb-5">
-            <thead>
-              <tr>
-                <th className="text-left">Product</th>
-                <th className="text-left">Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cartItems?.map((item) => (
+          <div className="font-semibold" style={styles.heading}>
+            Summary
+          </div>
+          <div>
+            <table className="w-full mb-5">
+              <thead>
                 <tr>
-                  <td className="text-left">{item?.name}</td>
-                  <td className="text-left">${item?.quantity * item?.price}</td>
+                  <th className="text-left">Product</th>
+                  <th className="text-left">Price</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div></div>
+              </thead>
+              <tbody>
+                {cartItems?.map((item) => (
+                  <tr>
+                    <td className="text-left">{item?.name}</td>
+                    <td className="text-left">
+                      ${item?.quantity * item?.price}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
         <div className="">
           <div className="flex justify-between font-bold text-xl border-t border-[#4C2B21] py-5">
@@ -110,6 +114,7 @@ const styles = {
     display: "flex",
     gap: 20,
     alignItems: "flex-start",
+    background: "#FDFBF7",
   },
 
   heading: {
@@ -125,6 +130,7 @@ const styles = {
   detailSection: {
     flex: 3,
     padding: "30px 75px",
+   
   },
   summarySection: {
     flex: 1,
