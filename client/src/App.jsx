@@ -11,12 +11,15 @@ import Home from "./pages/home/home";
 import AdminDashboard from "./pages/admin/adminDashboard";
 import Blog from "./pages/Blog/blog";
 import { jwtDecode } from "jwt-decode";
-import { fetchUserData } from "./features/authslice";
 import { useDispatch, useSelector } from "react-redux";
 import PrivateRoutes from "./utils/privateRoutes";
 import { fetchProductData } from "./features/productSlice";
 import ProductDetails from "./pages/product/productDetails";
 import Cart from "./pages/cart/Cart";
+import { fetchUserData } from "./features/authSlice";
+import Profile from "./pages/profile/profile";
+import Chat from "./components/chatbot/chat";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -63,9 +66,14 @@ function App() {
         <Route exact path="/shop" element={<Shop />} />
         <Route exact path="/" element={<Home />} />
         <Route exact path="/blog" element={<Blog />} />
-        <Route exact path="/cart" element={<Cart/>} />
-        <Route path="/shop/productDetails/:productId" element={<ProductDetails />} />
+        <Route exact path="/cart" element={<Cart />} />
+        <Route exact path="/profile" element={<Profile />} />
+        <Route
+          path="/shop/productDetails/:productId"
+          element={<ProductDetails />}
+        />
       </Routes>
+      <Chat />
     </div>
   );
 }
