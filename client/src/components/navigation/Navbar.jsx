@@ -13,7 +13,7 @@ import {
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { useSelector, useDispatch } from "react-redux";
-import { clearUserData } from "../../features/authslice";
+import { clearUserData } from "../../features/authSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -22,6 +22,7 @@ const Navbar = () => {
   const userToken = localStorage.getItem("userToken"); //local storage bata userToken leko
 
   const userData = useSelector((state) => state.user.data);
+  const cartItems = useSelector((state) => state.cart.products);
 
   const logoutClickHandler = () => {
     localStorage.removeItem("userToken");
@@ -41,7 +42,7 @@ const Navbar = () => {
         </span>
         <Separator />
         <span onClick={() => navigate("/shop")} style={styles.pointer}>
-          Shop
+          Books
         </span>
         <Separator />
         <span onClick={() => navigate("/blog")} style={styles.pointer}>
@@ -70,10 +71,16 @@ const Navbar = () => {
                 )}
                 {userData.role === "user" && (
                   <>
-                    <span onClick={() => navigate("/cart")}>
+                    <span
+                      onClick={() => navigate("/cart")}
+                      className="relative"
+                    >
+                      <span className="absolute top-0 right-0 bg-[#4C2B21] h-4 w-4 text-center text-white rounded-full text-xs ">
+                        {cartItems.length}
+                      </span>
                       <AiOutlineShoppingCart size={25} style={styles.pointer} />
                     </span>
-                    <span>
+                    <span onClick={() => navigate("/profile")}>
                       <BiUserCircle size={25} style={styles.pointer} />
                     </span>
                     <span onClick={logoutClickHandler}>
