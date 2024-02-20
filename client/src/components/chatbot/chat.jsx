@@ -98,7 +98,7 @@ const Chat = () => {
             transition: "transform 0.3s ease-in-out",
             transform: chatOpen ? "translateX(0)" : "translateX(100%)",
           }}
-          className=" z-20 text-white flex flex-col shrink-0 grow-0 justify-around 
+          className=" z-20 text-white flex flex-col shrink-0 grow-0 justify-around
             fixed bottom-0 right-32 rounded-lg
             mr-1 mb-5 lg:mr-5 lg:mb-5 xl:mr-10 xl:mb-10"
         >
@@ -109,7 +109,7 @@ const Chat = () => {
       <div class="relative">
         <button
           onClick={toggleChat}
-          class="z-20 text-white flex flex-col shrink-0 grow-0 justify-around 
+          class="z-20 text-white flex flex-col shrink-0 grow-0 justify-around
                   fixed bottom-0  right-5 rounded-lg
                   mr-1 mb-5 lg:mr-5 lg:mb-5 xl:mr-10 xl:mb-10"
         >
@@ -134,3 +134,5 @@ const Chat = () => {
 };
 
 export default Chat;
+
+
