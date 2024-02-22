@@ -14,6 +14,9 @@ import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { useSelector, useDispatch } from "react-redux";
 import { clearUserData } from "../../features/authSlice";
+import { HiOutlineSquares2X2 } from "react-icons/hi2";
+import { FaRegBookmark } from "react-icons/fa";
+import { IoSettingsOutline } from "react-icons/io5";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -23,6 +26,11 @@ const Navbar = () => {
 
   const userData = useSelector((state) => state.user.data);
   const cartItems = useSelector((state) => state.cart.products);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   const logoutClickHandler = () => {
     localStorage.removeItem("userToken");
@@ -80,12 +88,54 @@ const Navbar = () => {
                       </span>
                       <AiOutlineShoppingCart size={25} style={styles.pointer} />
                     </span>
-                    <span onClick={() => navigate("/profile")}>
-                      <BiUserCircle size={25} style={styles.pointer} />
-                    </span>
-                    <span onClick={logoutClickHandler}>
+                    <div onClick={toggleDropdown}>
+                      <span className="cursor-pointer w-[25px] h-[25px] bg-white rounded-full flex justify-center items-center text-[#4C2B21] text-xs border-2 border-[#4C2B21]">
+                        {userData?.firstName[0].toUpperCase() +
+                          userData?.lastName[0].toUpperCase()}
+                      </span>
+
+                      {isOpen && (
+                        <div className="absolute end-16 z-10 mt-3 w-56 divide-y divide-gray-100 rounded-md border border-gray-100 bg-[#FDFBF7] shadow-lg transition-transform duration-300 ease-in-out transform translate-y-2">
+                          <div className="p-2">
+                            <span
+                              className="cursor-pointer flex items-center rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-[#F1EEE3]  hover:text-gray-700"
+                              onClick={() => {
+                                navigate("/profile/orders");
+                              }}
+                            >
+                              <HiOutlineSquares2X2 className={`h-4 w-4 mr-2`} />
+                              My Orders
+                            </span>
+                            <span
+                              className="cursor-pointer flex items-center rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-[#F1EEE3]  hover:text-gray-700"
+                              onClick={() => navigate("/profile/favourites")}
+                            >
+                              <FaRegBookmark className={`h-4 w-4 mr-2`} />
+                              Favourites
+                            </span>
+                            <span
+                              className=" cursor-pointer flex items-center rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-[#F1EEE3]  hover:text-gray-700"
+                              onClick={() =>
+                                navigate("/profile/account-settings")
+                              }
+                            >
+                              <IoSettingsOutline className={`h-4 w-4 mr-2`} />
+                              Account Settings
+                            </span>
+                            <span
+                              className=" cursor-pointer flex items-center rounded-lg px-4 py-2 text-sm text-red-500 hover:bg-[#F1EEE3]  hover:text-red-700"
+                              onClick={logoutClickHandler}
+                            >
+                              <BiLogOut className={`h-4 w-4 mr-2`} />
+                              Logout
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    {/* <span onClick={logoutClickHandler}>
                       <BiLogOut size={25} style={styles.pointer} />
-                    </span>
+                    </span> */}
                   </>
                 )}
               </>
