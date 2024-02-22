@@ -19,7 +19,9 @@ import Cart from "./pages/cart/Cart";
 import { fetchUserData } from "./features/authSlice";
 import Profile from "./pages/profile/profile";
 import Chat from "./components/chatbot/chat";
-
+import AccountSettings from "./pages/profile/components/AccountSettings";
+import Favourites from "./pages/profile/components/Favourites";
+import Orders from "./pages/profile/components/Orders";
 
 function App() {
   const dispatch = useDispatch();
@@ -67,11 +69,18 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/blog" element={<Blog />} />
         <Route exact path="/cart" element={<Cart />} />
-        <Route exact path="/profile" element={<Profile />} />
         <Route
           path="/shop/productDetails/:productId"
           element={<ProductDetails />}
         />
+        <Route exact path="/profile" element={<Profile />}>
+          <Route
+            path="/profile/account-settings"
+            element={<AccountSettings />}
+          />
+          <Route path="/profile/favourites" element={<Favourites />} />
+          <Route path="/profile/orders" element={<Orders />} />
+        </Route>
       </Routes>
       <Chat />
     </div>
