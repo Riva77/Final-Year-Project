@@ -13,6 +13,7 @@ import Footer from "../../components/footer/Footer";
 
 const home = () => {
   const productData = useSelector((state) => state.product.data);
+  const navigate = useNavigate();
 
   const books = productData?.map((book) => {
     return (
@@ -50,7 +51,7 @@ const home = () => {
           </div>
 
           <div>
-            <CustomButton name="Shop" onCLick={() => navigate("/shop")} />
+            <CustomButton name="Shop" onClick={() => navigate("/shop")} />
           </div>
         </div>
         <div style={styles.rightDiv}></div>
@@ -107,7 +108,7 @@ const home = () => {
           </div>
         </div>
       </section>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
