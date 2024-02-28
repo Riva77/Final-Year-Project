@@ -6,35 +6,38 @@ import { useEffect } from "react";
 import QuantityButton from "../../components/buttons/QuantityButton";
 // import { addCartItem } from "../apis/cartApi/addCartItem";
 import { toastSuccess, toastError } from "../../utils/toast";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addProductToCart } from "../../features/cartSlice";
 
 const ProductDetails = () => {
   const { productId } = useParams();
   const [quantity, setQuantity] = useState(1);
-  const formData = useState();
+  // const formData = useState();
   const [book, setBook] = useState();
 
+  const [cartData, setCartData] = useState();
+
   const userData = useSelector((state) => state.user.data);
-    const handleQuantityChange = (newQuantity) => {
+  const dispatch = useDispatch();
+  const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
   };
 
-  const addToCartHandler = async () => {
-    //response await garna parxa tesailey async wala function banako
-    formData.user = userData?._id;
-    formData.product = book?._id;
-    formData.quantity = Number(quantity);
-    formData.totalPrice = Number(quantity) * Number(book?.price);
+  // const addToCartHandler = async () => {
+  //   //response await garna parxa tesailey async wala function banako
+  //   formData.user = userData?._id;
+  //   formData.product = book?._id;
+  //   formData.quantity = Number(quantity);
+  //   formData.totalPrice = Number(quantity) * Number(book?.price);
 
-    const response = await addCartItem(formData);
-    if (response.success) {
-      toastSuccess(response.message);
-    } else {
-      toastError(response.error);
-    }
-    console.log(response);
-  };
-
+  //   const response = await addCartItem(formData);
+  //   if (response.success) {
+  //     toastSuccess(response.message);
+  //   } else {
+  //     toastError(response.error);
+  //   }
+  //   console.log(response);
+  // };
 
   const fetchProductData = async () => {
     const product = await getSingleProduct(productId);
@@ -45,6 +48,10 @@ const ProductDetails = () => {
     fetchProductData();
   }, []);
 
+  const addToCartHandler = () => {
+    const cartItem = { ...book, quantity };
+    dispatch(addProductToCart(cartItem));
+  };
   console.log("id", productId);
 
   return (
