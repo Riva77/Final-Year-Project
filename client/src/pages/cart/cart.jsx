@@ -1,11 +1,18 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CartCard from "../../components/card/CartCard";
-import { Padding } from "@mui/icons-material";
 import CustomButton from "../../components/buttons/CustomButton";
+import { createOrder } from "../../apis/order/createOrder";
+import { toastError, toastSuccess } from "../../utils/toast";
+import { clearCart } from "../../features/cartSlice";
 
 // import Footer from "../components/Footer";
 const Cart = () => {
+  const dispatch = useDispatch();
+
   const cartItems = useSelector((state) => state.cart.products);
+
+  const userId = useSelector((state) => state.user.data?._id);
+
   const cart = cartItems?.map((item) => {
     return (
       <CartCard
@@ -20,6 +27,41 @@ const Cart = () => {
       />
     );
   });
+
+  const checkoutHandler = async () => {
+    let productsData = [];
+
+    // Iterate over cart items
+    cartItems.forEach((item) => {
+      const productData = {
+        product: item?._id,
+        quantity: item?.quantity,
+      };
+      productsData.push(productData);
+    });
+
+    // Calculate total price
+    const totalPrice = cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+
+    // Prepare order data
+    const orderData = {
+      customer: userId, // Assuming customerId is available
+      products: productsData,
+      totalPrice: totalPrice,
+    };
+
+    console.log("Submit Checkout", orderData);
+    const response = await createOrder(orderData);
+    if (response.success) {
+      toastSuccess(response.data.message);
+      dispatch(clearCart());
+    } else {
+      toastError(response.error);
+    }
+  };
   return (
     <div style={styles.cartItemContainer}>
       <section style={styles.detailSection}>
@@ -97,7 +139,7 @@ const Cart = () => {
             </span>
           </div>
           <div className="flex justify-center">
-            <CustomButton name={"Checkout"} />
+            <CustomButton name={"Checkout"} onClick={checkoutHandler} />
           </div>
         </div>
       </section>
@@ -130,7 +172,6 @@ const styles = {
   detailSection: {
     flex: 3,
     padding: "30px 75px",
-   
   },
   summarySection: {
     flex: 1,
