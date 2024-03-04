@@ -9,7 +9,7 @@ import { Toaster } from "sonner";
 import Navbar from "./components/navigation/Navbar";
 import Home from "./pages/home/home";
 import AdminDashboard from "./pages/admin/adminDashboard";
-import Blog from "./pages/Blog/blog";
+import Blog from "./pages/blog/blog";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import PrivateRoutes from "./utils/privateRoutes";
@@ -22,6 +22,8 @@ import Chat from "./components/chatbot/chat";
 import AccountSettings from "./pages/profile/components/AccountSettings";
 import Favourites from "./pages/profile/components/Favourites";
 import Orders from "./pages/profile/components/Orders";
+import CreatePost from "./pages/blog/createPost";
+import BlogDetails from "./pages/blog/blogDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -68,6 +70,8 @@ function App() {
         <Route exact path="/shop" element={<Shop />} />
         <Route exact path="/" element={<Home />} />
         <Route exact path="/blog" element={<Blog />} />
+        <Route exact path="/createPost" element={<CreatePost />} />
+        <Route exact path="/blogDetails" element={<BlogDetails />} />
         <Route exact path="/cart" element={<Cart />} />
         <Route
           path="/shop/productDetails/:productId"
