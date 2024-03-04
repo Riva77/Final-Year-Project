@@ -2,7 +2,7 @@ import KhaltiCheckout from "khalti-checkout-web";
 
 let config = {
     // replace this key with yours
-    "publicKey": "test_public_key_dc74e0fd57cb46cd93832aee0a390234",
+    "publicKey": "test_public_key_7b031b8db2194cf4a3b990af1e4002dd",
     "productIdentity": "1234567890",
     "productName": "Drogon",
     "productUrl": "http://gameofthrones.com/buy/Dragons",
