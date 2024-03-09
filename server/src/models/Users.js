@@ -24,6 +24,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  favoriteBooks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
 });
 
 userSchema.methods.generateAuthToken = function () {
