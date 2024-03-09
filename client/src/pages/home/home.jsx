@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CustomButton } from "../../components";
 import "../../App.css";
@@ -8,19 +8,41 @@ import ana from "../../assets/ana.png";
 import lauren from "../../assets/lauren.png";
 import tahereh from "../../assets/tahereh.png";
 import ProductCard from "../../components/card/ProductCard";
-import { useSelector } from "react-redux";
+import { toastError } from "../../utils/toast";
 import Footer from "../../components/footer/Footer";
+import axios from "axios";
+import { getTopProducts } from "../../apis/product/getTopProducts";
 
 const home = () => {
-  const productData = useSelector((state) => state.product.data);
+  const [productData, setProductData] = useState();
+
+  const fetchTopPicks = async () => {
+    try {
+      const books = await getTopProducts();
+      setProductData(books);
+      console.log(await books);
+    } catch (error) {
+      console.log(error);
+      toastError(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTopPicks();
+  }, []);
+
   const navigate = useNavigate();
+
+  const handleProductClick = (productId) => {
+    navigate(`/shop/productDetails/${productId}`);
+  };
 
   const books = productData?.map((book) => {
     return (
       <ProductCard
-        name={book.name}
-        price={book.price}
-        image={book.image}
+        name={book.product.name}
+        price={book.product.price}
+        image={book.product.image}
         key={book._id}
         onClick={() => handleProductClick(book._id)}
       />
