@@ -21,6 +21,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [searchVisible, setSearchVisible] = useState(false);
 
   const userToken = localStorage.getItem("userToken"); //local storage bata userToken leko
 
@@ -58,8 +59,12 @@ const Navbar = () => {
         </span>
         <Separator />
         <span style={styles.pointer}>
-          <AiOutlineSearch size="25px" />
+          <AiOutlineSearch
+            size="25px"
+            onClick={() => setSearchVisible(!searchVisible)}
+          />
         </span>
+        {searchVisible && <SearchBar />}
       </div>
       <div style={styles.button}>
         <Separator />
@@ -152,6 +157,16 @@ const Navbar = () => {
 
 export default Navbar;
 
+const SearchBar = () => {
+  // Implement search bar functionality here
+  return (
+    <div style={styles.searchBar}>
+      <input type="text" placeholder="Search..." style={styles.input} />
+      <button style={styles.searchButton}>Search</button>
+    </div>
+  );
+};
+
 const Separator = ({ type }) => {
   return type === "horizontal" ? (
     <span
@@ -214,5 +229,33 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     gap: 40,
+  },
+
+  searchBar: {
+    display: "flex",
+    alignItems: "center",
+    marginLeft: "10px", // Adjust this value as needed
+    height: "35px",
+    width: "300px",
+  },
+
+  input: {
+    marginRight: "10px",
+    padding: "5px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    height: "90%",
+    fontSize: "14px",
+    width: "70%",
+  },
+
+  searchButton: {
+    padding: "5px 10px",
+    backgroundColor: "#4C2B21",
+    color: "#fff",
+    borderRadius: "5px",
+    cursor: "pointer",
+    height: "90%",
+    fontSize: "14px",
   },
 };
