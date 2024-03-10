@@ -17,6 +17,12 @@ const fileUpload = require("express-fileupload");
 const getUserRoutes = require("./routes/user/getUser.js");
 const getCartItemRoutes = require("./routes/cart/getCartItem.js");
 const addCartItemRoutes = require("./routes/cart/addCartItem.js");
+const createOrderRoutes = require("./routes/order/createOrder.js");
+const getOrderRoutes = require("./routes/order/getOrder.js");
+const createPostRoutes = require("./routes/blog/createPost.js");
+const getPostRoutes = require("./routes/blog/getPost.js");
+const getTopProducts = require("./routes/product/getTopProducts.js");
+const addFavouriteBook = require("./routes/user/addFavouriteBook.js");
 
 connection();
 const app = express();
@@ -48,6 +54,12 @@ app.use("/api/cloudinary", cloudinaryRoutes);
 app.use("/api/getUser", getUserRoutes);
 app.use("/api/addCartItem", addCartItemRoutes);
 app.use("/api/getCartItem", getCartItemRoutes);
+app.use("/api/createOrder", createOrderRoutes);
+app.use("/api/getOrder", getOrderRoutes);
+app.use("/api/createPost", createPostRoutes);
+app.use("/api/getPost", getPostRoutes);
+app.use("/api/getTopProducts", getTopProducts);
+app.use("/api/addFavouriteBook", addFavouriteBook);
 
 app.listen(8000, () => {
   //setting up the server to listen on the port 8000
