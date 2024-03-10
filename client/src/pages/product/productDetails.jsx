@@ -8,36 +8,55 @@ import QuantityButton from "../../components/buttons/QuantityButton";
 import { toastSuccess, toastError } from "../../utils/toast";
 import { useSelector, useDispatch } from "react-redux";
 import { addProductToCart } from "../../features/cartSlice";
+import { IoIosHeartEmpty } from "react-icons/io";
+import { IoMdHeart } from "react-icons/io";
+import { addRemoveFavourites } from "../../apis/user/addRemoveFavourites";
+import { fetchUserData } from "../../features/authSlice";
 
 const ProductDetails = () => {
+
   const { productId } = useParams();
+  const userData = useSelector((state) => state.user.data);
   const [quantity, setQuantity] = useState(1);
+
+
+
+
   // const formData = useState();
   const [book, setBook] = useState();
 
   const [cartData, setCartData] = useState();
 
-  const userData = useSelector((state) => state.user.data);
+  const [isFavourite, setIsFavourite] = useState(userData?.favoriteBooks.indexOf(productId) !== -1);
+  // if (userData?.favoriteBooks.includes(productId)) {
+  //   setIsFavourite(true);
+  // }
+
   const dispatch = useDispatch();
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
   };
 
-  // const addToCartHandler = async () => {
-  //   //response await garna parxa tesailey async wala function banako
-  //   formData.user = userData?._id;
-  //   formData.product = book?._id;
-  //   formData.quantity = Number(quantity);
-  //   formData.totalPrice = Number(quantity) * Number(book?.price);
+  const addToFavourite = async () => {
+    try {
+      console.log("user", userData?._id);
+      const response = await addRemoveFavourites({
+        userId: userData?._id,
+        productId: productId,
+      });
+      dispatch(fetchUserData());
+      if (response.data.type === "add") {
+        toastSuccess(response.data.message);
+      } else {
+        toastError(response.data.message);
+      }
 
-  //   const response = await addCartItem(formData);
-  //   if (response.success) {
-  //     toastSuccess(response.message);
-  //   } else {
-  //     toastError(response.error);
-  //   }
-  //   console.log(response);
-  // };
+      console.log(response);
+      setIsFavourite(!isFavourite);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchProductData = async () => {
     const product = await getSingleProduct(productId);
@@ -46,6 +65,9 @@ const ProductDetails = () => {
   };
   useEffect(() => {
     fetchProductData();
+    // if (userData?.favoriteBooks.indexOf(productId) !== -1) {
+    //   setIsFavourite(true);
+    // }
   }, []);
 
   const addToCartHandler = () => {
@@ -73,12 +95,21 @@ const ProductDetails = () => {
                     onQuantityChange={handleQuantityChange}
                   />
                 </div>
-                <CustomButton
-                  name="Add to cart"
-                  type="submit"
-                  color="white"
-                  onClick={addToCartHandler}
-                />
+                <div className="flex items-center gap-4">
+                  <CustomButton
+                    name="Add to cart"
+                    type="submit"
+                    color="white"
+                    onClick={addToCartHandler}
+                  />
+                  <span className="cursor-pointer" onClick={addToFavourite}>
+                    {!isFavourite ? (
+                      <IoIosHeartEmpty size={30} color="#4C2B21" />
+                    ) : (
+                      <IoMdHeart size={30} color="#4C2B21" />
+                    )}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
