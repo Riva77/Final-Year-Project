@@ -6,10 +6,13 @@ import BlogCard from "../../components/card/BlogCard";
 import { useNavigate } from "react-router-dom";
 
 const Blog = () => {
-
   const navigate = useNavigate();
 
   const [blogData, setBlogData] = useState(null);
+
+  const handlePostClick = (blogId) => {
+    navigate(`/blog/blogDetails/${blogId}`);
+  };
 
   const fetchBlogData = async () => {
     const blog = await getPost();
@@ -31,7 +34,7 @@ const Blog = () => {
         content={blog.content}
         time={blog.createdAt}
         key={blog._id}
-
+        onClick={() => handlePostClick(blog?._id)}
       />
     );
   });
@@ -39,8 +42,11 @@ const Blog = () => {
     <div>
       <section style={styles.backgroundContainer}>
         <section style={styles.container}>
-          <CustomButton name="Create Post" onClick={() => navigate("/createPost")} />
-          <div style={styles.blogContainer} onClick={() => navigate("/blogDetails")}>{blogs}</div>
+          <CustomButton
+            name="Create Post"
+            onClick={() => navigate("/createPost")}
+          />
+          <div style={styles.blogContainer}>{blogs}</div>
         </section>
       </section>
     </div>
@@ -52,14 +58,14 @@ export default Blog;
 const styles = {
   backgroundContainer: {
     background: "#F1EEE3",
-    height: "91vh",
+    // height: "91vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "end",
   },
   container: {
     background: "#FDFBF7",
-    height: "91vh",
+    // height: "91vh",
     width: "1100px",
     padding: "100px ",
     display: "flex",
@@ -71,6 +77,6 @@ const styles = {
     display: "flex",
     gap: 20,
     flexDirection: "column",
-    cursor:"pointer",
+    cursor: "pointer",
   },
 };
