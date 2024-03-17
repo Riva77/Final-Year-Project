@@ -109,7 +109,7 @@ const home = () => {
         <div style={styles.authorTittle}>Choose By Author</div>
         <div style={styles.authorDiv}>
           <div style={styles.eachauthorDiv}>
-            <img src={colleen} alt="collen" style={styles.authorImg} />
+            <img src={colleen} alt="collen" style={styles.authorImg}  />
             <span style={styles.authorName}>Colleen Hoover</span>
           </div>
           <div style={styles.eachauthorDiv}>
