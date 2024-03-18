@@ -9,6 +9,7 @@ import { toastError, toastSuccess } from "../../utils/toast";
 import axios from "axios";
 import { createPost } from "../../apis/blog/createPost";
 import { useSelector } from "react-redux";
+import TextArea from "../../components/inputField/TextArea";
 // import { UserContext } from "../context/userProvider";
 
 const modules = {
@@ -129,7 +130,7 @@ const CreatePost = () => {
     <section
       style={{
         background: "#F1EEE3",
-        height: "100%",
+        // height: "100vh",
         display: "flex",
         justifyContent: "center",
         // alignItems: "end",
@@ -138,7 +139,7 @@ const CreatePost = () => {
       <section
         style={{
           background: "#FDFBF7",
-          height: "100vh",
+          // height: "100vh",
           width: "1100px",
           padding: "100px ",
           // display: "flex",
@@ -156,27 +157,32 @@ const CreatePost = () => {
               value={formData.title}
               onChange={changeHandler}
             />
-            <TextInput
+            <TextArea
               type="summary"
               name="summary"
               label="Summary"
               value={formData.summary}
               onChange={changeHandler}
+            
             />
 
             {/* <img src={file.preview} width={250} height={300} /> */}
+
             <ReactQuill
               theme="snow"
               value={formData.content}
               onChange={(newValue) =>
+                
                 setFormData({ ...formData, content: newValue })
               }
               modules={modules}
               formats={formats}
+              style={{ height: '400px', width:"860px" /* Specify your desired height here */ }}
             />
+            
             <FileInput
               type="file"
-              label="Product Image"
+              // label="Product Image"
               name="productImage"
               onChange={handleFileChange}
               style={{ width: "400px" }}
@@ -203,7 +209,7 @@ const styles = {
 
   form: {
     display: "flex",
-    gap: 20,
+    gap: 50,
     flexDirection: "column",
   },
 };
