@@ -79,7 +79,7 @@ const ProductDetails = () => {
   return (
     <div>
       <section style={styles.outerSection}>
-        <section style={styles.innerSection}>
+        <section style={styles.innerSection} >
           <div style={styles.upperPart}>
             <img src={book?.image} alt="book" style={styles.img} />
             <div style={styles.upperrightDiv}>
