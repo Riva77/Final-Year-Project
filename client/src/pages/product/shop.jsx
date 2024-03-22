@@ -10,17 +10,16 @@ import { getAuthor } from "../../apis/Author/getAuthor";
 import { getGenre } from "../../apis/Genre/getGenre";
 import { useSelector } from "react-redux";
 import ProductCard from "../../components/card/ProductCard";
-import Footer from "../../components/footer/Footer"
+import Footer from "../../components/footer/Footer";
 import { useNavigate } from "react-router-dom";
 
 const Shop = () => {
-
   const [author, setAuthor] = useState("All");
   const [genre, setGenre] = useState("All");
   const [minPrice, setMinPrice] = useState(1); //for rangeSlider
   const [maxPrice, setMaxPrice] = useState(50); //for rangeSlider
 
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
   const handlePriceChange = (newPriceRange) => {
     //for rangeSlider
@@ -34,38 +33,37 @@ const Shop = () => {
 
   const productData = useSelector((state) => state.product.data);
 
-  const books = productData 
-  ?.filter((book) => {
-    if (genre === "All") {
-      return book.price <= maxPrice && book.price >= minPrice;
-    } else {
+  const books = productData
+    ?.filter((book) => {
+      if (genre === "All") {
+        return book.price <= maxPrice && book.price >= minPrice;
+      } else {
+        return (
+          book.price <= maxPrice &&
+          book.price >= minPrice &&
+          book.genre === genre
+        );
+      }
+    })
+    .filter((book) => {
+      if (author === "All") {
+        return book;
+      } else {
+        return book.author === author; //each book ko author check gareko ra matching return gareko
+      }
+    })
+    .map((book) => {
       return (
-        book.price <= maxPrice &&
-        book.price >= minPrice &&
-        book.genre === genre
+        <ProductCard
+          name={book.name}
+          price={book.price}
+          image={book.image}
+          key={book._id}
+          onClick={() => handleProductClick(book._id)}
+        />
       );
-    }
-  })
-  .filter((book) => {
-    if (author === "All") {
-      return book;
-    } else {
-      return book.author === author; //each book ko author check gareko ra matching return gareko
-    }
-  })
-  .map((book) => {
-    return (
-      <ProductCard
-        name={book.name}
-        price={book.price}
-        image={book.image}
-        key={book._id}
-        onClick={() => handleProductClick(book._id)}
-      />
-    );
-  });
+    });
 
-  
   const dropdownChangeHandler = (e, label) => {
     // #ProudOfMyself
     const selectedValue = e.target.value;
@@ -85,7 +83,7 @@ const Shop = () => {
     ...new Set(productData?.map((books) => books.author)),
   ]; //book haru ko genre lai set vitra haleko. set ma unique data store hunxa.
 
-  console.log(bookGenre)
+  console.log(bookGenre);
 
   return (
     <div style={styles.divMain}>
@@ -108,7 +106,6 @@ const Shop = () => {
               </span>
             </div>
             <RangeSlider min={0} max={50} onChange={handlePriceChange} />
-            
           </div>
           <div style={styles.tab}>
             <span style={styles.tabHeading}>Filter by Genre</span>
@@ -214,7 +211,7 @@ const Shop = () => {
           </div>
         </section>
       </section>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
