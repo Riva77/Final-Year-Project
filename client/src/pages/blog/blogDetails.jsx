@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { getSinglePost } from "../../apis/blog/getSinglePost";
-import IndividualBlogCard from "../../components/card/IndividualBlogCard";
 import { useParams } from "react-router-dom";
 
 const BlogDetails = () => {
@@ -48,12 +47,18 @@ const BlogDetails = () => {
                 />
 
                 <div className="h-full bg-white p-4 sm:p-6 w-full flex flex-col gap-3">
-                  <time
-                    datetime="2022-10-10"
-                    className="block text-xs text-gray-500"
-                  >
-                    {new Date(blogData?.createdAt).toLocaleString()}
-                  </time>
+                  <div className="flex justify-between items-center">
+                    <time
+                      datetime="2022-10-10"
+                      className="block text-xs text-gray-500"
+                    >
+                      {new Date(blogData?.createdAt).toLocaleString()}
+                    </time>
+                    <span className="mt-2 line-clamp-3 text-sm/relaxed text-[#7b351f] font-medium">
+                      -
+                      {`${blogData?.user.firstName} ${blogData?.user.lastName}`}
+                    </span>
+                  </div>
 
                   <a href="#">
                     <h3 className="mt-0.5 text-2xl text-[#4C2B21]">
