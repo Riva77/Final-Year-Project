@@ -1,9 +1,17 @@
 import { FaUser } from "react-icons/fa";
 
-const BlogCard = ({ image, title, summary, content, time, onClick }) => {
+const BlogCard = ({
+  image,
+  title,
+  summary,
+  content,
+  time,
+  onClick,
+  author,
+}) => {
   const formattedTime = new Date(time).toLocaleString();
   return (
-    <div onClick={onClick} >
+    <div onClick={onClick}>
       <article className="flex w-full overflow-hidden rounded-lg shadow transition hover:shadow-lg">
         <div className="h-56 w-[320px] overflow-hidden">
           {/* Adjust dimensions as needed */}
@@ -11,10 +19,15 @@ const BlogCard = ({ image, title, summary, content, time, onClick }) => {
         </div>
 
         <div className="bg-white p-4 sm:p-6 w-full flex flex-col gap-1.5">
-          <time datetime="2022-10-10" className="block text-xs text-gray-500">
-            {formattedTime}
-          </time>
-          
+          <div className="flex justify-between items-center">
+            <time datetime="2022-10-10" className="block text-xs text-gray-500">
+              {formattedTime}
+            </time>
+            <span className="mt-2 line-clamp-3 text-sm/relaxed text-[#7b351f] font-medium">
+              -{author}
+            </span>
+          </div>
+
           <a href="#">
             <h3 className="mt-0.5 text-2xl text-[#4C2B21] ">{title}</h3>
           </a>
