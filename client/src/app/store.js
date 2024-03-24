@@ -3,6 +3,7 @@ import authReducer from "../features/authSlice";
 import productReducer from "../features/productSlice";
 import modalReducer from "../features/modalSlice";
 import cartReducer from "../features/cartSlice";
+import topProductReducer from "../features/topProductSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     product: productReducer,
     modal: modalReducer,
     cart: cartReducer,
+    topProduct: topProductReducer,
   },
 });
