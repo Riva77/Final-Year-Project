@@ -17,6 +17,7 @@ import { fetchProductData } from "./features/productSlice";
 import ProductDetails from "./pages/product/productDetails";
 import Cart from "./pages/cart/Cart";
 import { fetchUserData } from "./features/authSlice";
+import { fetchTopProductData } from "./features/topProductSlice";
 import Profile from "./pages/profile/profile";
 import Chat from "./components/chatbot/chat";
 import AccountSettings from "./pages/profile/components/AccountSettings";
@@ -39,6 +40,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchProductData());
+    dispatch(fetchTopProductData());
   }, []);
 
   const pathsWithoutNavbar = ["/login", "/signup"];
