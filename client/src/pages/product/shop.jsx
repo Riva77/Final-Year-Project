@@ -2,12 +2,9 @@ import CaterogiesBook from "../../assets/CaterogiesBook.png";
 import { useEffect, useState } from "react";
 import {
   CustomButton,
-  TextInput,
   RangeSlider,
   Dropdown,
 } from "../../components";
-import { getAuthor } from "../../apis/Author/getAuthor";
-import { getGenre } from "../../apis/Genre/getGenre";
 import { useSelector } from "react-redux";
 import ProductCard from "../../components/card/ProductCard";
 import Footer from "../../components/footer/Footer";
@@ -32,6 +29,7 @@ const Shop = () => {
   };
 
   const productData = useSelector((state) => state.product.data);
+  const topProductData = useSelector((state) => state.topProduct.data);
 
   const books = productData
     ?.filter((book) => {
@@ -150,7 +148,9 @@ const Shop = () => {
               }}
             >
               <div style={styles.bestSellerDiv}>Best Seller of the month</div>
-              <div style={styles.secretChamberDiv}>"The Secret Garden"</div>
+              <div style={styles.secretChamberDiv}>
+                "{topProductData && topProductData[0].product.name}"
+              </div>
               <div>
                 <CustomButton name="Add to cart" type="submit" color="white" />
               </div>
@@ -183,7 +183,7 @@ const Shop = () => {
                 its existence remained concealed, known only to a select few who
                 guarded its mysteries.
               </span>
-              <span style={{ fontWeight: "bold" }}>-Jenny Lawrence</span>
+              <span style={{ fontWeight: "bold" }}>- {topProductData && topProductData[0].product.author}</span>
             </div>
           </section>
 
