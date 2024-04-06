@@ -4,6 +4,7 @@ import productReducer from "../features/productSlice";
 import modalReducer from "../features/modalSlice";
 import cartReducer from "../features/cartSlice";
 import topProductReducer from "../features/topProductSlice";
+import selectedProductReducer from "../features/selectedProductSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     modal: modalReducer,
     cart: cartReducer,
     topProduct: topProductReducer,
+    selectedProduct: selectedProductReducer,
   },
 });
