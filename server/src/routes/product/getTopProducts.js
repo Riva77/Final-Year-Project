@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Order = require("../../models/Order.js");
+const { Product } = require("../../models/Product.js");
 
 router.get("/", async (req, res) => {
   try {
@@ -25,16 +26,37 @@ router.get("/", async (req, res) => {
           totalOrders: 1,
         },
       },
-    ]).exec();
+    ]);
 
-    // Populate the products
-    //
-    const populatedProducts = await Order.populate(topProducts, {
-      path: "product",
-      model: "Product",
-    });
+    const products = [];
+    for (const item of topProducts) {
+      const product = await Product.findById(item.product).populate("author");
+      if (product) {
+        products.push({
+          product,
+          totalOrders: item.totalOrders,
+        });
+      } else {
+        // Fetch another product from the sorted list
+        const nextProduct = await Product.findOne({
+          _id: { $nin: products.map((p) => p.product._id) },
+        }).populate("author");
+        if (nextProduct) {
+          products.push({
+            product: nextProduct,
+            totalOrders: item.totalOrders,
+          });
+        } else {
+          // If no replacement product found, return a placeholder
+          products.push({
+            product: { name: "Product Not Found", price: 0 },
+            totalOrders: item.totalOrders,
+          });
+        }
+      }
+    }
 
-    res.status(200).send(populatedProducts);
+    res.status(200).send(products);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send({ message: "Internal server error" });

@@ -1,10 +1,11 @@
 const router = require("express").Router();
 
-const Blog = require("../../models/Blog"); //module import gareko
+const  Blog  = require("../../models/Blog");
 
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const blog = await Blog.find().populate("user"); //Overall user ko data fetch gareko
+    const blogId = req.params.id;
+    const blog = await Blog.findById(blogId).populate("user"); //Id liyera product ko data fetch gareko
 
     if (!blog) {
       return res.status(404).send({ message: "Blog not found" });

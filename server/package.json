@@ -9,6 +9,7 @@
   "author": "Riva Karki",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "cloudinary": "^1.41.1",
     "cors": "^2.8.5",

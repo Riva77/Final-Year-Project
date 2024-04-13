@@ -1,5 +1,5 @@
 import { AiOutlineClose } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../../components/buttons/CustomButton";
 import { useEffect, useState, useCallback } from "react";
 import { toastError, toastSuccess } from "../../../utils/toast";
@@ -12,14 +12,18 @@ import { getAuthor } from "../../../apis/Author/getAuthor";
 import { getGenre } from "../../../apis/Genre/getGenre";
 import { addProduct } from "../../../apis/product/addProduct";
 import axios from "axios";
+import { clearProduct } from "../../../features/selectedProductSlice";
+import AuthorDropdown from "../../../components/admin/AuthorDropdown";
+import { fetchProductData } from "../../../features/productSlice";
 
 const UpdateProductModal = ({ isOpen }) => {
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(setProductModal());
+    dispatch(clearProduct());
   };
 
-  // const productData = useSelector((state) => state.product.data);
+  const selectedProduct = useSelector((state) => state.selectedProduct.data);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -32,15 +36,6 @@ const UpdateProductModal = ({ isOpen }) => {
     genre: "",
     pages: "",
   });
-
-  // useEffect(() => {
-  //   setFormData({
-  //     name: productData?.name,
-  //     price: productData?.price,
-  //     quantity: productData?.quantity,
-  //     description: productData?.description,
-  //   });
-  // }, [productData]);
 
   const [file, setFile] = useState({
     preview: "",
@@ -63,6 +58,9 @@ const UpdateProductModal = ({ isOpen }) => {
   useEffect(() => {
     fetchAuthor();
     fetchGenre();
+    if (selectedProduct) {
+      setFormData(selectedProduct);
+    }
   }, []);
 
   const handleFileChange = useCallback((e) => {
@@ -79,34 +77,32 @@ const UpdateProductModal = ({ isOpen }) => {
     console.log(file);
   }, []);
 
-    //Image cloudinary ma upload garni
-    const cloudinaryUpload = async (form) => {
-      try {
-        const response = await axios.post(
-          "http://localhost:8000/api/cloudinary",
-          form,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        return response;
-        
-      } catch (error) {
-        if (
-          error.response &&
-          error.response?.status >= 400 &&
-          error.response?.status <= 500
-        ) {
-          return {
-            success: false,
-            error: error.response.data.message || error.response.data,
-          };
+  //Image cloudinary ma upload garni
+  const cloudinaryUpload = async (form) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/cloudinary",
+        form,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
+      );
+      return response;
+    } catch (error) {
+      if (
+        error.response &&
+        error.response?.status >= 400 &&
+        error.response?.status <= 500
+      ) {
+        return {
+          success: false,
+          error: error.response.data.message || error.response.data,
+        };
       }
-      
-    };
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -131,6 +127,7 @@ const UpdateProductModal = ({ isOpen }) => {
       if (response.success) {
         toastSuccess("Product Added Successfully");
         setFile({ data: "", preview: "" });
+        dispatch(fetchProductData());
         setFormData({
           name: "",
           price: "",
@@ -153,7 +150,6 @@ const UpdateProductModal = ({ isOpen }) => {
     }
   };
 
-
   return (
     <div
       className={`${
@@ -165,84 +161,84 @@ const UpdateProductModal = ({ isOpen }) => {
           className="absolute top-3 right-3 cursor-pointer"
           onClick={handleClick}
         >
-          <AiOutlineClose size={20} color="gray"  />
+          <AiOutlineClose size={20} color="gray" />
         </span>
         <h1 className="text-xl font-medium border-b-2 border-b-gray-200 mb-5 pb-2">
-        Add Books
-      </h1>
+          Add Books
+        </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <div className="flex gap-5">
-          <TextInput
-            type="text"
-            name="name"
-            label="Name"
-            value={formData.name}
+          <div className="flex gap-5">
+            <TextInput
+              type="text"
+              name="name"
+              label="Name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            <TextInput
+              type="number"
+              name="price"
+              label="Price"
+              value={formData.price}
+              min={1}
+              onChange={handleChange}
+            />
+            <TextInput
+              type="number"
+              name="quantity"
+              label="Quantity"
+              value={formData.quantity}
+              min={1}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex gap-5 items-center">
+            <TextInput
+              type="number"
+              name="pages"
+              label="Pages"
+              value={formData.pages}
+              min={1}
+              onChange={handleChange}
+            />
+            <AuthorDropdown
+              items={author}
+              label="Author"
+              value={formData.author}
+              name={"author"}
+              onChange={handleChange}
+            />
+            <Dropdown
+              items={genre}
+              label="Genre"
+              value={formData.genre}
+              name={"genre"}
+              onChange={handleChange}
+            />
+          </div>
+          <FileInput
+            type="file"
+            label="Product Image"
+            name="productImage"
+            onChange={handleFileChange}
+            style={{ width: "400px" }}
+          />
+          <TextArea
+            name="description"
+            label="Description"
+            value={formData.description}
             onChange={handleChange}
           />
-          <TextInput
-            type="number"
-            name="price"
-            label="Price"
-            value={formData.price}
-            min={1}
+          <TextArea
+            name="synopsis"
+            label="Synopsis"
+            value={formData.synopsis}
             onChange={handleChange}
           />
-          <TextInput
-            type="number"
-            name="quantity"
-            label="Quantity"
-            value={formData.quantity}
-            min={1}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex gap-5 items-center">
-          <TextInput
-            type="number"
-            name="pages"
-            label="Pages"
-            value={formData.pages}
-            min={1}
-            onChange={handleChange}
-          />
-          <Dropdown
-            items={author}
-            label="Author"
-            value={formData.author}
-            name={"author"}
-            onChange={handleChange}
-          />
-          <Dropdown
-            items={genre}
-            label="Genre"
-            value={formData.genre}
-            name={"genre"}
-            onChange={handleChange}
-          />
-        </div>
-        <FileInput
-          type="file"
-          label="Product Image"
-          name="productImage"
-          onChange={handleFileChange}
-          style={{ width: "400px" }}
-        />
-        <TextArea
-          name="description"
-          label="Description"
-          value={formData.description}
-          onChange={handleChange}
-        />
-        <TextArea
-          name="synopsis"
-          label="Synopsis"
-          value={formData.synopsis}
-          onChange={handleChange}
-        />
-        <div className="flex justify-center mt-3">
-          <CustomButton title="Add Product" name="Add" />
-        </div>
+          <div className="flex justify-center mt-3">
+            <CustomButton title="Add Product" name="Add" />
+          </div>
         </form>
       </div>
     </div>

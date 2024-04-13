@@ -12,24 +12,12 @@ import { toastError } from "../../utils/toast";
 import Footer from "../../components/footer/Footer";
 import axios from "axios";
 import { getTopProducts } from "../../apis/product/getTopProducts";
+import { useSelector } from "react-redux";
 
 const home = () => {
-  const [productData, setProductData] = useState();
+  const productData = useSelector((state) => state.topProduct.data);
 
-  const fetchTopPicks = async () => {
-    try {
-      const books = await getTopProducts();
-      setProductData(books);
-      console.log(await books);
-    } catch (error) {
-      console.log(error);
-      toastError(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchTopPicks();
-  }, []);
+  console.log("top; ", productData);
 
   const navigate = useNavigate();
 
@@ -40,14 +28,16 @@ const home = () => {
   const books = productData?.map((book) => {
     return (
       <ProductCard
-        name={book.product.name}
-        price={book.product.price}
-        image={book.product.image}
+        name={book.product?.name}
+        price={book.product?.price}
+        image={book.product?.image}
         key={book._id}
-        onClick={() => handleProductClick(book._id)}
+        onClick={() => handleProductClick(book.product._id)}
       />
     );
   });
+
+  console.log("books", books);
 
   return (
     <div>
@@ -73,7 +63,7 @@ const home = () => {
           </div>
 
           <div>
-            <CustomButton name="Shop" onClick={() => navigate("/shop")} />
+            <CustomButton name="Shop" onClick={() => navigate("/shop/All")} />
           </div>
         </div>
         <div style={styles.rightDiv}></div>
@@ -108,26 +98,22 @@ const home = () => {
       <section style={styles.authorSection}>
         <div style={styles.authorTittle}>Choose By Author</div>
         <div style={styles.authorDiv}>
-          <div style={styles.eachauthorDiv}>
-            <img src={colleen} alt="collen" style={styles.authorImg}  />
-            <span style={styles.authorName}>Colleen Hoover</span>
-          </div>
-          <div style={styles.eachauthorDiv}>
-            <img src={lauren} alt="lauren" style={styles.authorImg} />
-            <span style={styles.authorName}>Lauren Asher</span>
-          </div>
-          <div style={styles.eachauthorDiv}>
-            <img src={ana} alt="ana" style={styles.authorImg} />
-            <span style={styles.authorName}>Ana Huang</span>
-          </div>
-          <div style={styles.eachauthorDiv}>
-            <img src={jenny} alt="jenny" style={styles.authorImg} />
-            <span style={styles.authorName}>Jenny Han</span>
-          </div>
-          <div style={styles.eachauthorDiv}>
-            <img src={tahereh} alt="jenny" style={styles.authorImg} />
-            <span style={styles.authorName}>Tahereh Mafi</span>
-          </div>
+          {productData?.map((prod, index) => (
+            <div
+              style={styles.eachauthorDiv}
+              onClick={() => navigate(`/shop/${prod.product.author.name}`)}
+              key={index}
+              className="cursor-pointer"
+            >
+              <img
+                src={prod.product.author.image}
+                alt={prod.product.author.name}
+                style={styles.authorImg}
+                width={100}
+              />
+              <span style={styles.authorName}>{prod.product.author.name}</span>
+            </div>
+          ))}
         </div>
       </section>
       <Footer />

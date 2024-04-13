@@ -1,17 +1,15 @@
 import CaterogiesBook from "../../assets/CaterogiesBook.png";
 import { useEffect, useState } from "react";
-import {
-  CustomButton,
-  RangeSlider,
-  Dropdown,
-} from "../../components";
+import { CustomButton, RangeSlider, Dropdown } from "../../components";
 import { useSelector } from "react-redux";
 import ProductCard from "../../components/card/ProductCard";
 import Footer from "../../components/footer/Footer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Shop = () => {
-  const [author, setAuthor] = useState("All");
+  const { filter } = useParams();
+  console.log(filter);
+  const [author, setAuthor] = useState(filter);
   const [genre, setGenre] = useState("All");
   const [minPrice, setMinPrice] = useState(1); //for rangeSlider
   const [maxPrice, setMaxPrice] = useState(50); //for rangeSlider
@@ -47,7 +45,7 @@ const Shop = () => {
       if (author === "All") {
         return book;
       } else {
-        return book.author === author; //each book ko author check gareko ra matching return gareko
+        return book.author.name === author; //each book ko author check gareko ra matching return gareko
       }
     })
     .map((book) => {
@@ -149,7 +147,7 @@ const Shop = () => {
             >
               <div style={styles.bestSellerDiv}>Best Seller of the month</div>
               <div style={styles.secretChamberDiv}>
-                "{topProductData && topProductData[0].product.name}"
+                "{topProductData && topProductData[0]?.product.name}"
               </div>
               <div>
                 <CustomButton name="Add to cart" type="submit" color="white" />
@@ -183,7 +181,9 @@ const Shop = () => {
                 its existence remained concealed, known only to a select few who
                 guarded its mysteries.
               </span>
-              <span style={{ fontWeight: "bold" }}>- {topProductData && topProductData[0].product.author}</span>
+              <span style={{ fontWeight: "bold" }}>
+                - {topProductData && topProductData[0].product.author.name}
+              </span>
             </div>
           </section>
 

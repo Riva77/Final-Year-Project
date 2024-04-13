@@ -21,9 +21,20 @@ const orderSchema = new mongoose.Schema({
       },
     },
   ],
+  paymentType: {
+    type: String,
+    default: "Cash On Delivery",
+  },
   totalPrice: {
     type: Number,
     required: true,
+  },
+  paymentStatus: {
+    type: String,
+    default: "Pending",
+  },
+  transactionId: {
+    type: String,
   },
   status: {
     type: "string",

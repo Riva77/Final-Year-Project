@@ -22,7 +22,7 @@ const Cart = () => {
         productPrice={item?.price}
         productQuantity={item?.quantity}
         genre={item?.genre}
-        author={item?.author}
+        author={item?.author.name}
         key={item?._id}
       />
     );
@@ -57,7 +57,11 @@ const Cart = () => {
     const response = await createOrder(orderData);
     if (response.success) {
       toastSuccess(response.data.message);
-      dispatch(clearCart());
+      console.log(response.data);
+      if (response.data.data.payment_url) {
+        window.location.href = response.data.data.payment_url;
+      }
+      // dispatch(clearCart());
     } else {
       toastError(response.error);
     }

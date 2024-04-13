@@ -19,13 +19,22 @@ const AdminDashboard = () => {
   };
   const handleLogout = () => {};
 
-  const isProductModalOpen = useSelector((state) => state.modal.isAddProductModalOpen);
-  const isAuthorModalOpen = useSelector((state) => state.modal.isAddAuthorModalOpen);
-  const isGenreModalOpen = useSelector((state) => state.modal.isAddGenreModalOpen);
+  const isProductModalOpen = useSelector(
+    (state) => state.modal.isAddProductModalOpen
+  );
+  const isAuthorModalOpen = useSelector(
+    (state) => state.modal.isAddAuthorModalOpen
+  );
+  const isGenreModalOpen = useSelector(
+    (state) => state.modal.isAddGenreModalOpen
+  );
+  const isSelectedProductModalOpen = useSelector(
+    (state) => state.selectedProduct.isSelected
+  );
 
   return (
     <>
-      <UpdateProductModal isOpen={isProductModalOpen} />
+      <UpdateProductModal isOpen={isProductModalOpen || isSelectedProductModalOpen} />
       <UpdateAuthorModal isOpen={isAuthorModalOpen} />
       <UpdateGenreModal isOpen={isGenreModalOpen} />
       <div
@@ -59,7 +68,6 @@ const AdminDashboard = () => {
               gap: 2,
             }}
           >
-           
             <Tab
               title={"Product"}
               onClick={handleTabClick}

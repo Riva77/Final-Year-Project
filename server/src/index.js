@@ -21,8 +21,11 @@ const createOrderRoutes = require("./routes/order/createOrder.js");
 const getOrderRoutes = require("./routes/order/getOrder.js");
 const createPostRoutes = require("./routes/blog/createPost.js");
 const getPostRoutes = require("./routes/blog/getPost.js");
+const getSinglePostRoutes = require("./routes/blog/getSinglePost.js");
 const getTopProducts = require("./routes/product/getTopProducts.js");
 const addFavouriteBook = require("./routes/user/addFavouriteBook.js");
+const deleteProductRoutes = require("./routes/product/deleteProduct.js");
+const paymentRoutes = require("./routes/payment/payment.js");
 
 connection();
 const app = express();
@@ -58,8 +61,11 @@ app.use("/api/createOrder", createOrderRoutes);
 app.use("/api/getOrder", getOrderRoutes);
 app.use("/api/createPost", createPostRoutes);
 app.use("/api/getPost", getPostRoutes);
+app.use("/api/getSinglePost", getSinglePostRoutes);
 app.use("/api/getTopProducts", getTopProducts);
 app.use("/api/addFavouriteBook", addFavouriteBook);
+app.use("/api/deleteProduct", deleteProductRoutes);
+app.use("/api/khalti/callback", paymentRoutes);
 
 app.listen(8000, () => {
   //setting up the server to listen on the port 8000

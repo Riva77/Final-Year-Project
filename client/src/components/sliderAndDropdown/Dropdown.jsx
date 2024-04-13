@@ -4,9 +4,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-
 const Dropdown = ({ items, onChange, value, label, name }) => {
-  console.log("DD:",items);
+  console.log("DD:", items);
   return (
     <Box sx={{ width: 250 }}>
       <FormControl fullWidth>
@@ -29,10 +28,10 @@ const Dropdown = ({ items, onChange, value, label, name }) => {
             },
           }}
         >
-        
-  
           {items?.map((item, index) => (
-            <MenuItem key={index} value={item.name?item.name:item}>{item.name?item.name:item}</MenuItem>
+            <MenuItem key={index} value={item.name ? item.name : item}>
+              {item.name ? item.name : item}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
@@ -109,5 +108,3 @@ export default Dropdown;
 // };
 
 // export default Dropdown;
-
-

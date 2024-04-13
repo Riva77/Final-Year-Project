@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
@@ -17,11 +17,14 @@ import { clearUserData } from "../../features/authSlice";
 import { HiOutlineSquares2X2 } from "react-icons/hi2";
 import { FaRegBookmark } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
+import SearchResult from "../sliderAndDropdown/SearchResult";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [searchVisible, setSearchVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const userToken = localStorage.getItem("userToken"); //local storage bata userToken leko
 
@@ -50,7 +53,7 @@ const Navbar = () => {
           Home
         </span>
         <Separator />
-        <span onClick={() => navigate("/shop")} style={styles.pointer}>
+        <span onClick={() => navigate("/shop/All")} style={styles.pointer}>
           Books
         </span>
         <Separator />
@@ -61,10 +64,25 @@ const Navbar = () => {
         <span style={styles.pointer}>
           <AiOutlineSearch
             size="25px"
-            onClick={() => setSearchVisible(!searchVisible)}
+            onClick={() => {
+              setSearchVisible(!searchVisible);
+              setSearchQuery("");
+            }}
           />
         </span>
-        {searchVisible && <SearchBar />}
+        {searchVisible && (
+          <div style={styles.searchBar} className="relative">
+            <input
+              type="text"
+              placeholder="Search..."
+              style={styles.input}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button style={styles.searchButton}>Search</button>
+            {searchQuery != "" && <SearchResult searchQuery={searchQuery} />}
+          </div>
+        )}
       </div>
       <div style={styles.button}>
         <Separator />
@@ -157,15 +175,15 @@ const Navbar = () => {
 
 export default Navbar;
 
-const SearchBar = () => {
-  // Implement search bar functionality here
-  return (
-    <div style={styles.searchBar}>
-      <input type="text" placeholder="Search..." style={styles.input} />
-      <button style={styles.searchButton}>Search</button>
-    </div>
-  );
-};
+// const SearchBar = () => {
+//   // Implement search bar functionality here
+//   return (
+//     <div style={styles.searchBar}>
+//       <input type="text" placeholder="Search..." style={styles.input} />
+//       <button style={styles.searchButton}>Search</button>
+//     </div>
+//   );
+// };
 
 const Separator = ({ type }) => {
   return type === "horizontal" ? (

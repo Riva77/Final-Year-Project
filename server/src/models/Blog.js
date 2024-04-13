@@ -22,6 +22,10 @@ const blogSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", //User ko reference deko. User chai foreign key
     },
+    approval : {
+      type: String,
+      default: "pending"
+    }
   },
   //Post create gareko time database ma add gareko
   { timestamps: true }

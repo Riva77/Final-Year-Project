@@ -131,7 +131,7 @@ const ProductDetails = () => {
               </div>
               <div style={styles.miniDetail}>
                 Author
-                <span style={styles.minidetailAns}>{book?.author}</span>
+                <span style={styles.minidetailAns}>{book?.author.name}</span>
               </div>
             </div>
             <div style={styles.minidetailDiv}>
