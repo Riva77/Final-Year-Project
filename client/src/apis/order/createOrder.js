@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export const createOrder = async ({ customer, products, totalPrice }) => {
+export const createOrder = async ({ customer, products, totalPrice, paymentType }) => {
   const API_URL = "http://localhost:8000/api";
   try {
-    const response = await axios.post(`${API_URL}/createOrder`, { customer, products, totalPrice });
+    const response = await axios.post(`${API_URL}/createOrder`, { customer, products, totalPrice, paymentType });
 
     const data = response?.data; // if response exist the get response data
     return { success: true, data };
