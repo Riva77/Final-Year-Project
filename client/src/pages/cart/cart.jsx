@@ -2,16 +2,61 @@ import { useSelector, useDispatch } from "react-redux";
 import CartCard from "../../components/card/CartCard";
 import CustomButton from "../../components/buttons/CustomButton";
 import { createOrder } from "../../apis/order/createOrder";
-import { toastError, toastSuccess } from "../../utils/toast";
+import { toastError, toastLoading, toastSuccess } from "../../utils/toast";
 import { clearCart } from "../../features/cartSlice";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 // import Footer from "../components/Footer";
 const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const status = new URLSearchParams(window.location.search).get("status");
+  const transactionId = new URLSearchParams(window.location.search).get(
+    "transaction_id"
+  );
+
+  const updateOrder = () => {
+    const response = axios.patch(
+      `http://localhost:8000/api/updateOrder/${localStorage.getItem(
+        "orderId"
+      )}`,
+      { paymentStatus: status, transactionId: transactionId }
+    );
+    if (response.success) {
+      dispatch(clearCart());
+      toastSuccess("Payment Successful");
+    }
+  };
+
+  const deleteOrder = () => {
+    axios.delete(
+      `http://localhost:8000/api/${localStorage.getItem("orderId")}`
+    );
+    toastError("Payment Failed");
+  };
+
+  useEffect(() => {
+    if (status && transactionId) {
+      if (status === "Completed") {
+        updateOrder();
+        dispatch(clearCart());
+        toastSuccess("Order placed successfully");
+        navigate("/cart", { replace: true });
+      } else {
+        deleteOrder();
+        toastError("Payment Failed");
+      }
+    }
+  }, [status && transactionId]);
 
   const cartItems = useSelector((state) => state.cart.products);
 
   const userId = useSelector((state) => state.user.data?._id);
+
+  const [paymentType, setPaymentType] = useState("Cash On Delivery");
 
   const cart = cartItems?.map((item) => {
     return (
@@ -51,26 +96,31 @@ const Cart = () => {
       customer: userId, // Assuming customerId is available
       products: productsData,
       totalPrice: totalPrice,
+      paymentType: paymentType,
     };
 
     console.log("Submit Checkout", orderData);
     const response = await createOrder(orderData);
-    if (response.success) {
-      toastSuccess(response.data.message);
-      console.log(response.data);
-      if (response.data.data.payment_url) {
-        window.location.href = response.data.data.payment_url;
-      }
+    console.log("khaltiResponse ", response);
+    if (response.success && response.data.type === "khalti") {
+      localStorage.setItem("orderId", response.data.order_id);
+      toastLoading(response.data.message);
+      window.location.href = response.data.data.payment_url;
       // dispatch(clearCart());
+    } else if (response.success && response.data.type === "cash") {
+      dispatch(clearCart());
+      toastSuccess("Order placed successfully");
     } else {
-      toastError(response.error);
+      console.log(response);
     }
   };
+
   return (
     <div style={styles.cartItemContainer}>
       <section style={styles.detailSection}>
         <div style={styles.heading}>
           <span className="font-semibold">Shopping Cart</span>
+          {/* <span>{JSON.stringify(status)}</span> */}
           <span>{cartItems?.length} Items</span>
         </div>
         <div style={styles.columnTabs}>
@@ -142,8 +192,31 @@ const Cart = () => {
               }, 0)}
             </span>
           </div>
-          <div className="flex justify-center">
-            <CustomButton name={"Checkout"} onClick={checkoutHandler} />
+          <div className="mt-5 flex flex-col justify-center items-center gap-5">
+            <label
+              htmlFor="Option3"
+              className="flex cursor-pointer items-start gap-4 text-lg"
+              onClick={() => setPaymentType("Khalti")}
+            >
+              <div className="flex items-center">
+                &#8203;
+                <input
+                  type="checkbox"
+                  className="size-6 rounded border-gray-300"
+                  id="Option3"
+                />
+              </div>
+
+              <div>
+                <strong className="font-medium text-gray-900">
+                  Pay via Khalti{" "}
+                </strong>
+              </div>
+            </label>
+
+            <div className="flex justify-center">
+              <CustomButton name={"Checkout"} onClick={checkoutHandler} />
+            </div>
           </div>
         </div>
       </section>
