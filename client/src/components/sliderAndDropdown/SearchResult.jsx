@@ -27,7 +27,7 @@ const SearchResult = ({ searchQuery }) => {
                   <spanc className="text-[#4C2B21] font-semibold text-md">
                     {product.name}
                   </spanc>
-                  <span className="text-xs"> Author: {product.author}</span>
+                  <span className="text-xs"> Author: {product.author.name}</span>
                 </span>
               </div>
               <span className="text-[#4C2B21] text-lg">${product.price}</span>
