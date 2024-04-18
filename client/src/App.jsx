@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PrivateRoutes from "./utils/privateRoutes";
 import { fetchProductData } from "./features/productSlice";
 import ProductDetails from "./pages/product/productDetails";
-import Cart from "./pages/cart/Cart";
+import Cart from "./pages/cart/cart";
 import { fetchUserData } from "./features/authSlice";
 import { fetchTopProductData } from "./features/topProductSlice";
 import Profile from "./pages/profile/profile";
