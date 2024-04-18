@@ -4,7 +4,7 @@ import khalti from "../../assets/khalti.png";
 const Footer = () => {
   return (
     <footer style={styles.container}>
-      <section style={styles.columnContainer}>
+      {/* <section style={styles.columnContainer}>
         <div style={styles.footerColumn}>
           <span style={styles.columnHeading}>COMPANY INFO</span>
           <div style={styles.columnContent}>
@@ -17,22 +17,13 @@ const Footer = () => {
         <div style={styles.footerColumn}>
           <span style={styles.columnHeading}>HELP LINKS</span>
           <div style={styles.columnContent}>
-            {/* <span style={styles.span}>Tracking</span> */}
+         
             <span style={styles.span}>Order Status</span>
             <span style={styles.span}>Delivery</span>
             <span style={styles.span}>Shipping Info</span>
             <span style={styles.span}>FAQ</span>
           </div>
         </div>
-        {/* <div style={styles.footerColumn}>
-          <span style={styles.columnHeading}>USEFUL LINKS</span>
-          <div style={styles.columnContent}>
-            <span style={styles.span}>Special Offers</span>
-            <span style={styles.span}>Gift Cards</span>
-            <span style={styles.span}>Advertising</span>
-            <span style={styles.span}>Terms of Use</span>
-          </div>
-        </div> */}
         <div style={styles.footerColumn}>
           <span style={styles.columnHeading}>GET IN THE KNOW</span>
           <form action="" style={styles.formStyle}>
@@ -46,8 +37,8 @@ const Footer = () => {
             </button>
           </form>
         </div>
-      </section>
-      <hr style={styles.separator} />
+      </section> */}
+      {/* <hr style={styles.separator} /> */}
       <section style={styles.copyrightSection}>
         <div>
           <span style={styles.span}>&copy; 2024 Riva Karki</span>
@@ -129,7 +120,7 @@ const styles = {
   },
 
   copyrightSection: {
-    marginTop: "70px",
+    // marginTop: "30px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
