@@ -25,6 +25,7 @@ import Favourites from "./pages/profile/components/Favourites";
 import Orders from "./pages/profile/components/Orders";
 import CreatePost from "./pages/blog/createPost";
 import BlogDetails from "./pages/blog/blogDetails";
+import OTPInput from "./pages/otpverification/OTPInput";
 
 function App() {
   const dispatch = useDispatch();
@@ -75,6 +76,7 @@ function App() {
         <Route exact path="/createPost" element={<CreatePost />} />
         <Route path="/blog/blogDetails/:blogId" element={<BlogDetails />} />
         <Route exact path="/cart" element={<Cart />} />
+        <Route exact path="/otpVerification" element={<OTPInput />} />
         <Route
           path="/shop/productDetails/:productId"
           element={<ProductDetails />}
@@ -88,7 +90,7 @@ function App() {
           <Route path="/profile/orders" element={<Orders />} />
         </Route>
       </Routes>
-      <Chat />
+      {/* <Chat /> */}
     </div>
   );
 }
