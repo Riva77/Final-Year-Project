@@ -10,7 +10,6 @@ export const signup = async ({ firstName, lastName, email, password }) => {
       password,
     });
     const data = response?.data;
-    eko;
     return { success: true, data };
   } catch (error) {
     if (
