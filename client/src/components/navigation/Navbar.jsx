@@ -5,10 +5,8 @@ import { useState, useEffect, useContext } from "react";
 import { jwtDecode } from "jwt-decode";
 import CustomButton from "../buttons/CustomButton";
 import {
-  BiUserCircle,
   BiLogOut,
-  BiSolidShoppingBagAlt,
-  BiMenuAltRight,
+
 } from "react-icons/bi";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -79,7 +77,7 @@ const Navbar = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button style={styles.searchButton}>Search</button>
+           
             {searchQuery != "" && <SearchResult searchQuery={searchQuery} />}
           </div>
         )}
