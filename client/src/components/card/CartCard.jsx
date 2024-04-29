@@ -62,10 +62,10 @@ const CartCard = ({
           <span>{String(isUpdated)}</span> */}
         </div>
         <div style={{ ...styles.otherDetails, color: "#4C2B21" }}>
-          $ {productPrice}
+          Rs. {productPrice}
         </div>
         <div style={{ ...styles.otherDetails, color: "#4C2B21" }}>
-          $ {productTotPrice}
+          Rs. {productTotPrice}
         </div>
       </section>
       <section style={styles.buttonSection}>

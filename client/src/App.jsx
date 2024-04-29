@@ -26,6 +26,8 @@ import Orders from "./pages/profile/components/Orders";
 import CreatePost from "./pages/blog/createPost";
 import BlogDetails from "./pages/blog/blogDetails";
 import OTPInput from "./pages/otpverification/OTPInput";
+import Shipping from "./pages/cart/shipping";
+import Invoice from "./pages/profile/components/Invoice";
 
 function App() {
   const dispatch = useDispatch();
@@ -77,6 +79,7 @@ function App() {
         <Route path="/blog/blogDetails/:blogId" element={<BlogDetails />} />
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/otpVerification" element={<OTPInput />} />
+        <Route exact path="/shippingDetails" element={<Shipping />} />
         <Route
           path="/shop/productDetails/:productId"
           element={<ProductDetails />}
@@ -88,6 +91,7 @@ function App() {
           />
           <Route path="/profile/favourites" element={<Favourites />} />
           <Route path="/profile/orders" element={<Orders />} />
+          <Route path="/profile/orders/details" element={<Invoice />} />
         </Route>
       </Routes>
       {/* <Chat /> */}
