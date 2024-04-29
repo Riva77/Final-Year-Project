@@ -54,7 +54,7 @@ const ProductCard = ({ image, name, price, imgStyle, onClick }) => {
             color: "brown",
           }}
         >
-          $ {price}
+          Rs. {price}
         </span>
       </div>
     </div>
