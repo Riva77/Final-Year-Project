@@ -59,6 +59,7 @@ const Cart = () => {
   const [paymentType, setPaymentType] = useState("Cash On Delivery");
 
   const cart = cartItems?.map((item) => {
+    console.log(item);
     return (
       <CartCard
         productId={item?._id}
@@ -67,15 +68,14 @@ const Cart = () => {
         productPrice={item?.price}
         productQuantity={item?.quantity}
         genre={item?.genre}
-        author={item?.author.name}
+        author={item?.author?.name}
         key={item?._id}
       />
     );
   });
 
-  const checkoutHandler = async () => {
+  const shippingNavigation = () => {
     let productsData = [];
-
     // Iterate over cart items
     cartItems.forEach((item) => {
       const productData = {
@@ -96,22 +96,13 @@ const Cart = () => {
       customer: userId, // Assuming customerId is available
       products: productsData,
       totalPrice: totalPrice,
-      paymentType: paymentType,
     };
 
-    console.log("Submit Checkout", orderData);
-    const response = await createOrder(orderData);
-    console.log("khaltiResponse ", response);
-    if (response.success && response.data.type === "khalti") {
-      localStorage.setItem("orderId", response.data.order_id);
-      toastLoading(response.data.message);
-      window.location.href = response.data.data.payment_url;
-      // dispatch(clearCart());
-    } else if (response.success && response.data.type === "cash") {
-      dispatch(clearCart());
-      toastSuccess("Order placed successfully");
+    localStorage.setItem("orderData", JSON.stringify(orderData));
+    if (orderData.products.length !== 0) {
+      navigate("/shippingDetails");
     } else {
-      console.log(response);
+      toastError("Cart is empty");
     }
   };
 
@@ -173,7 +164,7 @@ const Cart = () => {
                   <tr>
                     <td className="text-left">{item?.name}</td>
                     <td className="text-left">
-                      ${item?.quantity * item?.price}
+                      Rs. {item?.quantity * item?.price}
                     </td>
                   </tr>
                 ))}
@@ -186,37 +177,14 @@ const Cart = () => {
           <div className="flex justify-between font-bold text-xl border-t border-[#4C2B21] py-5">
             <span>Grand Total</span>
             <span>
-              $
+              Rs.
               {cartItems?.reduce((accumulator, product) => {
                 return accumulator + product.quantity * product.price;
               }, 0)}
             </span>
           </div>
-          <div className="mt-5 flex flex-col justify-center items-center gap-5">
-            <label
-              htmlFor="Option3"
-              className="flex cursor-pointer items-start gap-4 text-lg"
-              onClick={() => setPaymentType("Khalti")}
-            >
-              <div className="flex items-center">
-                &#8203;
-                <input
-                  type="checkbox"
-                  className="size-6 rounded border-gray-300"
-                  id="Option3"
-                />
-              </div>
-
-              <div>
-                <strong className="font-medium text-gray-900">
-                  Pay via Khalti{" "}
-                </strong>
-              </div>
-            </label>
-
-            <div className="flex justify-center">
-              <CustomButton name={"Checkout"} onClick={checkoutHandler} />
-            </div>
+          <div className="mt-5 flex  justify-center items-center gap-5">
+            <CustomButton name={"Proceed "} onClick={shippingNavigation} />
           </div>
         </div>
       </section>
