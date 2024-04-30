@@ -28,6 +28,7 @@ import BlogDetails from "./pages/blog/blogDetails";
 import OTPInput from "./pages/otpverification/OTPInput";
 import Shipping from "./pages/cart/shipping";
 import Invoice from "./pages/profile/components/Invoice";
+import ResetPassword from "./pages/otpverification/resetPassword";
 
 function App() {
   const dispatch = useDispatch();
@@ -80,6 +81,7 @@ function App() {
         <Route exact path="/cart" element={<Cart />} />
         <Route exact path="/otpVerification" element={<OTPInput />} />
         <Route exact path="/shippingDetails" element={<Shipping />} />
+        <Route exact path="/resetPassword" element={<ResetPassword />} />
         <Route
           path="/shop/productDetails/:productId"
           element={<ProductDetails />}
