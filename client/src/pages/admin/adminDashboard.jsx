@@ -6,6 +6,7 @@ import Tab from "../../components/admin/Tab";
 import Product from "./contents/Product";
 import Genre from "./contents/Genre";
 import Author from "./contents/Author";
+import Orders from "./contents/AdminOrders";
 import UpdateProductModal from "./contents/UpdateProductModal";
 import UpdateAuthorModal from "./contents/UpdateAuthorModal";
 import UpdateGenreModal from "./contents/UpdateGenreModal";
@@ -83,6 +84,11 @@ const AdminDashboard = () => {
               onClick={handleTabClick}
               isActive={activeTab === "Genre"}
             />
+             <Tab
+              title={"Orders"}
+              onClick={handleTabClick}
+              isActive={activeTab === "Orders"}
+            />
           </div>
           <CustomButton name="Logout" onClick={handleLogout} />
         </aside>
@@ -101,6 +107,7 @@ const AdminDashboard = () => {
           {activeTab === "Product" && <Product />}
           {activeTab === "Author" && <Author />}
           {activeTab === "Genre" && <Genre />}
+          {activeTab === "Orders" && <Orders />}
         </section>
       </div>
     </>
