@@ -140,7 +140,7 @@ const UpdateAuthorModal = ({ isOpen }) => {
             />
           </div>
           <div className="flex justify-center mt-3">
-            <CustomButton title="Add Ingredient" name="Add" />
+            <CustomButton name="Add" />
           </div>
         </form>
       </div>
