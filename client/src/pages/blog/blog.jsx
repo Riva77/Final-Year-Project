@@ -34,7 +34,7 @@ const Blog = () => {
         content={blog.content}
         time={blog.createdAt}
         key={blog._id}
-        author={`${blog.user.firstName} ${blog.user.lastName}`}
+        author={`${blog.user?.firstName} ${blog.user?.lastName}`}
         onClick={() => handlePostClick(blog?._id)}
       />
     );
