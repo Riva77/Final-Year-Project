@@ -10,6 +10,8 @@ import Orders from "./contents/AdminOrders";
 import UpdateProductModal from "./contents/UpdateProductModal";
 import UpdateAuthorModal from "./contents/UpdateAuthorModal";
 import UpdateGenreModal from "./contents/UpdateGenreModal";
+import ViewOrderModal from "./contents/ViewOrderModal";
+import EditProductModal from "./contents/EditProductModal";
 
 const AdminDashboard = () => {
   const tab = localStorage.getItem("adminActiveTab");
@@ -29,15 +31,20 @@ const AdminDashboard = () => {
   const isGenreModalOpen = useSelector(
     (state) => state.modal.isAddGenreModalOpen
   );
+  const isViewOrderModalOpen = useSelector(
+    (state) => state.modal.isViewOrderModalOpen
+  );
   const isSelectedProductModalOpen = useSelector(
     (state) => state.selectedProduct.isSelected
   );
 
   return (
     <>
-      <UpdateProductModal isOpen={isProductModalOpen || isSelectedProductModalOpen} />
+      <UpdateProductModal isOpen={isProductModalOpen} />
+      <EditProductModal isOpen={isSelectedProductModalOpen} />
       <UpdateAuthorModal isOpen={isAuthorModalOpen} />
       <UpdateGenreModal isOpen={isGenreModalOpen} />
+      <ViewOrderModal isOpen={isViewOrderModalOpen} />
       <div
         style={{
           padding: "20px 64px",
@@ -84,7 +91,7 @@ const AdminDashboard = () => {
               onClick={handleTabClick}
               isActive={activeTab === "Genre"}
             />
-             <Tab
+            <Tab
               title={"Orders"}
               onClick={handleTabClick}
               isActive={activeTab === "Orders"}
