@@ -1,18 +1,17 @@
 import CaterogiesBook from "../../assets/CaterogiesBook.png";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { CustomButton, RangeSlider, Dropdown } from "../../components";
-import { useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import ProductCard from "../../components/card/ProductCard";
 import Footer from "../../components/footer/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Shop = () => {
   const { filter } = useParams();
-  console.log(filter);
   const [author, setAuthor] = useState(filter);
   const [genre, setGenre] = useState("All");
-  const [minPrice, setMinPrice] = useState(1); //for rangeSlider
-  const [maxPrice, setMaxPrice] = useState(50); //for rangeSlider
+  const [minPrice, setMinPrice] = useState(0); //for rangeSlider
+  const [maxPrice, setMaxPrice] = useState(500); //for rangeSlider
 
   const navigate = useNavigate();
 
@@ -95,13 +94,13 @@ const Shop = () => {
             <span style={styles.tabHeading}>Filter by Price</span>
             <div style={styles.priceRange}>
               <span>
-                Min: <span style={styles.price}>$ {minPrice}</span>
+                Min: <span style={styles.price}>Rs. {minPrice}</span>
               </span>
               <span>
-                Max: <span style={styles.price}>$ {maxPrice}</span>
+                Max: <span style={styles.price}>Rs. {maxPrice}</span>
               </span>
             </div>
-            <RangeSlider min={0} max={50} onChange={handlePriceChange} />
+            <RangeSlider min={0} max={500} onChange={handlePriceChange} />
           </div>
           <div style={styles.tab}>
             <span style={styles.tabHeading}>Filter by Genre</span>
@@ -145,12 +144,12 @@ const Shop = () => {
                 fontFamily: "'Playfair Display'",
               }}
             >
-              <div style={styles.bestSellerDiv}>Best Seller of the month</div>
+              <div style={styles.bestSellerDiv}>Best Seller Among Users</div>
               <div style={styles.secretChamberDiv}>
                 "{topProductData && topProductData[0]?.product.name}"
               </div>
               <div>
-                <CustomButton name="Add to cart" type="submit" color="white" />
+                <CustomButton name="View Book" type="submit" color="white" onClick={() => navigate(`/shop/productDetails/${topProductData && topProductData[0]?.product._id}`)}/>
               </div>
             </div>
             <div
