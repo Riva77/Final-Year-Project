@@ -9,7 +9,6 @@ import { fetchProductData } from "../../features/productSlice";
 const Table = ({ items }) => {
   const dispatch = useDispatch();
   const handleEditProduct = async (product) => {
-    // dispatch(setProductModal());
     dispatch(setProduct(product));
   };
 
