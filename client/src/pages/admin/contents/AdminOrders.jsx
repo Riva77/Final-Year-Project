@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { getOrder } from "../../../apis/order/getOrder";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import { setViewOrderModal } from "../../../features/modalSlice";
+import { useDispatch } from "react-redux";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
 
   const [details, setDetails] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState("");
+  const dispatch = useDispatch();
 
   const fetchOrder = async () => {
     const orderData = await getOrder();
@@ -14,17 +17,16 @@ const AdminOrders = () => {
   };
 
   useEffect(() => {
-    
     fetchOrder();
   }, []);
 
-  const handleViewDetails = (orderId) => {
-    setDetails(!details);
-    setSelectedOrder(orderId);
+  const handleViewDetails = () => {
+    // setDetails(!details);
+    // setSelectedOrder(orderId);
+    dispatch(setViewOrderModal());
   };
-  console.log(orders)
+  console.log(orders);
   return (
-    
     <div className="w-full">
       <div className="w-full flex flex-col gap-4 ">
         <h1 className="flex text-xl font-medium border-b-2 border-b-gray-200 mb-5 pb-2 items-center">
@@ -55,10 +57,12 @@ const AdminOrders = () => {
                       {index + 1}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                      {order.customer?.firstName +" "+ order.customer?.lastName}
+                      {order.customer?.firstName +
+                        " " +
+                        order.customer?.lastName}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                    {order.products.map((product, index) => {
+                      {order.products.map((product, index) => {
                         if (index === 0) {
                           // Display the name of the first product
                           return <span>{product.product.name}</span>;
@@ -84,17 +88,10 @@ const AdminOrders = () => {
                       {order.status}
                     </td>
                     <td className="whitespace-nowrap px-10 py-5 text-center flex gap-6 items-center ">
-                      {details ? (
-                        <IoIosArrowUp
-                          color="#EF4343"
-                          onClick={() => handleViewDetails(order._id)}
-                        />
-                      ) : (
-                        <IoIosArrowDown
-                          color="#EF4343"
-                          onClick={() => handleViewDetails(order._id)}
-                        />
-                      )}
+                      <IoIosArrowUp
+                        color="#EF4343"
+                        onClick={() => handleViewDetails()}
+                      />
                     </td>
                   </tr>
                   <tr
