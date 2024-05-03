@@ -5,6 +5,7 @@ const initialState = {
     isAddProductModalOpen: false,
     isAddAuthorModalOpen: false,
     isAddGenreModalOpen: false,
+    isViewOrderModalOpen: false,
 
 }
 
@@ -21,10 +22,13 @@ const modalSlice = createSlice({
         },
         setGenreModal:(state)=>{
             state.isAddGenreModalOpen=!state.isAddGenreModalOpen;
+        },
+        setViewOrderModal:(state)=>{
+            state.isViewOrderModalOpen=!state.isViewOrderModalOpen;
         }
     },
 
 });
-export const {setProductModal, setAuthorModal, setGenreModal} = modalSlice.actions;
+export const {setProductModal, setAuthorModal, setGenreModal, setViewOrderModal} = modalSlice.actions;
 
 export default modalSlice.reducer;
