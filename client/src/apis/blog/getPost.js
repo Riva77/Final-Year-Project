@@ -3,7 +3,7 @@ import axios from "axios"; // Now you can use axios to make HTTP requests
 export const getPost = async () => {
   const API_URL = "http://localhost:8000/api";
   try {
-    const response = await axios.get(`${API_URL}/getPost`);
+    const response = await axios.get(`${API_URL}/getApprovedPost`);
 
     const data = response?.data; // if response exist the get response data
     return data;
