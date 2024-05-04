@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getSinglePost } from "../../apis/blog/getSinglePost";
 import { useParams } from "react-router-dom";
+import { formatDate } from "../../utils/helper";
 
 const BlogDetails = () => {
   const { blogId } = useParams();
@@ -52,7 +53,7 @@ const BlogDetails = () => {
                       datetime="2022-10-10"
                       className="block text-xs text-gray-500"
                     >
-                      {new Date(blogData?.createdAt).toLocaleString()}
+                      {formatDate(blogData?.createdAt)}
                     </time>
                     <span className="mt-2 line-clamp-3 text-sm/relaxed text-[#7b351f] font-medium">
                       -
