@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/login/login";
@@ -29,6 +29,13 @@ import OTPInput from "./pages/otpverification/OTPInput";
 import Shipping from "./pages/cart/shipping";
 import Invoice from "./pages/profile/components/Invoice";
 import ResetPassword from "./pages/otpverification/resetPassword";
+import Product from "./pages/admin/contents/Product";
+import Genre from "./pages/admin/contents/Genre";
+import Author from "./pages/admin/contents/Author";
+import AdminOrders from "./pages/admin/contents/AdminOrders";
+import AdminBlogs from "./pages/admin/contents/AdminBlogs";
+import Dashboard from "./pages/admin/contents/Dashboard";
+import UserBlog from "./pages/profile/components/UserBlog";
 
 function App() {
   const dispatch = useDispatch();
@@ -59,7 +66,7 @@ function App() {
   const user = useSelector((state) => state.user);
   useEffect(() => {
     if (user.data) {
-      user.data.role === "admin" ? navigate("/adminDashboard") : navigate("/");
+      user.data.role === "admin" ? navigate("/admin") : navigate("/");
     }
   }, []);
 
@@ -68,8 +75,14 @@ function App() {
       <Toaster richColors={true} />
       {navbarVisible && <Navbar />}
       <Routes>
-        <Route element={<PrivateRoutes />}>
-          <Route exact path="/adminDashboard" element={<AdminDashboard />} />
+        <Route exact path="/admin" element={<AdminDashboard />}>
+          <Route index element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="products" element={<Product />} />
+          <Route path="genre" element={<Genre />} />
+          <Route path="author" element={<Author />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="blogs" element={<AdminBlogs />} />
         </Route>
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<Signup />} />
@@ -93,6 +106,7 @@ function App() {
           />
           <Route path="/profile/favourites" element={<Favourites />} />
           <Route path="/profile/orders" element={<Orders />} />
+          <Route path="/profile/blogs" element={<UserBlog />} />
           <Route path="/profile/orders/details" element={<Invoice />} />
         </Route>
       </Routes>
