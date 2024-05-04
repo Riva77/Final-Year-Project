@@ -2,20 +2,36 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CustomButton } from "../../components";
 import "../../App.css";
-import colleen from "../../assets/colleen.png";
-import jenny from "../../assets/jenny.png";
-import ana from "../../assets/ana.png";
-import lauren from "../../assets/lauren.png";
-import tahereh from "../../assets/tahereh.png";
 import ProductCard from "../../components/card/ProductCard";
-import { toastError } from "../../utils/toast";
 import Footer from "../../components/footer/Footer";
 import axios from "axios";
-import { getTopProducts } from "../../apis/product/getTopProducts";
 import { useSelector } from "react-redux";
+import Spinner from "../../components/spinner/spinner";
 
 const home = () => {
   const productData = useSelector((state) => state.topProduct.data);
+
+  const[topAuthor, setTopAuthor ]= useState();
+
+  const fetchTopAuthor = async (e) => {
+    try {
+      const topAuthors = await axios.get(
+        `http://localhost:8000/api/getTopAuthors`
+      );
+      console.log("author", topAuthors)
+      setTopAuthor(topAuthors.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTopAuthor();
+  }, []);
+
+  // if (!topAuthor) {
+  //   return <Spinner message={"Loading Blogs..."} />;
+  // }
 
   console.log("top; ", productData);
 
@@ -98,20 +114,20 @@ const home = () => {
       <section style={styles.authorSection}>
         <div style={styles.authorTittle}>Choose By Author</div>
         <div style={styles.authorDiv}>
-          {productData?.map((prod, index) => (
+          {topAuthor?.map((data, index) => (
             <div
               style={styles.eachauthorDiv}
-              onClick={() => navigate(`/shop/${prod.product.author.name}`)}
+              onClick={() => navigate(`/shop/${data?.authorDetails?.name}`)}
               key={index}
               className="cursor-pointer"
             >
               <img
-                src={prod.product.author.image}
-                alt={prod.product.author.name}
+                src={data?.authorDetails?.image}
+                alt={data?.authorDetails?.name}
                 style={styles.authorImg}
                 width={100}
               />
-              <span style={styles.authorName}>{prod.product.author.name}</span>
+              <span style={styles.authorName}>{data?.authorDetails?.name}</span>
             </div>
           ))}
         </div>
