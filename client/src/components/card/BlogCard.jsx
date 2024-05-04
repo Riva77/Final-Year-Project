@@ -1,4 +1,5 @@
 import { FaUser } from "react-icons/fa";
+import { formatDate } from "../../utils/helper";
 
 const BlogCard = ({
   image,
@@ -9,7 +10,7 @@ const BlogCard = ({
   onClick,
   author,
 }) => {
-  const formattedTime = new Date(time).toLocaleString();
+  // const formattedTime = new Date(time).toLocaleString();
   return (
     <div onClick={onClick}>
       <article className="flex w-full overflow-hidden rounded-lg shadow transition hover:shadow-lg">
@@ -21,7 +22,7 @@ const BlogCard = ({
         <div className="bg-white p-4 sm:p-6 w-full flex flex-col gap-1.5">
           <div className="flex justify-between items-center">
             <time datetime="2022-10-10" className="block text-xs text-gray-500">
-              {formattedTime}
+              {formatDate(time)}
             </time>
             <span className="mt-2 line-clamp-3 text-sm/relaxed text-[#7b351f] font-medium">
               -{author}
