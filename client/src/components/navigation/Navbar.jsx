@@ -4,10 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { jwtDecode } from "jwt-decode";
 import CustomButton from "../buttons/CustomButton";
-import {
-  BiLogOut,
-
-} from "react-icons/bi";
+import { BiBookAlt, BiLogOut } from "react-icons/bi";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { useSelector, useDispatch } from "react-redux";
@@ -77,7 +74,7 @@ const Navbar = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-           
+
             {searchQuery != "" && <SearchResult searchQuery={searchQuery} />}
           </div>
         )}
@@ -90,7 +87,7 @@ const Navbar = () => {
               <>
                 {userData.role === "admin" && (
                   <>
-                    <span onClick={() => navigate("/admindashboard")}>
+                    <span onClick={() => navigate("/admin")}>
                       <LuLayoutDashboard size={25} style={styles.pointer} />
                     </span>
                     <span onClick={logoutClickHandler}>
@@ -142,6 +139,15 @@ const Navbar = () => {
                             >
                               <IoSettingsOutline className={`h-4 w-4 mr-2`} />
                               Account Settings
+                            </span>
+                            <span
+                              className=" cursor-pointer flex items-center rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-[#F1EEE3]  hover:text-gray-700"
+                              onClick={() =>
+                                navigate("/profile/blogs")
+                              }
+                            >
+                              <BiBookAlt className={`h-4 w-4 mr-2`} />
+                             My Blogs
                             </span>
                             <span
                               className=" cursor-pointer flex items-center rounded-lg px-4 py-2 text-sm text-red-500 hover:bg-[#F1EEE3]  hover:text-red-700"
