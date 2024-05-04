@@ -1,26 +1,20 @@
 import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
-import CustomButton from "../../components/buttons/CustomButton";
-import Tab from "../../components/admin/Tab";
-import Product from "./contents/Product";
-import Genre from "./contents/Genre";
-import Author from "./contents/Author";
-import Orders from "./contents/AdminOrders";
 import UpdateProductModal from "./contents/UpdateProductModal";
 import UpdateAuthorModal from "./contents/UpdateAuthorModal";
 import UpdateGenreModal from "./contents/UpdateGenreModal";
 import ViewOrderModal from "./contents/ViewOrderModal";
 import EditProductModal from "./contents/EditProductModal";
+import { adminRoutes } from "../../routes/adminDashboardRoutes";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
-  const tab = localStorage.getItem("adminActiveTab");
-  const [activeTab, setActiveTab] = useState(tab ? tab : "Add Product");
-  const handleTabClick = (tabTitle) => {
-    setActiveTab(tabTitle);
-    localStorage.setItem("adminActiveTab", tabTitle);
-  };
-  const handleLogout = () => {};
+  const navigate = useNavigate();
+
+  const path = window.location.pathname
+    .replace("/admin/", "")
+    .replace("-", " ");
 
   const isProductModalOpen = useSelector(
     (state) => state.modal.isAddProductModalOpen
@@ -76,30 +70,28 @@ const AdminDashboard = () => {
               gap: 2,
             }}
           >
-            <Tab
-              title={"Product"}
-              onClick={handleTabClick}
-              isActive={activeTab === "Product"}
-            />
-            <Tab
-              title={"Author"}
-              onClick={handleTabClick}
-              isActive={activeTab === "Author"}
-            />
-            <Tab
-              title={"Genre"}
-              onClick={handleTabClick}
-              isActive={activeTab === "Genre"}
-            />
-            <Tab
-              title={"Orders"}
-              onClick={handleTabClick}
-              isActive={activeTab === "Orders"}
-            />
+            {/* <span> {JSON.stringify(path)}</span> */}
+            {adminRoutes.map((route, k) => {
+              return (
+                <div
+                  onClick={() => navigate(route.path)}
+                  key={k}
+                  className={`${
+                    route.name.toLowerCase() == path
+                      ? "bg-[#4C2B21] text-white"
+                      : "text-black"
+                  } px-4 flex  font-medium , text-md cursor-pointer rounded-md w-full items-center mb-2 py-5 hover:bg-[#4C2B21] hover:text-white `}
+                >
+                  {route.icon}
+                  {route.name}
+                </div>
+              );
+            })}
           </div>
-          <CustomButton name="Logout" onClick={handleLogout} />
+          {/* <CustomButton name="Logout" onClick={handleLogout} /> */}
         </aside>
         <section
+          className="cool-scroll"
           style={{
             padding: "50px 32px",
             flex: 1,
@@ -111,10 +103,7 @@ const AdminDashboard = () => {
             overflowY: "auto",
           }}
         >
-          {activeTab === "Product" && <Product />}
-          {activeTab === "Author" && <Author />}
-          {activeTab === "Genre" && <Genre />}
-          {activeTab === "Orders" && <Orders />}
+          <Outlet />
         </section>
       </div>
     </>
