@@ -3,9 +3,10 @@ import { getOrder } from "../../../apis/order/getOrder";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { setViewOrderModal } from "../../../features/modalSlice";
 import { useDispatch } from "react-redux";
+import Spinner from "../../../components/spinner/Spinner";
 
 const AdminOrders = () => {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState();
 
   const [details, setDetails] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState("");
@@ -26,6 +27,10 @@ const AdminOrders = () => {
     dispatch(setViewOrderModal());
   };
   console.log(orders);
+
+  if (!orders) {
+    return <Spinner message={"Loading Orders..."} />;
+  }
   return (
     <div className="w-full">
       <div className="w-full flex flex-col gap-4 ">
