@@ -5,9 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signup } from "../../apis/authentication/signup";
 import { toastError, toastSuccess } from "../../utils/toast";
+import { setOTP } from "../../features/otpSlice";
+import { useDispatch } from "react-redux";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -32,12 +35,12 @@ const Signup = () => {
     e.preventDefault();
     if (checkPasswordMatch()) {
       const response = await signup(formData);
+      console.log(response);
       if (response.success) {
-        toastSuccess("User registered successfully!");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        dispatch(setOTP(response.data.OTP));
+        navigate("/otpVerification");
       } else {
+        toastError(response.error);
       }
       console.log("response", response);
     }
@@ -47,12 +50,7 @@ const Signup = () => {
       <section
         style={{ background: `url(${background})` }}
         className="bannerSection"
-      >
-        {/* <img src={login} alt="books" /> */}
-        {/* <div>
-          <img src="Logo" alt="hehe" />
-        </div> */}
-      </section>
+      ></section>
       <section className="formSection">
         <h1
           style={{
