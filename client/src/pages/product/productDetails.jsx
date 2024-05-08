@@ -12,22 +12,18 @@ import { IoIosHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
 import { addRemoveFavourites } from "../../apis/user/addRemoveFavourites";
 import { fetchUserData } from "../../features/authSlice";
+import { current } from "@reduxjs/toolkit";
 
 const ProductDetails = () => {
-
   const { productId } = useParams();
   const userData = useSelector((state) => state.user.data);
   const [quantity, setQuantity] = useState(1);
 
-
-
-
-  // const formData = useState();
   const [book, setBook] = useState();
 
   const [cartData, setCartData] = useState();
 
-  const [isFavourite, setIsFavourite] = useState(userData?.favoriteBooks.indexOf(productId) !== -1);
+  const [isFavourite, setIsFavourite] = useState(false);
   // if (userData?.favoriteBooks.includes(productId)) {
   //   setIsFavourite(true);
   // }
@@ -44,7 +40,7 @@ const ProductDetails = () => {
         userId: userData?._id,
         productId: productId,
       });
-      dispatch(fetchUserData());
+      dispatch(fetchUserData(userData._id));
       if (response.data.type === "add") {
         toastSuccess(response.data.message);
       } else {
@@ -65,10 +61,13 @@ const ProductDetails = () => {
   };
   useEffect(() => {
     fetchProductData();
-    // if (userData?.favoriteBooks.indexOf(productId) !== -1) {
-    //   setIsFavourite(true);
-    // }
   }, []);
+
+  // useEffect(() => {
+  //   if (book !== null && userData?.favoriteBooks.indexOf(productId) !== -1) {
+  //     setIsFavourite(true);
+  //   }
+  // }, [book]);
 
   const addToCartHandler = () => {
     const cartItem = { ...book, quantity };
@@ -79,12 +78,12 @@ const ProductDetails = () => {
   return (
     <div>
       <section style={styles.outerSection}>
-        <section style={styles.innerSection} >
+        <section style={styles.innerSection}>
           <div style={styles.upperPart}>
             <img src={book?.image} alt="book" style={styles.img} />
             <div style={styles.upperrightDiv}>
               <span style={styles.bookName}>{book?.name}</span>
-              <span style={styles.price}>$ {book?.price}</span>
+              <span style={styles.price}>Rs. {book?.price}</span>
               <span style={styles.description}>{book?.description}</span>
               <div
                 style={{ display: "flex", gap: 20, flexDirection: "column" }}
@@ -103,10 +102,11 @@ const ProductDetails = () => {
                     onClick={addToCartHandler}
                   />
                   <span className="cursor-pointer" onClick={addToFavourite}>
-                    {!isFavourite ? (
-                      <IoIosHeartEmpty size={30} color="#4C2B21" />
+                    {userData?.favoriteBooks.some((favBook)=>favBook._id===book?._id)?(
+                       <IoMdHeart size={30} color="#4C2B21" />
                     ) : (
-                      <IoMdHeart size={30} color="#4C2B21" />
+                     
+                      <IoIosHeartEmpty size={30} color="#4C2B21" />
                     )}
                   </span>
                 </div>
