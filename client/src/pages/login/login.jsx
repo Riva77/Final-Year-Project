@@ -5,10 +5,13 @@ import "../../styles/login.css";
 import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../utils/toast";
 import { login } from "../../apis/authentication/login";
+import { setOTP } from "../../features/otpSlice";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const navigate = useNavigate();
-  // const dispatch = useDispatch(); //reducer use garera store ma data set garna help garxa
+  const dispatch = useDispatch(); //reducer use garera store ma data set garna help garxa
 
   const [formData, setFormData] = useState({
     email: "",
@@ -26,6 +29,20 @@ const Login = () => {
     } else {
       const OTP = Math.floor(Math.random() * 9000 + 1000);
       dispatch(setOTP(OTP));
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/api/sendEmail",
+          { email, OTP }
+        );
+        if (response.status === 200) {
+          toastSuccess(response.data.message);
+          navigate(
+            `/otpVerification?isForgotPassword=true&email=${formData.email}`
+          );
+        }
+      } catch (error) {
+        toastError(error.response.data.message);
+      }
     }
   };
 
@@ -38,7 +55,11 @@ const Login = () => {
       // console.log(jwtDecode(userToken));
       localStorage.setItem("userToken", userToken); //Key= "userToken", userToken= value. Aba get garni bela key matra chainxa
       toastSuccess("Logged in successfully!");
-      navigate("/");
+      if (response.data.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } else {
       toastError(response.error);
     }
