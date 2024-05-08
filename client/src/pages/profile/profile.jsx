@@ -1,15 +1,20 @@
 import { useSelector } from "react-redux";
 import profileRoute from "../../routes/profileRoutes";
 import { useNavigate, Outlet } from "react-router-dom";
+import Spinner from "../../components/Spinner/spinner";
 
 const Profile = () => {
   const userData = useSelector((state) => state.user.data);
 
   const navigate = useNavigate();
 
-  const path = window.location.pathname 
+  const path = window.location.pathname
     .replace("/profile/", "")
     .replace("-", " ");
+
+  if (!userData) {
+    return <Spinner />;
+  }
 
   return (
     <div style={styles.divMain}>
