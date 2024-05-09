@@ -1,4 +1,5 @@
 const mongoose = require("mongoose"); //mongoose lai import gareko, database connect ni garxa schema banauna ni help garxa
+const Joi = require("joi");
 
 const blogSchema = new mongoose.Schema(
   {
@@ -22,14 +23,26 @@ const blogSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", //User ko reference deko. User chai foreign key
     },
-    approval : {
+    approval: {
       type: String,
-      default: "pending"
-    }
+      default: "pending",
+    },
   },
   //Post create gareko time database ma add gareko
   { timestamps: true }
 );
 
 const Blog = mongoose.model("Blog", blogSchema);
-module.exports = Blog;
+
+const validate = (data) => {
+  const schema = Joi.object({
+    title: Joi.string().required().label("Title"),
+    summary: Joi.string().required().label("Summary"),
+    content: Joi.string().required().label("Content"),
+    image: Joi.string().required().label("Image"),
+    user: Joi.string().required().label("User"),
+  });
+  return schema.validate(data);
+};
+
+module.exports = { Blog, validate };
