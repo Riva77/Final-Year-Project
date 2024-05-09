@@ -1,44 +1,54 @@
 const router = require("express").Router();
-const Author = require("../../models/Author.js");
+const Order = require("../../models/Order");
 
 router.get("/", async (req, res) => {
   try {
-    const topAuthor = await Author.aggregate([
-      {
-        $unwind: "$authors", // Unwind the products array
-      },
+    const result = await Order.aggregate([
+      { $unwind: "$products" },
       {
         $group: {
-          _id: "$authors.author", 
-          totalOrders: { $sum: 1 }, // Counting total orders for each product
+          _id: "$products.product",
+          totalSold: { $sum: "$products.quantity" },
         },
       },
       {
-        $sort: { totalOrders: -1 }, // Sorting in descending order of totalOrders
-      },
-      {
-        $limit: 4, // Limiting to top 4 products
-      },
-      {
-        $project: {
-          author: "$_id",
-          totalOrders: 1,
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productDetails",
         },
       },
-    ]).exec();
+      { $unwind: "$productDetails" },
+      {
+        $group: {
+          _id: "$productDetails.author",
+          totalQuantity: { $sum: "$totalSold" },
+        },
+      },
+      { $sort: { totalQuantity: -1 } },
+      { $limit: 4 },
+      {
+        $lookup: {
+          from: "authors",
+          localField: "_id",
+          foreignField: "_id",
+          as: "authorDetails",
+        },
+      },
+      { $unwind: "$authorDetails" },
+    ]);
 
-    // Populate the products
-    //
-    const populatedProducts = await Order.populate(topProducts, {
-      path: "product",
-      model: "Product",
-    });
-
-    res.status(200).send(populatedProducts);
+    result.map((item) => ({
+      author: item.authorDetails,
+      totalQuantity: item.totalQuantity,
+    }));
+    
+    res.status(200).json(result);
   } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send({ message: "Internal server error" });
+    console.error("Error in aggregation: ", error);
   }
 });
 
 module.exports = router;
+
