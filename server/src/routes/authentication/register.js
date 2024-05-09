@@ -1,17 +1,23 @@
 const router = require("express").Router();
 const { User, validate } = require("../../models/Users.js");
 const bcrypt = require("bcrypt");
+const sendEmail = require("../../services/email.service.js");
 
 router.post("/", async (req, res) => {
-  let body = { ...req.body };
+  let { firstName, lastName, email, password } = req.body;
   try {
-    const { error } = validate(body);
+    const { error } = validate({
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: email,
+      password:password,
+    });
     if (error) {
       return res.status(400).send(error.details[0].message);
     }
 
-    if (!body.role) body = { ...body, role: "user" };
-    const user = await User.findOne({ email: body.email });
+    // if (!body.role) body = { ...body, role: "user" };
+    const user = await User.findOne({ email: email });
 
     if (user) {
       return res.status(409).send({ message: "User already registered" });
@@ -19,11 +25,20 @@ router.post("/", async (req, res) => {
 
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
 
-    const hashPassword = await bcrypt.hash(body.password, salt);
+    const hashPassword = await bcrypt.hash(password, salt);
+    const otp = Math.floor(Math.random() * 9000 + 1000);
+    await sendEmail(email, otp);
 
-    await new User({ ...body, password: hashPassword }).save();
-    res.status(201).send({ message: "User registered successfully" });
+    await new User({
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: email,
+      password: hashPassword,
+      role: "user",
+    }).save();
+    res.status(201).send({ OTP: otp, message: "User registered successfully" });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ message: "Internal server error." });
   }
 });
