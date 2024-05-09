@@ -40,6 +40,17 @@ const orderSchema = new mongoose.Schema({
     type: "string",
     default: "Received",
   },
+
+  phoneNumber: {
+    type: String,
+  },
+
+  district: {
+    type: String,
+  },
+
+  address: { type: String },
+  wardNumber: { type: String },
 });
 
 const Order = mongoose.model("Order", orderSchema);
