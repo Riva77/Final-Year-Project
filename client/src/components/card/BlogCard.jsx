@@ -1,7 +1,11 @@
-import { FaUser } from "react-icons/fa";
+import { BiTrashAlt } from "react-icons/bi";
 import { formatDate } from "../../utils/helper";
+import { toastError, toastSuccess } from "../../utils/toast";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const BlogCard = ({
+  id,
   image,
   title,
   summary,
@@ -9,11 +13,39 @@ const BlogCard = ({
   time,
   onClick,
   author,
+  fetchData,
 }) => {
+  const user = useSelector((state) => state.user.data);
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/api/deleteBlog/${id}`
+      );
+      fetchData();
+      console.log(response);
+      toastSuccess("Blog deleted successfully");
+    } catch (error) {
+      console.log(error);
+      toastError("Error deleting blog");
+    }
+  };
+
   // const formattedTime = new Date(time).toLocaleString();
   return (
-    <div onClick={onClick}>
-      <article className="flex w-full overflow-hidden rounded-lg shadow transition hover:shadow-lg">
+    <div className="relative">
+      <div
+        className={`absolute right-5 bottom-5 ${
+          user._id === author?._id || user.role === "admin" ? "" : "hidden"
+        }`}
+        onClick={() => handleDelete(id)}
+      >
+        <BiTrashAlt />
+      </div>
+      <article
+        className="flex w-full overflow-hidden rounded-lg shadow transition hover:shadow-lg"
+        onClick={onClick}
+      >
         <div className="h-56 w-[320px] overflow-hidden">
           {/* Adjust dimensions as needed */}
           <img alt="Image" src={image} className="h-full w-full object-cover" />
@@ -25,7 +57,7 @@ const BlogCard = ({
               {formatDate(time)}
             </time>
             <span className="mt-2 line-clamp-3 text-sm/relaxed text-[#7b351f] font-medium">
-              -{author}
+              -{author?.firstName + " " + author?.lastName}
             </span>
           </div>
 
@@ -36,9 +68,10 @@ const BlogCard = ({
           <p className="mt-2 line-clamp-3 text-sm/relaxed text-[#7b351f] font-medium">
             {summary}
           </p>
-          <p className="mt-2 line-clamp-3 text-sm/relaxed text-gray-500 ">
-            {content}
-          </p>
+          <p
+            className="mt-2 line-clamp-3 text-sm/relaxed text-gray-500 "
+            dangerouslySetInnerHTML={{ __html: content }}
+          ></p>
         </div>
       </article>
     </div>
