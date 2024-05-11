@@ -1,29 +1,12 @@
 import axios from "axios";
 
-export const updateProduct = async (productId, {
-  name,
-  price,
-  description,
-  quantity,
-  image,
-  author,
-  synopsis,
-  genre,
-  pages,
-}) => {
+export const updateProduct = async (productId, formData) => {
   const API_URL = "http://localhost:8000/api";
   try {
-    const response = await axios.put(`${API_URL}/updateProduct/${productId}`, {
-      name,
-      price,
-      description,
-      quantity,
-      image,
-      author,
-      synopsis,
-      genre,
-      pages,
-    });
+    const response = await axios.patch(
+      `${API_URL}/updateProduct/${productId}`,
+      formData
+    );
 
     const data = response?.data; // if response exists then get response data
     return { success: true, data };
