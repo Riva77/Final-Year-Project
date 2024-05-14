@@ -58,6 +58,27 @@ const Cart = () => {
 
   const [paymentType, setPaymentType] = useState("Cash On Delivery");
 
+  const [selectedCartItems, setSelectedCartItems] = useState([]);
+
+  useEffect(() => {
+    setSelectedCartItems(cartItems);
+  }, [cartItems]);
+
+  const addorRemoveItem = (productId) => {
+    const index = selectedCartItems.findIndex((item) => item._id === productId);
+    if (index > -1) {
+      const newCartItems = [...selectedCartItems];
+      newCartItems.splice(index, 1);
+      setSelectedCartItems(newCartItems);
+    } else {
+      const newCartItems = [...selectedCartItems];
+      const item = cartItems.find((item) => item._id === productId);
+      newCartItems.push(item);
+      setSelectedCartItems(newCartItems);
+    }
+    console.log(selectedCartItems);
+  };
+
   const cart = cartItems?.map((item) => {
     console.log(item);
     return (
@@ -70,6 +91,11 @@ const Cart = () => {
         genre={item?.genre}
         author={item?.author?.name}
         key={item?._id}
+        isSelected={
+          selectedCartItems.findIndex((cartItem) => cartItem._id === item._id) >
+          -1
+        }
+        setSelectedCartItems={addorRemoveItem}
       />
     );
   });
@@ -77,7 +103,7 @@ const Cart = () => {
   const shippingNavigation = () => {
     let productsData = [];
     // Iterate over cart items
-    cartItems.forEach((item) => {
+    selectedCartItems.forEach((item) => {
       const productData = {
         product: item?._id,
         quantity: item?.quantity,
@@ -86,7 +112,7 @@ const Cart = () => {
     });
 
     // Calculate total price
-    const totalPrice = cartItems.reduce(
+    const totalPrice = selectedCartItems.reduce(
       (total, item) => total + item.price * item.quantity,
       0
     );
@@ -114,6 +140,8 @@ const Cart = () => {
           {/* <span>{JSON.stringify(status)}</span> */}
           <span>{cartItems?.length} Items</span>
         </div>
+        {/* <span>{JSON.stringify(selectedCartItems)}</span> */}
+
         <div style={styles.columnTabs}>
           <span
             style={{
@@ -160,7 +188,7 @@ const Cart = () => {
                 </tr>
               </thead>
               <tbody>
-                {cartItems?.map((item) => (
+                {selectedCartItems?.map((item) => (
                   <tr>
                     <td className="text-left">{item?.name}</td>
                     <td className="text-left">
@@ -178,7 +206,7 @@ const Cart = () => {
             <span>Grand Total</span>
             <span>
               Rs.
-              {cartItems?.reduce((accumulator, product) => {
+              {selectedCartItems?.reduce((accumulator, product) => {
                 return accumulator + product.quantity * product.price;
               }, 0)}
             </span>
