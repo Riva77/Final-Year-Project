@@ -28,14 +28,16 @@ const Blog = () => {
     //blogdata xa vani matra map garni (?)
     return (
       <BlogCard
+        id={blog._id}
         image={blog.image}
         title={blog.title}
         summary={blog.summary}
         content={blog.content}
         time={blog.createdAt}
         key={blog._id}
-        author={`${blog.user?.firstName} ${blog.user?.lastName}`}
+        author={blog.user}
         onClick={() => handlePostClick(blog?._id)}
+        fetchData={fetchBlogData}
       />
     );
   });
