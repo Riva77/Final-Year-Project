@@ -7,6 +7,8 @@ import {
   updateProductQuantity,
 } from "../../features/cartSlice";
 import { toastSuccess } from "../../utils/toast";
+import CheckIcon from "@mui/icons-material/Check";
+import ToggleButton from "@mui/material/ToggleButton";
 
 const CartCard = ({
   productId,
@@ -16,6 +18,8 @@ const CartCard = ({
   productPrice,
   author,
   productQuantity,
+  isSelected,
+  setSelectedCartItems,
 }) => {
   const dispatch = useDispatch();
 
@@ -78,6 +82,16 @@ const CartCard = ({
         >
           <MdFileUpload color="white" /> Update
         </span> */}
+        <ToggleButton
+          value="check"
+          selected={isSelected}
+          onChange={() => setSelectedCartItems(productId)}
+          size="small"
+          color={isSelected ? `success` : `error`}
+        >
+          <CheckIcon />
+        </ToggleButton>
+        {/* <span>{JSON.stringify(isSelected)}</span> */}
         <span
           style={{ ...styles.button, background: "#c94949" }}
           onClick={handleDeleteCartItem}
