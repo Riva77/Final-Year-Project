@@ -62,14 +62,16 @@ const AdminBlogs = () => {
           {blog.approval[0].toUpperCase() + blog.approval.substring(1)}
         </div>
         <BlogCard
+          id={blog?._id}
           image={blog.image}
           title={blog.title}
           summary={blog.summary}
           content={blog.content}
           time={blog.createdAt}
           key={blog._id}
-          author={`${blog.user?.firstName} ${blog.user?.lastName}`}
+          author={blog.user}
           onClick={() => handlePostClick(blog?._id)}
+          fetchData={fetchBlogData}
         />
         {blog.approval === "pending" && (
           <div className="flex justify-end gap-2">
