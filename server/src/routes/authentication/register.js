@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { User, validate } = require("../../models/Users.js");
 const bcrypt = require("bcrypt");
-const sendEmail = require("../../services/email.service.js");
+const { sendEmail } = require("../../services/email.service.js");
 
 router.post("/", async (req, res) => {
   let { firstName, lastName, email, password } = req.body;
@@ -10,7 +10,7 @@ router.post("/", async (req, res) => {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       email: email,
-      password:password,
+      password: password,
     });
     if (error) {
       return res.status(400).send(error.details[0].message);
