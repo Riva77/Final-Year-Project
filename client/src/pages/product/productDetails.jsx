@@ -70,6 +70,10 @@ const ProductDetails = () => {
   // }, [book]);
 
   const addToCartHandler = () => {
+    if (book?.quantity === 0) {
+      toastError("Product is out of stock");
+      return;
+    }
     const cartItem = { ...book, quantity };
     dispatch(addProductToCart(cartItem));
   };
@@ -102,10 +106,11 @@ const ProductDetails = () => {
                     onClick={addToCartHandler}
                   />
                   <span className="cursor-pointer" onClick={addToFavourite}>
-                    {userData?.favoriteBooks.some((favBook)=>favBook._id===book?._id)?(
-                       <IoMdHeart size={30} color="#4C2B21" />
+                    {userData?.favoriteBooks.some(
+                      (favBook) => favBook._id === book?._id
+                    ) ? (
+                      <IoMdHeart size={30} color="#4C2B21" />
                     ) : (
-                     
                       <IoIosHeartEmpty size={30} color="#4C2B21" />
                     )}
                   </span>
@@ -137,7 +142,9 @@ const ProductDetails = () => {
             <div style={styles.minidetailDiv}>
               <div style={styles.miniDetail}>
                 Quantity
-                <span style={styles.minidetailAns}>{book?.quantity}</span>
+                <span style={styles.minidetailAns}>
+                  {book?.quantity === 0 ? "OUT OF STOCK" : book?.quantity}
+                </span>
               </div>
               <div style={styles.miniDetail}>
                 Pages
