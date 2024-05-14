@@ -39,6 +39,10 @@ const getTopAuthors = require("./routes/author/getTopAuthor.js");
 const changePasswordRoutes = require("./routes/user/changePassword.js");
 const editProfileRoutes = require("./routes/user/editProfile.js");
 const getUserBlogRoutes = require("./routes/blog/getUserBlog.js");
+const getSalesByMonth = require("./routes/order/getSalesByMonth.js");
+const getBlogStats = require("./routes/blog/getBlogStats.js");
+const getOrderStats = require("./routes/order/getOrderStats.js");
+const deleteBlog = require("./routes/blog/deleteBlog.js");
 
 connection();
 const app = express();
@@ -92,6 +96,10 @@ app.use("/api/getTopAuthors", getTopAuthors);
 app.use("/api/changePassword", changePasswordRoutes);
 app.use("/api/editProfile", editProfileRoutes);
 app.use("/api/getUserBlog", getUserBlogRoutes);
+app.use("/api/getSalesByMonth", getSalesByMonth);
+app.use("/api/getBlogStats", getBlogStats);
+app.use("/api/getOrderStats", getOrderStats);
+app.use("/api/deleteBlog", deleteBlog);
 
 app.listen(8000, () => {
   //setting up the server to listen on the port 8000
