@@ -40,45 +40,49 @@ const Navbar = () => {
   return (
     <nav style={styles.nav}>
       <Separator type="horizontal" />
-      <div style={styles.tabs}>
-        <span onClick={() => navigate("/")} style={styles.pointer}>
-          <img src={logo} style={styles.logo} />
-        </span>
-        <span onClick={() => navigate("/")} style={styles.pointer}>
-          Home
-        </span>
-        <Separator />
-        <span onClick={() => navigate("/shop/All")} style={styles.pointer}>
-          Books
-        </span>
-        <Separator />
-        <span onClick={() => navigate("/blog")} style={styles.pointer}>
-          Blog
-        </span>
-        <Separator />
-        <span style={styles.pointer}>
-          <AiOutlineSearch
-            size="25px"
-            onClick={() => {
-              setSearchVisible(!searchVisible);
-              setSearchQuery("");
-            }}
-          />
-        </span>
-        {searchVisible && (
-          <div style={styles.searchBar} className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              style={styles.input}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+      {userData?.role === "user" ? (
+        <div style={styles.tabs}>
+          <span onClick={() => navigate("/")} style={styles.pointer}>
+            <img src={logo} style={styles.logo} />
+          </span>
+          <span onClick={() => navigate("/")} style={styles.pointer}>
+            Home
+          </span>
+          <Separator />
+          <span onClick={() => navigate("/shop/All")} style={styles.pointer}>
+            Books
+          </span>
+          <Separator />
+          <span onClick={() => navigate("/blog")} style={styles.pointer}>
+            Blog
+          </span>
+          <Separator />
+          <span style={styles.pointer}>
+            <AiOutlineSearch
+              size="25px"
+              onClick={() => {
+                setSearchVisible(!searchVisible);
+                setSearchQuery("");
+              }}
             />
+          </span>
+          {searchVisible && (
+            <div style={styles.searchBar} className="relative">
+              <input
+                type="text"
+                placeholder="Search..."
+                style={styles.input}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
 
-            {searchQuery != "" && <SearchResult searchQuery={searchQuery} />}
-          </div>
-        )}
-      </div>
+              {searchQuery != "" && <SearchResult searchQuery={searchQuery} />}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="w-96"></div>
+      )}
       <div style={styles.button}>
         <Separator />
         {userToken && (
@@ -142,12 +146,10 @@ const Navbar = () => {
                             </span>
                             <span
                               className=" cursor-pointer flex items-center rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-[#F1EEE3]  hover:text-gray-700"
-                              onClick={() =>
-                                navigate("/profile/blogs")
-                              }
+                              onClick={() => navigate("/profile/blogs")}
                             >
                               <BiBookAlt className={`h-4 w-4 mr-2`} />
-                             My Blogs
+                              My Blogs
                             </span>
                             <span
                               className=" cursor-pointer flex items-center rounded-lg px-4 py-2 text-sm text-red-500 hover:bg-[#F1EEE3]  hover:text-red-700"
