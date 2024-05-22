@@ -15,7 +15,7 @@
     "@emotion/styled": "^11.11.5",
     "@headlessui/react": "^1.7.17",
     "@mui/icons-material": "^5.15.3",
-    "@mui/material": "^5.15.3",
+    "@mui/material": "^5.15.17",
     "@react-pdf/renderer": "^3.4.4",
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.6.2",
