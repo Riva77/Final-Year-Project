@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
-import QuantityButton from "../../components/buttons/QuantityButton";
-import { MdFileUpload, MdDelete } from "react-icons/md";
-import { useDispatch } from "react-redux";
-import {
-  removeProductFromCart,
-  updateProductQuantity,
-} from "../../features/cartSlice";
-import { toastSuccess } from "../../utils/toast";
 import CheckIcon from "@mui/icons-material/Check";
 import ToggleButton from "@mui/material/ToggleButton";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { MdDelete } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import QuantityButton from "../../components/buttons/QuantityButton";
+import {
+  fetchCartItems,
+  updateProductQuantity,
+} from "../../features/cartSlice";
+import { toastError, toastSuccess } from "../../utils/toast";
 
 const CartCard = ({
   productId,
@@ -20,6 +21,7 @@ const CartCard = ({
   productQuantity,
   isSelected,
   setSelectedCartItems,
+  cartItemId,
 }) => {
   const dispatch = useDispatch();
 
@@ -33,12 +35,44 @@ const CartCard = ({
     setProductTotPrice(Number(newQuantity) * productPrice);
   };
 
-  const handleDeleteCartItem = () => {
-    dispatch(removeProductFromCart(productId));
+  const updateQuantity = async () => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:8000/api/updateCartItem/${cartItemId}`,
+        {
+          quantity,
+        }
+      );
+      if (response.status === 200) {
+        dispatch(fetchCartItems());
+        console.log("Item updated successfully");
+      }
+    } catch (error) {
+      toastError(error.response.data.message);
+    }
   };
   useEffect(() => {
-    dispatch(updateProductQuantity({ productId, quantity }));
+    updateQuantity();
   }, [quantity]);
+
+  const handleDeleteCartItem = async () => {
+    // dispatch(removeProductFromCart(productId));
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/api/deleteCartItem/${cartItemId}`
+      );
+      if (response.status === 200) {
+        dispatch(fetchCartItems());
+        toastSuccess("Item deleted successfully");
+      }
+    } catch (error) {
+      console.error(error);
+      toastError(error.response.data.message);
+    }
+  };
+  // useEffect(() => {
+  //   dispatch(updateProductQuantity({ productId, quantity }));
+  // }, [quantity]);
 
   return (
     <div style={styles.container}>
@@ -87,9 +121,13 @@ const CartCard = ({
           selected={isSelected}
           onChange={() => setSelectedCartItems(productId)}
           size="small"
+          sx={{
+            width: 40,
+            height: 40,
+          }}
           color={isSelected ? `success` : `error`}
         >
-          <CheckIcon />
+          {isSelected && <CheckIcon />}
         </ToggleButton>
         {/* <span>{JSON.stringify(isSelected)}</span> */}
         <span
