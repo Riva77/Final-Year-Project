@@ -12,7 +12,6 @@ import AdminDashboard from "./pages/admin/adminDashboard";
 import Blog from "./pages/blog/blog";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
-import PrivateRoutes from "./utils/privateRoutes";
 import { fetchProductData } from "./features/productSlice";
 import ProductDetails from "./pages/product/productDetails";
 import Cart from "./pages/cart/cart";
@@ -36,6 +35,10 @@ import AdminOrders from "./pages/admin/contents/AdminOrders";
 import AdminBlogs from "./pages/admin/contents/AdminBlogs";
 import Dashboard from "./pages/admin/contents/Dashboard";
 import UserBlog from "./pages/profile/components/UserBlog";
+import Spinner from "./components/spinner/spinner";
+import Error from "./pages/Error/Error";
+import axios from "axios";
+import { fetchCartItems } from "./features/cartSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -46,6 +49,8 @@ function App() {
     if (userToken) {
       const userId = jwtDecode(userToken)._id;
       dispatch(fetchUserData(userId));
+      axios.defaults.headers.common["Authorization"] = `Bearer ${userToken}`;
+      dispatch(fetchCartItems());
     }
   }, [userToken]);
 
@@ -70,45 +75,59 @@ function App() {
     }
   }, []);
 
+  if (userToken && !user.data) {
+    return <Spinner />;
+  }
+
   return (
     <div>
       <Toaster richColors={true} />
       {navbarVisible && <Navbar />}
       <Routes>
-        <Route exact path="/admin" element={<AdminDashboard />}>
-          <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="products" element={<Product />} />
-          <Route path="genre" element={<Genre />} />
-          <Route path="author" element={<Author />} />
-          <Route path="orders" element={<AdminOrders />} />
-          <Route path="blogs" element={<AdminBlogs />} />
-        </Route>
-        <Route exact path="/login" element={<Login />} />
-        <Route exact path="/signup" element={<Signup />} />
-        <Route path="/shop/:filter" element={<Shop />} />
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/blog" element={<Blog />} />
-        <Route exact path="/createPost" element={<CreatePost />} />
-        <Route path="/blog/blogDetails/:blogId" element={<BlogDetails />} />
-        <Route exact path="/cart" element={<Cart />} />
-        <Route exact path="/otpVerification" element={<OTPInput />} />
-        <Route exact path="/shippingDetails" element={<Shipping />} />
-        <Route exact path="/resetPassword" element={<ResetPassword />} />
+        {user?.data?.role === "admin" && (
+          <Route exact path="/admin" element={<AdminDashboard />}>
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="products" element={<Product />} />
+            <Route path="genre" element={<Genre />} />
+            <Route path="author" element={<Author />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="blogs" element={<AdminBlogs />} />
+          </Route>
+        )}
+
+        {user?.data?.role === "user" && (
+          <>
+            <Route exact path="/createPost" element={<CreatePost />} />
+            <Route exact path="/cart" element={<Cart />} />
+            <Route exact path="/shippingDetails" element={<Shipping />} />
+
+            <Route exact path="/profile" element={<Profile />}>
+              <Route
+                path="/profile/account-settings"
+                element={<AccountSettings />}
+              />
+              <Route path="/profile/favourites" element={<Favourites />} />
+              <Route path="/profile/orders" element={<Orders />} />
+              <Route path="/profile/blogs" element={<UserBlog />} />
+              <Route path="/profile/orders/details" element={<Invoice />} />
+            </Route>
+          </>
+        )}
+
         <Route
           path="/shop/productDetails/:productId"
           element={<ProductDetails />}
         />
-        <Route exact path="/profile" element={<Profile />}>
-          <Route
-            path="/profile/account-settings"
-            element={<AccountSettings />}
-          />
-          <Route path="/profile/favourites" element={<Favourites />} />
-          <Route path="/profile/orders" element={<Orders />} />
-          <Route path="/profile/blogs" element={<UserBlog />} />
-          <Route path="/profile/orders/details" element={<Invoice />} />
-        </Route>
+        <Route exact path="/otpVerification" element={<OTPInput />} />
+        <Route path="/shop/:filter" element={<Shop />} />
+        <Route exact path="/blog" element={<Blog />} />
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/signup" element={<Signup />} />
+        <Route path="/blog/blogDetails/:blogId" element={<BlogDetails />} />
+        <Route exact path="*" element={<Error />} />
+        <Route exact path="/resetPassword" element={<ResetPassword />} />
       </Routes>
       {/* <Chat /> */}
     </div>

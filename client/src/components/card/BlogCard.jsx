@@ -36,7 +36,9 @@ const BlogCard = ({
     <div className="relative">
       <div
         className={`absolute right-5 bottom-5 ${
-          user._id === author?._id || user.role === "admin" ? "" : "hidden"
+          user && (user._id === author?._id || user.role === "admin")
+            ? ""
+            : "hidden"
         }`}
         onClick={() => handleDelete(id)}
       >

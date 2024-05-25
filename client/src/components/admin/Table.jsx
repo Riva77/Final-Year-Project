@@ -3,13 +3,17 @@ import { deleteProduct } from "../../apis/product/deleteProduct";
 import { toastSuccess, toastError } from "../../utils/toast";
 import { useDispatch } from "react-redux";
 import { setProductModal } from "../../features/modalSlice"; // Import action creators
-import { setProduct } from "../../features/selectedProductSlice";
+import {
+  setProduct,
+  setProductType,
+} from "../../features/selectedProductSlice";
 import { fetchProductData } from "../../features/productSlice";
 
 const Table = ({ items }) => {
   const dispatch = useDispatch();
   const handleEditProduct = async (product) => {
     dispatch(setProduct(product));
+    dispatch(setProductType("product"));
   };
 
   const handleDeleteProduct = async (productId) => {
