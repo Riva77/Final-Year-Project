@@ -30,7 +30,7 @@ const SearchResult = ({ searchQuery }) => {
                   <span className="text-xs"> Author: {product.author.name}</span>
                 </span>
               </div>
-              <span className="text-[#4C2B21] text-lg">${product.price}</span>
+              <span className="text-[#4C2B21] text-lg">Rs. {product.price}</span>
             </div>
           ))
         ) : (
