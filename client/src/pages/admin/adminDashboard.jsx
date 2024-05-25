@@ -28,9 +28,10 @@ const AdminDashboard = () => {
   const isViewOrderModalOpen = useSelector(
     (state) => state.modal.isViewOrderModalOpen
   );
-  const isSelectedProductModalOpen = useSelector(
-    (state) => state.selectedProduct.isSelected
-  );
+
+  const selectedProduct = useSelector((state) => state.selectedProduct);
+  const isSelectedProductModalOpen =
+    selectedProduct.isSelected && selectedProduct.productType === "product";
 
   return (
     <>
@@ -43,7 +44,7 @@ const AdminDashboard = () => {
         style={{
           padding: "20px 64px",
           display: "flex",
-          minHeight: "50vh",
+          height: "91.5vh",
           backgroundColor: "#F1EEE3",
           gap: "20px",
         }}
