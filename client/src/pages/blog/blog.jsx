@@ -48,7 +48,7 @@ const Blog = () => {
   return (
     <div>
       <section style={styles.backgroundContainer}>
-        <section style={styles.container}>
+        <section style={styles.container} className="overflow-y-auto cool-scroll">
           {user && (
             <CustomButton
               name="Create Post"
@@ -58,7 +58,7 @@ const Blog = () => {
           <div style={styles.blogContainer}>{blogs}</div>
         </section>
       </section>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
@@ -81,6 +81,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: 30,
+  
   },
   blogContainer: {
     width: "100%",

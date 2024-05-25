@@ -89,6 +89,7 @@ const UpdateAuthorModal = ({ isOpen }) => {
       const response = await addAuthor(formData);
       if (response.success) {
         toastSuccess("Author Added Successfully");
+        dispatch( setAuthorModal())
         setFile({ data: "", preview: "" });
         setFormData({
           name: "",

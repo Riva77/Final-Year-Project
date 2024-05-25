@@ -1,7 +1,6 @@
 import { CustomButton, TextInput } from "../../components";
 import { useState } from "react";
 import { toastError, toastSuccess } from "../../utils/toast";
-import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 

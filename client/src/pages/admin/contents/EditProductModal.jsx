@@ -9,12 +9,15 @@ import TextInput from "../../../components/inputField/TextInput";
 import { fetchProductData } from "../../../features/productSlice";
 import { clearProduct } from "../../../features/selectedProductSlice";
 import { toastError, toastSuccess } from "../../../utils/toast";
+import { useNavigate } from "react-router-dom";
 
 const EditProductModal = ({ isOpen }) => {
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(clearProduct());
   };
+
+  const navigate=useNavigate();
 
   const selectedProduct = useSelector((state) => state.selectedProduct.data);
 
@@ -42,7 +45,9 @@ const EditProductModal = ({ isOpen }) => {
     const response = await updateProduct(selectedProduct._id, formData);
     if (response.success) {
       toastSuccess("Product Updated Successfully");
-      dispatch(fetchProductData());
+      dispatch(fetchProductData()); 
+      dispatch(clearProduct())
+      // navigate("/admin/products")
       setFormData({
         price: "",
         quantity: "",
@@ -70,8 +75,8 @@ const EditProductModal = ({ isOpen }) => {
         <h1 className="text-xl font-medium border-b-2 border-b-gray-200 mb-5 pb-2">
           Update Books
         </h1>
+     
         <span>{JSON.stringify(formData)}</span>
-        {/* <span>{JSON.stringify(formData)}</span> */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div className="flex gap-5">
             <TextInput

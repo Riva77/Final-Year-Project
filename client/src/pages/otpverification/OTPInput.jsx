@@ -1,43 +1,56 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
-import { toastError, toastSuccess } from "../../utils/toast";
-import CustomButton from "../../components/buttons/CustomButton";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { emailVerification } from "../../apis/OTP/emailVerification";
+import CustomButton from "../../components/buttons/CustomButton";
+import { setOTP } from "../../features/otpSlice";
+import { toastError, toastSuccess } from "../../utils/toast";
 
 const OTPInput = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [timerCount, setTimer] = useState(60);
   const [OTPinput, setOTPinput] = useState([0, 0, 0, 0]);
   const [disable, setDisable] = useState(true);
-  // const { email } = useParams();
   const OTP = useSelector((state) => state.otp.OTP);
-  const user = useSelector((state) => state.user.data);
 
   const isForgotPassword = new URLSearchParams(window.location.search).get(
     "isForgotPassword"
   );
-  const email = new URLSearchParams(window.location.search).get(
-    "email"
-  );
-  // const resendOTP = async () => {
-  //   if (disable) return;
-  //   try {
-  //     const response = await emailVerification("/mail", { email, OTP });
-  //     if (response.status === 200) {
-  //       toastSuccess(response.data.message);
-  //       setDisable(true);
-  //       setTimer(60);
-  //     }
-  //   } catch (error) {
-  //     toastError(error.response.data.message);
-  //   }
-  // };
+  const email = new URLSearchParams(window.location.search).get("email");
+
+  const resendOTP = async () => {
+    if (disable) return;
+    const newOTP = Math.floor(Math.random() * 9000 + 1000);
+    dispatch(setOTP(newOTP));
+    try {
+      const response = await emailVerification({
+        email: email,
+        OTP: newOTP,
+      });
+      if (response.status === 200) {
+        toastSuccess(response.data.message);
+        setDisable(true);
+        setTimer(60);
+      }
+    } catch (error) {
+      toastError(error.response.data.message);
+    }
+  };
 
   const verfiyOTP = () => {
     if (parseInt(OTPinput.join("")) === OTP) {
+      try {
+        axios.patch("http://localhost:8000/api/verify", {
+          email: email,
+        });
+      } catch (error) {
+        console.log(error);
+        toastError("Internal server error");
+      }
       toastSuccess("OTP verification successful");
+
       if (isForgotPassword) {
         navigate(`/resetPassword?email=${email}`);
       } else {
@@ -70,7 +83,7 @@ const OTPInput = () => {
               <p>Email Verification</p>
             </div>
             <div className="flex flex-row text-sm font-medium text-gray-400">
-              <p>We have sent a code to your email {user?.email}</p>
+              <p>We have sent a code to your email {email}</p>
             </div>
           </div>
 

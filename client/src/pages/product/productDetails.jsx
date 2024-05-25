@@ -7,12 +7,13 @@ import QuantityButton from "../../components/buttons/QuantityButton";
 // import { addCartItem } from "../apis/cartApi/addCartItem";
 import { toastSuccess, toastError } from "../../utils/toast";
 import { useSelector, useDispatch } from "react-redux";
-import { addProductToCart } from "../../features/cartSlice";
+import { addProductToCart, fetchCartItems } from "../../features/cartSlice";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
 import { addRemoveFavourites } from "../../apis/user/addRemoveFavourites";
 import { fetchUserData } from "../../features/authSlice";
 import { current } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const ProductDetails = () => {
   const { productId } = useParams();
@@ -69,13 +70,30 @@ const ProductDetails = () => {
   //   }
   // }, [book]);
 
-  const addToCartHandler = () => {
+  const addToCartHandler = async (productId) => {
     if (book?.quantity === 0) {
       toastError("Product is out of stock");
       return;
     }
-    const cartItem = { ...book, quantity };
-    dispatch(addProductToCart(cartItem));
+    // const cartItem = { ...book, quantity };
+    // dispatch(addProductToCart(cartItem));
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/addCartItem",
+        {
+          product: productId,
+          quantity: quantity,
+        }
+      );
+
+      if (response.status === 201) {
+        toastSuccess("Product added to cart successfully");
+        dispatch(fetchCartItems());
+      }
+    } catch (error) {
+      console.log(error)
+      toastError(error.response.data.message || error.message);
+    }
   };
   console.log("id", productId);
 
@@ -103,7 +121,7 @@ const ProductDetails = () => {
                     name="Add to cart"
                     type="submit"
                     color="white"
-                    onClick={addToCartHandler}
+                    onClick={() => addToCartHandler(book?._id)}
                   />
                   <span className="cursor-pointer" onClick={addToFavourite}>
                     {userData?.favoriteBooks.some(

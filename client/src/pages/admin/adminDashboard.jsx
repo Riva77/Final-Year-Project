@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
-import UpdateProductModal from "./contents/UpdateProductModal";
+import AddProductModal from "./contents/AddProductModal";
 import UpdateAuthorModal from "./contents/UpdateAuthorModal";
 import UpdateGenreModal from "./contents/UpdateGenreModal";
 import ViewOrderModal from "./contents/ViewOrderModal";
@@ -35,7 +35,7 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <UpdateProductModal isOpen={isProductModalOpen} />
+      <AddProductModal isOpen={isProductModalOpen} />
       <EditProductModal isOpen={isSelectedProductModalOpen} />
       <UpdateAuthorModal isOpen={isAuthorModalOpen} />
       <UpdateGenreModal isOpen={isGenreModalOpen} />

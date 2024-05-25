@@ -18,6 +18,7 @@ const selectedProductSlice = createSlice({
     clearProduct: (state) => {
       state.data = {};
       state.isSelected = false;
+      state.productType='';
     },
     setProductType: (state, action) => {
       state.productType = action.payload;

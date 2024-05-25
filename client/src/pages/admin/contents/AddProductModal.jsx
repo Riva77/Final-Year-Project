@@ -16,7 +16,7 @@ import { clearProduct } from "../../../features/selectedProductSlice";
 import AuthorDropdown from "../../../components/admin/AuthorDropdown";
 import { fetchProductData } from "../../../features/productSlice";
 
-const UpdateProductModal = ({ isOpen }) => {
+const AddProductModal = ({ isOpen }) => {
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(setProductModal());
@@ -141,6 +141,8 @@ const UpdateProductModal = ({ isOpen }) => {
       const response = await addProduct(formData);
       if (response.success) {
         toastSuccess("Product Added Successfully");
+        dispatch(clearProduct())
+        dispatch(setProductModal());
         setFile({ data: "", preview: "" });
         dispatch(fetchProductData());
         setFormData({
@@ -260,4 +262,4 @@ const UpdateProductModal = ({ isOpen }) => {
   );
 };
 
-export default UpdateProductModal;
+export default AddProductModal;

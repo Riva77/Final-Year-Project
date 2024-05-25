@@ -32,7 +32,7 @@ const Navbar = () => {
   };
 
   const logoutClickHandler = () => {
-    localStorage.removeItem("userToken");
+    localStorage.clear();
     dispatch(clearUserData());
     navigate("/");
   };

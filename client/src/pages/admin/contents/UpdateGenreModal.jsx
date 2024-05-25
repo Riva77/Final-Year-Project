@@ -1,12 +1,11 @@
 import { AiOutlineClose } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import CustomButton from "../../../components/buttons/CustomButton";
-import { useState,} from "react";
+import { useState } from "react";
 import { toastError, toastSuccess } from "../../../utils/toast";
 import TextInput from "../../../components/inputField/TextInput";
 import { addGenre } from "../../../apis/Genre/addGenre";
 import { setGenreModal } from "../../../features/modalSlice";
-
 
 const UpdateGenreModal = ({ isOpen }) => {
   const dispatch = useDispatch();
@@ -47,7 +46,6 @@ const UpdateGenreModal = ({ isOpen }) => {
     }
   };
 
-
   return (
     <div
       className={`${
@@ -59,25 +57,25 @@ const UpdateGenreModal = ({ isOpen }) => {
           className="absolute top-3 right-3 cursor-pointer"
           onClick={handleClick}
         >
-          <AiOutlineClose size={20} color="gray"  />
+          <AiOutlineClose size={20} color="gray" />
         </span>
         <h1 className="text-xl font-medium border-b-2 border-b-gray-200 mb-5 pb-2">
-        Add Genre
-      </h1>
+          Add Genre
+        </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <div className="flex gap-5">
-          <TextInput
-            type="text"
-            name="name"
-            label="Name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex justify-center mt-3">
-          <CustomButton title="Add Product" name="Add" />
-        </div>
+          <div className="flex gap-5">
+            <TextInput
+              type="text"
+              name="name"
+              label="Name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex justify-center mt-3">
+            <CustomButton title="Add Product" name="Add" />
+          </div>
         </form>
       </div>
     </div>

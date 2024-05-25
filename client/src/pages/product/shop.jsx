@@ -1,7 +1,7 @@
 import CaterogiesBook from "../../assets/CaterogiesBook.png";
-import {  useState } from "react";
+import { useState } from "react";
 import { CustomButton, RangeSlider, Dropdown } from "../../components";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ProductCard from "../../components/card/ProductCard";
 import Footer from "../../components/footer/Footer";
 import { useNavigate, useParams } from "react-router-dom";
@@ -26,7 +26,7 @@ const Shop = () => {
   };
 
   const productData = useSelector((state) => state.product.data);
-  const topProductData = useSelector((state) => state.topProduct.data);
+  const topProductData = useSelector((state) => state.topProduct?.data);
 
   const books = productData
     ?.filter((book) => {
@@ -149,7 +149,18 @@ const Shop = () => {
                 "{topProductData && topProductData[0]?.product.name}"
               </div>
               <div>
-                <CustomButton name="View Book" type="submit" color="white" onClick={() => navigate(`/shop/productDetails/${topProductData && topProductData[0]?.product._id}`)}/>
+                <CustomButton
+                  name="View Book"
+                  type="submit"
+                  color="white"
+                  onClick={() =>
+                    navigate(
+                      `/shop/productDetails/${topProductData &&
+                        topProductData[0]?.product._id}`
+                    )
+                  }
+                />
+               
               </div>
             </div>
             <div
@@ -181,7 +192,9 @@ const Shop = () => {
                 guarded its mysteries.
               </span>
               <span style={{ fontWeight: "bold" }}>
-                - {topProductData && topProductData[0].product.author.name}
+                -{" "}
+                {topProductData?.length > 0 &&
+                  topProductData[0].product?.author.name}
               </span>
             </div>
           </section>
