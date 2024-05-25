@@ -40,7 +40,7 @@ const Navbar = () => {
   return (
     <nav style={styles.nav}>
       <Separator type="horizontal" />
-      {userData?.role === "user" ? (
+      {userData?.role !== "admin" ? (
         <div style={styles.tabs}>
           <span onClick={() => navigate("/")} style={styles.pointer}>
             <img src={logo} style={styles.logo} />
