@@ -4,6 +4,8 @@ import CustomButton from "../../components/buttons/CustomButton";
 import { useEffect } from "react";
 import BlogCard from "../../components/card/BlogCard";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Footer from "../../components/footer/Footer";
 
 const Blog = () => {
   const navigate = useNavigate();
@@ -19,6 +21,8 @@ const Blog = () => {
     setBlogData(blog);
     console.log(await blog);
   };
+
+  const user = useSelector((state) => state.user.data);
 
   useEffect(() => {
     fetchBlogData();
@@ -45,13 +49,16 @@ const Blog = () => {
     <div>
       <section style={styles.backgroundContainer}>
         <section style={styles.container}>
-          <CustomButton
-            name="Create Post"
-            onClick={() => navigate("/createPost")}
-          />
+          {user && (
+            <CustomButton
+              name="Create Post"
+              onClick={() => navigate("/createPost")}
+            />
+          )}
           <div style={styles.blogContainer}>{blogs}</div>
         </section>
       </section>
+      <Footer />
     </div>
   );
 };
@@ -61,14 +68,14 @@ export default Blog;
 const styles = {
   backgroundContainer: {
     background: "#F1EEE3",
-    // height: "91vh",
+     height: "91vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "end",
   },
   container: {
     background: "#FDFBF7",
-    // height: "91vh",
+    height: "91vh",
     width: "1100px",
     padding: "100px ",
     display: "flex",
