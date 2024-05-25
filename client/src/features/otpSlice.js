@@ -10,13 +10,12 @@ export const otpSlice = createSlice({
   reducers: {
     setOTP: (state, action) => {
       state.OTP = action.payload;
-    
     },
-    clearOTP:(state)=>{
-      state.OTP= "";
-    }
+    clearOTP: (state) => {
+      state.OTP = "";
+    },
   },
 });
 
-export const { setOTP,clearOTP } = otpSlice.actions;
+export const { setOTP, clearOTP } = otpSlice.actions;
 export default otpSlice.reducer;
