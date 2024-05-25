@@ -22,12 +22,22 @@ const ProductCard = ({ image, name, price, imgStyle, onClick }) => {
         cursor: "pointer",
         padding: "10px",
       }}
+      className=""
       onClick={onClick}
       ref={cardRef}
       onMouseEnter={mouseEnterHandler}
       onMouseLeave={mouseLeaveHandler}
     >
-      <img src={image} alt={name} style={{ ...styles.img, ...imgStyle }} />
+      <span className="book-card__book-front"></span>
+      <img
+        src={image}
+        alt={name}
+        style={{ ...styles.img, ...imgStyle }}
+        className=" book-card__img"
+      />
+      <span className="book-card__book-back"></span>
+      <span className="book-card__book-side"></span>
+
       <div
         style={{
           display: "flex",
