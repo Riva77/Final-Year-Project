@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  data:{},
+  data: {},
   isSelected: false,
+  productType: "",
 };
 
 const selectedProductSlice = createSlice({
@@ -18,7 +19,14 @@ const selectedProductSlice = createSlice({
       state.data = {};
       state.isSelected = false;
     },
+    setProductType: (state, action) => {
+      state.productType = action.payload;
+    },
   },
 });
-export const { setProduct, clearProduct } = selectedProductSlice.actions;
+export const {
+  setProduct,
+  clearProduct,
+  setProductType,
+} = selectedProductSlice.actions;
 export default selectedProductSlice.reducer;
