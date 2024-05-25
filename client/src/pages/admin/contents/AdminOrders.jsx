@@ -4,6 +4,10 @@ import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { setViewOrderModal } from "../../../features/modalSlice";
 import { useDispatch } from "react-redux";
 import Spinner from "../../../components/spinner/Spinner";
+import {
+  setProduct,
+  setProductType,
+} from "../../../features/selectedProductSlice";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState();
@@ -21,10 +25,12 @@ const AdminOrders = () => {
     fetchOrder();
   }, []);
 
-  const handleViewDetails = () => {
+  const handleViewDetails = (order) => {
     // setDetails(!details);
     // setSelectedOrder(orderId);
     dispatch(setViewOrderModal());
+    dispatch(setProduct(order));
+    dispatch(setProductType("order"));
   };
   console.log(orders);
 
@@ -70,7 +76,7 @@ const AdminOrders = () => {
                       {order.products.map((product, index) => {
                         if (index === 0) {
                           // Display the name of the first product
-                          return <span>{product.product.name}</span>;
+                          return <span>{product.product?.name}</span>;
                         } else {
                           // For subsequent products, don't display the name
                           return null;
@@ -90,12 +96,22 @@ const AdminOrders = () => {
                       {order.paymentType}
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                      {order.status}
+                      <span
+                        className={`${
+                          order.status === "Received"
+                            ? "bg-yellow-200"
+                            : order.status === "Processing"
+                            ? "bg-orange-300"
+                            : "bg-green-300"
+                        } px-3 py-1 rounded-full `}
+                      >
+                        {order.status}
+                      </span>
                     </td>
                     <td className="whitespace-nowrap px-10 py-5 text-center flex gap-6 items-center ">
                       <IoIosArrowUp
                         color="#EF4343"
-                        onClick={() => handleViewDetails()}
+                        onClick={() => handleViewDetails(order)}
                       />
                     </td>
                   </tr>
