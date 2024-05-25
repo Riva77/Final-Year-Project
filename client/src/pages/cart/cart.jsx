@@ -1,12 +1,11 @@
-import { useSelector, useDispatch } from "react-redux";
-import CartCard from "../../components/card/CartCard";
-import CustomButton from "../../components/buttons/CustomButton";
-import { createOrder } from "../../apis/order/createOrder";
-import { toastError, toastLoading, toastSuccess } from "../../utils/toast";
-import { clearCart } from "../../features/cartSlice";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import CustomButton from "../../components/buttons/CustomButton";
+import CartCard from "../../components/card/CartCard";
+import { clearCart, fetchCartItems } from "../../features/cartSlice";
+import { toastError, toastSuccess } from "../../utils/toast";
 
 // import Footer from "../components/Footer";
 const Cart = () => {
@@ -42,7 +41,7 @@ const Cart = () => {
     if (status && transactionId) {
       if (status === "Completed") {
         updateOrder();
-        dispatch(clearCart());
+        dispatch(fetchCartItems());
         toastSuccess("Order placed successfully");
         navigate("/cart", { replace: true });
       } else {
@@ -79,26 +78,30 @@ const Cart = () => {
     console.log(selectedCartItems);
   };
 
-  const cart = cartItems?.map((item) => {
-    console.log(item);
-    return (
-      <CartCard
-        productId={item?._id}
-        image={item?.image}
-        name={item?.name}
-        productPrice={item?.price}
-        productQuantity={item?.quantity}
-        genre={item?.genre}
-        author={item?.author?.name}
-        key={item?._id}
-        isSelected={
-          selectedCartItems.findIndex((cartItem) => cartItem._id === item._id) >
-          -1
-        }
-        setSelectedCartItems={addorRemoveItem}
-      />
-    );
-  });
+  const cart =
+    cartItems.length > 0 &&
+    cartItems?.map((item) => {
+      console.log(item);
+      return (
+        <CartCard
+          productId={item?._id}
+          image={item?.image}
+          name={item?.name}
+          productPrice={item?.price}
+          productQuantity={item?.quantity}
+          genre={item?.genre}
+          author={item?.author?.name}
+          key={item?._id}
+          cartItemId={item?.cartItemId}
+          isSelected={
+            selectedCartItems.findIndex(
+              (cartItem) => cartItem._id === item._id
+            ) > -1
+          }
+          setSelectedCartItems={addorRemoveItem}
+        />
+      );
+    });
 
   const shippingNavigation = () => {
     let productsData = [];

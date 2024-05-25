@@ -10,6 +10,7 @@ import axios from "axios";
 import { createPost } from "../../apis/blog/createPost";
 import { useSelector } from "react-redux";
 import TextArea from "../../components/inputField/TextArea";
+import { useNavigate } from "react-router-dom";
 // import { UserContext } from "../context/userProvider";
 
 const modules = {
@@ -41,6 +42,8 @@ const formats = [
 ];
 
 const CreatePost = () => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const initialFormData = {
     title: "",
     summary: "",
@@ -82,6 +85,8 @@ const CreatePost = () => {
 
   //Image cloudinary ma upload garni
   const cloudinaryUpload = async (form) => {
+    console.log(form)
+    
     const response = await axios.post(
       "http://localhost:8000/api/cloudinary",
       form,
@@ -96,9 +101,24 @@ const CreatePost = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    formData.user = userId;
+    //check if formaData has empty fields or fields with only space  and return a error
+    for (const key in formData) {
+      if (key === "image") continue;
+      if (formData[key].trim() === "") {
+        setLoading(false);
+        toastError("Please fill all the fields");
+        return;
+      }
+    }
+    if (!file.data){
+      toastError("No file selected!")
+      return;
+    }
     const form = new FormData();
     form.append("file", file.data);
-    formData.user = userId;
+
     const cloudinaryResponse = await cloudinaryUpload(form); //vako img file lai cloudinary ma upload gareko
     console.log(cloudinaryResponse); //just check garya
 
@@ -113,13 +133,20 @@ const CreatePost = () => {
       if (response.success) {
         toastSuccess("Blog posted successfully");
         setFormData(initialFormData);
-        setFile({ data: "", preview: "" });
+        setFile({
+          preview: "",
+          data: "",
+        });
+        setLoading(false);
+        navigate("/blog");
       } else {
+        setLoading(false);
         toastError(response.error);
       }
 
       console.log("response", response);
     } else {
+      setLoading(false);
       toastError("Cloudinary upload failed");
       console.log("error");
     }
@@ -163,7 +190,6 @@ const CreatePost = () => {
               label="Summary"
               value={formData.summary}
               onChange={changeHandler}
-            
             />
 
             {/* <img src={file.preview} width={250} height={300} /> */}
@@ -172,14 +198,16 @@ const CreatePost = () => {
               theme="snow"
               value={formData.content}
               onChange={(newValue) =>
-                
                 setFormData({ ...formData, content: newValue })
               }
               modules={modules}
               formats={formats}
-              style={{ height: '400px', width:"860px" /* Specify your desired height here */ }}
+              style={{
+                height: "400px",
+                width: "860px" /* Specify your desired height here */,
+              }}
             />
-            
+
             <FileInput
               type="file"
               // label="Product Image"
@@ -188,7 +216,7 @@ const CreatePost = () => {
               style={{ width: "400px" }}
             />
 
-            <CustomButton type="submit" name="Submit" />
+            <CustomButton isDisabled={loading} type="submit" name="Submit" />
           </form>
         </div>
       </section>

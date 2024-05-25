@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { createOrder } from "../../apis/order/createOrder";
 import CustomButton from "../../components/buttons/CustomButton";
 import Dropdown from "../../components/sliderAndDropdown/Dropdown";
-import { createOrder } from "../../apis/order/createOrder";
 import { toastError, toastLoading, toastSuccess } from "../../utils/toast";
-import { useDispatch } from "react-redux";
-import { clearCart } from "../../features/cartSlice";
-import {useNavigate} from "react-router-dom"
+import { fetchCartItems } from "../../features/cartSlice";
 
 const Shipping = () => {
   const order = JSON.parse(localStorage.getItem("orderData"));
@@ -26,7 +26,6 @@ const Shipping = () => {
   };
 
   const checkoutHandler = async () => {
-    // Check if all fields are filled
     const requiredFields = ["phoneNumber", "district", "address", "wardNumber"];
     const missingFields = requiredFields.filter((field) => !formData[field]);
 
@@ -57,17 +56,30 @@ const Shipping = () => {
       return;
     }
 
+
+
+    for (const key in formData) {
+      if (key==='wardNumber' || key === "customer" || key==="products" || key=== "totalPrice")  continue ;
+     
+      if (formData[key].trim() === "") {
+        toastError("Please fill all the fields");
+        return;
+      }
+    }
+
     const response = await createOrder(formData);
+    console.log("cartFormData: ", formData);
     console.log("khaltiResponse ", response);
     if (response.success && response.data.type === "khalti") {
       localStorage.setItem("orderId", response.data.order_id);
       toastLoading(response.data.message);
+      localStorage.removeItem("orderData");
       window.location.href = response.data.data.payment_url;
-      // dispatch(clearCart());
+      dispatch(fetchCartItems());
     } else if (response.success && response.data.type === "cash") {
-      localStorage.removeItem("orderData")
-      dispatch(clearCart());
-      navigate("/cart")
+      localStorage.removeItem("orderData");
+      dispatch(fetchCartItems());
+      navigate("/cart");
       toastSuccess("Order placed successfully");
     } else {
       console.log(response);
@@ -77,7 +89,9 @@ const Shipping = () => {
   return (
     <div>
       <section style={styles.outerSection}>
+
         <section style={styles.innerSection}>
+        <span>{JSON.stringify(formData)}</span>
           <div className="w-full my-2 flex flex-col gap-4 ">
             <h1 className="flex text-xl font-medium border-b-2 border-b-gray-200 mb-5 pb-2 items-center">
               Shipping Details

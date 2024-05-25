@@ -18,20 +18,6 @@ const BlogDetails = () => {
     console.log(blogData?.content);
   }, []);
 
-  // const blogs = blogData?.map((blog) => {
-  //   //blogdata xa vani matra map garni (?)
-  //   return (
-  //     <IndividualBlogCard
-  //       image={blog.image}
-  //       title={blog.title}
-  //       summary={blog.summary}
-  //       content={blog.content}
-  //       time={blog.createdAt}
-  //       key={blog._id}
-  //     />
-  //   );
-  // });
-
   return (
     <div>
       <section style={styles.outerSection}>

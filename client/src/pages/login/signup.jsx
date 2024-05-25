@@ -7,6 +7,7 @@ import { signup } from "../../apis/authentication/signup";
 import { toastError, toastSuccess } from "../../utils/toast";
 import { setOTP } from "../../features/otpSlice";
 import { useDispatch } from "react-redux";
+import { HiHome } from "react-icons/hi2";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const Signup = () => {
       console.log(response);
       if (response.success) {
         dispatch(setOTP(response.data.OTP));
-        navigate("/otpVerification");
+        navigate(`/otpVerification?email=${formData.email}`);
       } else {
         toastError(response.error);
       }
@@ -52,6 +53,12 @@ const Signup = () => {
         className="bannerSection"
       ></section>
       <section className="formSection">
+        <span
+          className="absolute top-5 right-5 flex gap-2 cursor-pointer hover:text-[#4C2B21]"
+          onClick={() => navigate("/")}
+        >
+          <HiHome size={20} /> Home
+        </span>
         <h1
           style={{
             color: "#4C2B21",
@@ -101,7 +108,10 @@ const Signup = () => {
         </form>
         <div style={{ display: "flex", gap: 8 }}>
           Already have an account?
-          <span className="nav-link" onClick={() => navigate("/login")}>
+          <span
+            className="nav-link cursor-pointer"
+            onClick={() => navigate("/login")}
+          >
             Login
           </span>
         </div>

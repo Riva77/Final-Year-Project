@@ -8,6 +8,7 @@ import { login } from "../../apis/authentication/login";
 import { setOTP } from "../../features/otpSlice";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { HiHome } from "react-icons/hi2";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -69,9 +70,15 @@ const Login = () => {
     <div className="container">
       <section
         // style={{ background: `url(${background})` }}
-        className="bannerSection"
+        className="bannerSection "
       ></section>
       <section className="formSection">
+        <span
+          className="absolute top-5 right-5 flex gap-2 cursor-pointer hover:text-[#4C2B21]"
+          onClick={() => navigate("/")}
+        >
+          <HiHome size={20} /> Home
+        </span>
         <h1
           style={{
             color: "#4C2B21",
@@ -106,7 +113,10 @@ const Login = () => {
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           Don't have an account?
-          <span className="nav-link" onClick={() => navigate("/signup")}>
+          <span
+            className="nav-link cursor-pointer"
+            onClick={() => navigate("/signup")}
+          >
             Signup
           </span>
         </div>
