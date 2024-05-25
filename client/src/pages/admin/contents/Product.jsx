@@ -24,6 +24,7 @@ const Product = () => {
   const dispatch = useDispatch();
   const handleAddProduct = () => {
     dispatch(setProductModal());
+    
   };
 
   // const handleEditProduct = (item) => {
