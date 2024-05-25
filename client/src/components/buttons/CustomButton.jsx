@@ -1,9 +1,10 @@
 import React from "react";
 
-const CustomButton = ({ name, color, type, onClick }) => {
+const CustomButton = ({ isDisabled, name, color, type, onClick }) => {
   return (
     <button
       style={{
+        isDisabled: isDisabled,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
