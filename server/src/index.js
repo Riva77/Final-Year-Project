@@ -43,6 +43,14 @@ const getSalesByMonth = require("./routes/order/getSalesByMonth.js");
 const getBlogStats = require("./routes/blog/getBlogStats.js");
 const getOrderStats = require("./routes/order/getOrderStats.js");
 const deleteBlog = require("./routes/blog/deleteBlog.js");
+const updateOrderStatus = require("./routes/order/updateOrderStatus.js");
+const updateCartItemRoutes = require("./routes/cart/updateCartItem.js");
+const deleteCartItemRoutes = require("./routes/cart/deleteCartItem.js");
+const verifyUser = require("./routes/authentication/verify.js");
+const {
+  protectAdmin,
+  protect,
+} = require("./middlewares/authorization.middleware.js");
 
 connection();
 const app = express();
@@ -63,43 +71,47 @@ app.use(fileUpload({ useTempFiles: true }));
 
 app.use("/api/login", loginRoutes);
 app.use("/api/register", registerRoutes);
-app.use("/api/addProduct", addProductRoutes);
+app.use("/api/addProduct", protectAdmin, addProductRoutes);
 app.use("/api/getProduct", getProductRoutes);
 app.use("/api/getSingleProduct", getSingleProductRoutes);
-app.use("/api/addAuthor", addAuthorRoutes);
+app.use("/api/addAuthor", protectAdmin, addAuthorRoutes);
 app.use("/api/getAuthor", getAuthorRoutes);
 app.use("/api/addGenre", addGenreRoutes);
 app.use("/api/getGenre", getGenreRoutes);
 app.use("/api/cloudinary", cloudinaryRoutes);
 app.use("/api/getUser", getUserRoutes);
-app.use("/api/addCartItem", addCartItemRoutes);
-app.use("/api/getCartItem", getCartItemRoutes);
-app.use("/api/createOrder", createOrderRoutes);
-app.use("/api/getOrder", getOrderRoutes);
-app.use("/api/createPost", createPostRoutes);
+app.use("/api/addCartItem", protect, addCartItemRoutes);
+app.use("/api/getCartItem", protect, getCartItemRoutes);
+app.use("/api/createOrder", protect, createOrderRoutes);
+app.use("/api/getOrder", protectAdmin, getOrderRoutes);
+app.use("/api/createPost", protect, createPostRoutes);
 app.use("/api/getApprovedPost", getApprovedPostRoutes);
 app.use("/api/getSinglePost", getSinglePostRoutes);
 app.use("/api/getTopProducts", getTopProducts);
-app.use("/api/addFavouriteBook", addFavouriteBook);
-app.use("/api/updateOrder", updateOrderRoutes);
-app.use("/api/deleteOrder", deleteOrderRoutes);
+app.use("/api/addFavouriteBook", protect, addFavouriteBook);
+app.use("/api/updateOrder", protect, updateOrderRoutes);
+app.use("/api/deleteOrder", protect, deleteOrderRoutes);
 app.use("/api/deleteProduct", deleteProductRoutes);
 app.use("/api/khalti/callback", paymentRoutes);
-app.use("/api/getUserOrder", getUserOrderRoutes);
-app.use("/api/getOrderById", getOrderByIdRoutes);
+app.use("/api/getUserOrder", protect, getUserOrderRoutes);
+app.use("/api/getOrderById", protect, getOrderByIdRoutes);
 app.use("/api/sendEmail", sendEmailRoutes);
 app.use("/api/resetpassword", resetPasswordRoutes);
-app.use("/api/updateProduct", updateProductRoutes);
-app.use("/api/approveBlog", approveBlogRoutes);
+app.use("/api/updateProduct", protectAdmin, updateProductRoutes);
+app.use("/api/approveBlog", protectAdmin, approveBlogRoutes);
 app.use("/api/getAllBlogs", getAllBlogRoutes);
 app.use("/api/getTopAuthors", getTopAuthors);
-app.use("/api/changePassword", changePasswordRoutes);
-app.use("/api/editProfile", editProfileRoutes);
-app.use("/api/getUserBlog", getUserBlogRoutes);
-app.use("/api/getSalesByMonth", getSalesByMonth);
-app.use("/api/getBlogStats", getBlogStats);
-app.use("/api/getOrderStats", getOrderStats);
-app.use("/api/deleteBlog", deleteBlog);
+app.use("/api/changePassword", protect, changePasswordRoutes);
+app.use("/api/editProfile", protect, editProfileRoutes);
+app.use("/api/getUserBlog", protect, getUserBlogRoutes);
+app.use("/api/getSalesByMonth", protectAdmin, getSalesByMonth);
+app.use("/api/getBlogStats", protectAdmin, getBlogStats);
+app.use("/api/getOrderStats", protectAdmin, getOrderStats);
+app.use("/api/deleteBlog", protect, deleteBlog);
+app.use("/api/updateOrderStatus", updateOrderStatus);
+app.use("/api/updateCartItem", protect, updateCartItemRoutes);
+app.use("/api/deleteCartItem", protect, deleteCartItemRoutes);
+app.use("/api/verify", verifyUser);
 
 app.listen(8000, () => {
   //setting up the server to listen on the port 8000

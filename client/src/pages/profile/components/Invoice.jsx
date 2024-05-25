@@ -1,17 +1,17 @@
 import {
-  PDFDownloadLink,
   Document,
+  Image,
   Page,
+  PDFDownloadLink,
+  StyleSheet,
   Text,
   View,
-  StyleSheet,
-  Image,
 } from "@react-pdf/renderer";
-import { Fragment, useEffect, useState } from "react";
-import { formatDate } from "../../../utils/helper";
-import Spinner from "../../../components/spinner/spinner";
 import axios from "axios";
+import { Fragment, useEffect, useState } from "react";
 import logo from "../../../assets/logo.png";
+import Spinner from "../../../components/spinner/Spinner";
+import { formatDate, formatDateWithoutTime } from "../../../utils/helper";
 
 const Invoice = () => {
   const orderId = new URLSearchParams(window.location.search).get("orderId");
@@ -67,8 +67,8 @@ const Invoice = () => {
         </div>
         {/* <div className="text-gray-700 mb-2">
           {orderDetails?.address + " - " + orderDetails?.wardNumber}
-        </div> */}
-        <div className="text-gray-700 mb-2">{orderDetails?.district}</div>
+        </div>
+        <div className="text-gray-700 mb-2">{orderDetails?.district}</div> */}
         <div className="text-gray-700">{orderDetails?.customer?.email}</div>
       </div>
       <table className="w-full mb-8">
@@ -145,7 +145,7 @@ const InvoicePDF = ({ orderDetails }) => (
         </View>
         <View style={styles.invoiceDateContainer}>
           <Text style={styles.label}>Date: </Text>
-          <Text>{formatDate(orderDetails?.orderDate)}</Text>
+          <Text>{formatDateWithoutTime(orderDetails?.orderDate)}</Text>
         </View>
       </Fragment>
 
