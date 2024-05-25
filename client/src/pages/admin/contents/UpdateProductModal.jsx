@@ -113,6 +113,21 @@ const UpdateProductModal = ({ isOpen }) => {
     const form = new FormData();
     form.append("file", file.data);
 
+    // validate fomData
+    if (
+      !formData.name ||
+      !formData.price ||
+      !formData.quantity ||
+      !formData.author ||
+      !formData.genre ||
+      !formData.pages ||
+      !formData.synopsis ||
+      !formData.description
+    ) {
+      toastError("Please fill all the fields");
+      return;
+    }
+
     const cloudinaryResponse = await cloudinaryUpload(form); //vako img file lai cloudinary ma upload gareko
     console.log(cloudinaryResponse); //just check garya
 
